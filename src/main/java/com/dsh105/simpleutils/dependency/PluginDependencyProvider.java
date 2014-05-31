@@ -17,7 +17,6 @@
 
 package com.dsh105.simpleutils.dependency;
 
-import com.dsh105.echopet.compat.api.plugin.EchoPet;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
