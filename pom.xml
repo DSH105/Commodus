@@ -19,6 +19,12 @@
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public/</url>
         </repository>
+
+        <!-- Hawk's CI -->
+        <repository>
+            <id>hawk-repo</id>
+            <url>http://ci.hawkfalcon.com/plugin/repository/everything/</url>
+        </repository>
     </repositories>
 
     <!-- Dependencies -->
@@ -35,7 +41,7 @@
         <dependency>
             <groupId>com.captainbern</groupId>
             <artifactId>Minecraft-Reflection</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
         <!-- JUnit unit testing -->
