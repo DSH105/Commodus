@@ -19,6 +19,12 @@
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public/</url>
         </repository>
+
+        <!-- Hawk's CI -->
+        <repository>
+            <id>hawk-repo</id>
+            <url>http://ci.hawkfalcon.com/plugin/repository/everything/</url>
+        </repository>
     </repositories>
 
     <!-- Dependencies -->
