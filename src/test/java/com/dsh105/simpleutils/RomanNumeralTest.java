@@ -56,22 +56,22 @@ public class RomanNumeralTest {
     public void testNumberConversions() {
         int value = 980;
         RomanNumeral romanNumeral = new RomanNumeral(value);
-        Assert.assertEquals("CMLXXX", romanNumeral.toInt());
+        Assert.assertEquals("CMLXXX", romanNumeral.toString());
 
         value = 80;
         romanNumeral = new RomanNumeral(value);
-        Assert.assertEquals("LXXX", romanNumeral.toInt());
+        Assert.assertEquals("LXXX", romanNumeral.toString());
 
         value = 74;
         romanNumeral = new RomanNumeral(value);
-        Assert.assertEquals("LXXIV", romanNumeral.toInt());
+        Assert.assertEquals("LXXIV", romanNumeral.toString());
 
         value = 385;
         romanNumeral = new RomanNumeral(value);
-        Assert.assertEquals("CCCLXXXV", romanNumeral.toInt());
+        Assert.assertEquals("CCCLXXXV", romanNumeral.toString());
 
         value = 126;
         romanNumeral = new RomanNumeral(value);
-        Assert.assertEquals("CXXVI", romanNumeral.toInt());
+        Assert.assertEquals("CXXVI", romanNumeral.toString());
     }
 }

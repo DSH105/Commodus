@@ -6,7 +6,7 @@ import org.junit.Test;
 public class StringUtilTest {
     @Test
     public void testCapitalization() {
-        Assert.assertEquals("Test message", StringUtil.capitalise("test message"));
+        Assert.assertEquals("Test Message", StringUtil.capitalise("test message"));
     }
 
     @Test
