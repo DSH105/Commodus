@@ -129,14 +129,39 @@ public class ObjectPaginator<T> {
      * @return Content of a certain page
      */
     public String[] getPage(int pageNumber, int perPage) {
+        return getPage(pageNumber, perPage, false);
+    }
+
+    /**
+     * Gets a certain page of raw content by page number
+     *
+     * @param pageNumber Page number to retrieve raw content for
+     * @param perPage Amount of entries allowed per page
+     * @return Raw content of a certain page
+     */
+    public ArrayList<T> getRawPage(int pageNumber, int perPage) {
+        if (pageNumber > getIndexAsDouble()) {
+            throw new IllegalArgumentException("Page does not exist!");
+        }
+        int index = perPage * (Math.abs(pageNumber) - 1);
+        ArrayList<T> list = new ArrayList<>();
+        for (int i = index; i < (index + perPage); i++) {
+            if (this.raw.size() > i) {
+                list.add(raw.get(i));
+            }
+        }
+        return list;
+    }
+
+    public String[] getPage(int pageNumber, int perPage, boolean raw) {
         if (pageNumber > getIndexAsDouble()) {
             throw new IllegalArgumentException("Page does not exist!");
         }
         int index = perPage * (Math.abs(pageNumber) - 1);
         ArrayList<String> list = new ArrayList<String>();
         for (int i = index; i < (index + perPage); i++) {
-            if (raw.size() > i) {
-                list.add(getConvertedContent(raw.get(i)));
+            if (this.raw.size() > i) {
+                list.add(getConvertedContent(this.raw.get(i)));
             }
         }
         return list.toArray(new String[list.size()]);
