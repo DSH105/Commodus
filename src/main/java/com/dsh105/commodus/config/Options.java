@@ -1,4 +1,4 @@
-package com.dsh105.commodus.config.options;
+package com.dsh105.commodus.config;
 
 
 import com.dsh105.commodus.config.YAMLConfig;
