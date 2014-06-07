@@ -15,9 +15,9 @@
  * along with SimpleUtils.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.dsh105.simpleutils;
+package com.dsh105.commodus;
 
-import com.dsh105.simpleutils.exceptions.ManifestAttributeNotFoundException;
+import com.dsh105.commodus.exceptions.ManifestAttributeNotFoundException;
 
 import java.io.File;
 import java.io.IOException;

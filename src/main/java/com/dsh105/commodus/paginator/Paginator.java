@@ -15,17 +15,27 @@
  * along with SimpleUtils.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.dsh105.simpleutils.paginator;
+package com.dsh105.commodus.paginator;
+
+import java.util.ArrayList;
 
 /**
- * Represents a pageable object that can be used in a {@link com.dsh105.simpleutils.paginator.Paginator}
+ * Represents a Paginator for {@link Pageable} objects
+ *
+ * @param <T> Type of item to separate that must be {@link Pageable}
  */
-public interface Pageable {
+public class Paginator<T extends Pageable> extends ObjectPaginator<T> {
 
-    /**
-     * Gets the content to paginate for this object
-     *
-     * @return Content to paginate
-     */
-    public String getContent();
+    public Paginator(int perPage, T... raw) {
+        super(perPage, raw);
+    }
+
+    public Paginator(ArrayList<T> raw, int perPage) {
+        super(raw, perPage);
+    }
+
+    @Override
+    protected String getConvertedContent(T rawObject) {
+        return rawObject.getContent();
+    }
 }

@@ -15,19 +15,17 @@
  * along with SimpleUtils.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.dsh105.simpleutils.exceptions;
+package com.dsh105.commodus.paginator;
 
-public class ManifestAttributeNotFoundException extends RuntimeException {
+/**
+ * Represents a pageable object that can be used in a {@link com.dsh105.commodus.paginator.Paginator}
+ */
+public interface Pageable {
 
-    public ManifestAttributeNotFoundException(String s) {
-        super(s);
-    }
-
-    public ManifestAttributeNotFoundException(String s, Throwable throwable) {
-        super(s, throwable);
-    }
-
-    public ManifestAttributeNotFoundException(Throwable throwable) {
-        super(throwable);
-    }
+    /**
+     * Gets the content to paginate for this object
+     *
+     * @return Content to paginate
+     */
+    public String getContent();
 }

@@ -15,7 +15,7 @@
  * along with SimpleUtils.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.dsh105.simpleutils;
+package com.dsh105.commodus;
 
 import com.google.common.collect.ImmutableList;
 import org.json.simple.JSONArray;

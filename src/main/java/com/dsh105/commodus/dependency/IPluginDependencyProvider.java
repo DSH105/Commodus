@@ -15,24 +15,17 @@
  * along with SimpleUtils.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.dsh105.simpleutils.logging;
+package com.dsh105.commodus.dependency;
 
-import org.bukkit.ChatColor;
+import org.bukkit.plugin.Plugin;
 
-public enum Level {
+public interface IPluginDependencyProvider<T extends Plugin> {
 
-    INFO(" [INFO] "),
-    NORMAL(ChatColor.GREEN + " [INFO] "),
-    SEVERE(ChatColor.RED + " [SEVERE] "),
-    WARNING(ChatColor.RED + " [WARNING] ");
+    public T getDependency();
 
-    private String prefix;
+    public boolean isHooked();
 
-    Level(String prefix) {
-        this.prefix = prefix;
-    }
+    public Plugin getHandlingPlugin();
 
-    public String getPrefix() {
-        return prefix;
-    }
+    public String getDependencyName();
 }

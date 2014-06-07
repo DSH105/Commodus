@@ -1,4 +1,4 @@
-package com.dsh105.simpleutils;
+package com.dsh105.commodus;
 
 import junit.framework.Assert;
 import org.junit.Test;

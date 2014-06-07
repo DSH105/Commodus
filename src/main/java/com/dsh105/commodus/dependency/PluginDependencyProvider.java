@@ -15,7 +15,7 @@
  * along with SimpleUtils.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.dsh105.simpleutils.dependency;
+package com.dsh105.commodus.dependency;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;

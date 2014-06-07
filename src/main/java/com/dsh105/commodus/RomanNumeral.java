@@ -15,7 +15,7 @@
  * along with SimpleUtils.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.dsh105.simpleutils;
+package com.dsh105.commodus;
 
 // http://math.hws.edu/eck/cs124/javanotes6/c8/ex3-ans.html
 

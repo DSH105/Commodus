@@ -15,7 +15,7 @@
  * along with SimpleUtils.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.dsh105.simpleutils.paginator;
+package com.dsh105.commodus.paginator;
 
 import java.util.ArrayList;
 
