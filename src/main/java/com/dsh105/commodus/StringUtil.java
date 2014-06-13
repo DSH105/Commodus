@@ -19,13 +19,27 @@ package com.dsh105.commodus;
 
 import org.apache.commons.lang.Validate;
 
+import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.regex.Pattern;
 
 public class StringUtil {
 
     private static final String EMPTY = "";
+    private static final Pattern DIACRITICS_AND_FRIENDS = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
+
+    public static String[] convert(Object... arrayToConvert) {
+        if (arrayToConvert.length <= 0) {
+            return new String[0];
+        }
+        String[] stringArray = new String[arrayToConvert.length];
+        for (int i = 0; i < stringArray.length; i++) {
+            stringArray[i] = arrayToConvert[i].toString();
+        }
+        return stringArray;
+    }
 
     /**
      * Capitalizes the first letter of a String
@@ -109,6 +123,13 @@ public class StringUtil {
             return new String[0];
         }
         return combined.split(separator);
+    }
+
+    // http://stackoverflow.com/a/1453284
+    public static String stripDiacritics(String str) {
+        str = Normalizer.normalize(str, Normalizer.Form.NFD);
+        str = DIACRITICS_AND_FRIENDS.matcher(str).replaceAll("");
+        return str;
     }
 
     /**

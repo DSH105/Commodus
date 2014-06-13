@@ -1,15 +1,20 @@
 package com.dsh105.commodus.config;
 
+import org.apache.commons.lang.Validate;
 
-import com.dsh105.commodus.config.YAMLConfig;
+import java.util.HashMap;
 
 public abstract class Options {
+
+    private HashMap<Option, Object> LOCKED = new HashMap<>();
+    private HashMap<Option, Object[]> LOCKED_CONDITION = new HashMap<>();
 
     protected YAMLConfig config;
 
     public Options(YAMLConfig config) {
         this.config = config;
         this.setDefaults();
+        config.saveConfig();
     }
 
     public abstract void setDefaults();
@@ -20,5 +25,42 @@ public abstract class Options {
 
     protected void set(String path, Object defObject, String... comments) {
         this.config.set(path, this.config.get(path, defObject), comments);
+    }
+
+    public boolean isLocked(Option option) {
+        return LOCKED.containsKey(option);
+    }
+
+    public boolean isLocked(Option option, Object[] condition) {
+        return LOCKED.containsKey(option) && LOCKED_CONDITION.get(option).equals(condition);
+    }
+
+    public <T> T getLockedValue(Option<T> option) {
+        return (T) LOCKED.get(option);
+    }
+
+    public <T> void lockValue(Option<T> option, T value) {
+        LOCKED.put(option, value);
+    }
+
+    public <T> void lockValue(Option<T> option, T value, Object... condition) {
+        Validate.notEmpty(condition, "Condition cannot be empty!");
+        LOCKED.put(option, value);
+        LOCKED_CONDITION.put(option, condition);
+    }
+
+    public <T> void unlockValue(Option<T> option, T value) {
+        LOCKED.put(option, value);
+        if (LOCKED_CONDITION.containsKey(option)) {
+            LOCKED_CONDITION.remove(option);
+        }
+    }
+
+    public <T> T get(Option<T> option, String... pathReplacements) {
+        return option.getValue(getConfig().config(), pathReplacements);
+    }
+
+    public <T> T get(Option<T> option, T defaultValue, String... pathReplacements) {
+        return option.getValue(getConfig().config(), defaultValue, pathReplacements);
     }
 }
