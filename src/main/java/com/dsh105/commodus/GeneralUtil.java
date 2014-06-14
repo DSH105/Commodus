@@ -17,10 +17,12 @@
 
 package com.dsh105.commodus;
 
+import com.google.common.collect.BiMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import java.util.Map;
 import java.util.Random;
 
 public class GeneralUtil {
@@ -91,5 +93,17 @@ public class GeneralUtil {
             coords[index++] = Integer.parseInt(args[i]);
         }
         return new Location(world, coords[0], coords[1], coords[2]);
+    }
+
+    public static <K, V> K getKeyAtValue(Map<K, V> map, V value) {
+        if (map instanceof BiMap) {
+            return ((BiMap<K, V>) map).inverse().get(value);
+        }
+        for (Map.Entry<K, V> entry : map.entrySet()) {
+            if (entry.getValue().equals(value)) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 }
