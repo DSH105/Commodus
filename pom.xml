@@ -43,13 +43,6 @@
             <artifactId>Minecraft-Reflection</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
-
-        <!-- Google Guava -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>17.0</version>
-        </dependency>
     </dependencies>
 
     <!-- Build -->

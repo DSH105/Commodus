@@ -13,11 +13,11 @@ public class UUIDFetcherTest {
 
     @Test
     public void testCaching() {
-        /*
-         * Since the above test will have already run,
-         * stuntguy3000 will already be in the cache
-         * depending on if the above test succeeded.
-         */
-        Assert.assertEquals(true, UUIDFetcher.getCache().asMap().containsKey("stuntguy3000"));
+        try {
+            UUIDFetcher.getUUIDOf("Vexil_"); // Load "Vexil_" into the UUIDFetcher's Cache
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Assert.assertEquals(true, UUIDFetcher.getCache().asMap().containsKey("Vexil_"));
     }
 }
