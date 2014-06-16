@@ -17,6 +17,9 @@
 
 package com.dsh105.commodus;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
 import com.google.common.collect.ImmutableList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -29,6 +32,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author evilmidget38
@@ -41,6 +45,15 @@ import java.util.concurrent.Callable;
 public class UUIDFetcher implements Callable<Map<String, UUID>> {
     private static final double PROFILES_PER_REQUEST = 100;
     private static final String PROFILE_URL = "https://api.mojang.com/profiles/minecraft";
+    private static Cache<String, UUID> UUID_CACHE = CacheBuilder.newBuilder()
+            .expireAfterWrite(1, TimeUnit.HOURS)
+            .build(new CacheLoader<String, UUID>() {
+                @Override
+                public UUID load(String name) throws Exception {
+                    return new UUIDFetcher(Arrays.asList(name)).call().get(name);
+                }
+            });
+
     private final JSONParser jsonParser = new JSONParser();
     private final List<String> names;
     private final boolean rateLimiting;
@@ -52,6 +65,10 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
 
     public UUIDFetcher(List<String> names) {
         this(names, true);
+    }
+
+    public static Cache<String, UUID> getCache() {
+        return UUID_CACHE;
     }
 
     private static void writeBody(HttpURLConnection connection, String body) throws Exception {
@@ -94,7 +111,7 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
     }
 
     public static UUID getUUIDOf(String name) throws Exception {
-        return new UUIDFetcher(Arrays.asList(name)).call().get(name);
+        return getCache().get(name);
     }
 
     public Map<String, UUID> call() throws Exception {
