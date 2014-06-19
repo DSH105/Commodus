@@ -19,6 +19,7 @@ package com.dsh105.commodus;
 
 import com.captainbern.minecraft.reflection.MinecraftReflection;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -35,20 +36,25 @@ public class PlayerIdent {
     }
 
 
-    public static Object getIdentificationFor(Player player) {
-        if (supportsUuid()) {
-            return player.getUniqueId();
-        } else {
+    public static Object getIdentificationFor(OfflinePlayer player) {
+        if (player instanceof Player) {
+            if (supportsUuid()) {
+                return player.getUniqueId();
+            }
             return player.getName();
+        } else {
+            try {
+                return UUIDFetcher.getUUIDOf(player.getName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        // As a last resort
+        return player.getName();
     }
 
-    public static String getIdentificationForAsString(Player player) {
-        if (supportsUuid()) {
-            return player.getUniqueId().toString();
-        } else {
-            return player.getName();
-        }
+    public static String getIdentificationForAsString(OfflinePlayer player) {
+        return getIdentificationFor(player).toString();
     }
 
     public static Player getPlayerOf(Object identification) {
