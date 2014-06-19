@@ -3,6 +3,8 @@ package com.dsh105.commodus.particle;
 import com.captainbern.minecraft.protocol.PacketType;
 import com.captainbern.minecraft.wrapper.WrappedPacket;
 import com.dsh105.commodus.GeneralUtil;
+import com.dsh105.commodus.GeometryUtil;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -42,7 +44,7 @@ public class ParticleBuilder implements Cloneable {
         this(name, 0, 0, 0, GeneralUtil.random().nextFloat(), GeneralUtil.random().nextFloat(), GeneralUtil.random().nextFloat(), speed, amount);
     }
 
-    public void send(Player player) {
+    public void show(Player player) {
         WrappedPacket packet = new WrappedPacket(PacketType.Play.Server.WORLD_PARTICLES);
         packet.getStrings().write(0, getName());
         packet.getFloats().write(0, getX());
@@ -54,6 +56,12 @@ public class ParticleBuilder implements Cloneable {
         packet.getFloats().write(6, getSpeed());
         packet.getIntegers().write(0, getAmount());
         // TODO: send the packet
+    }
+
+    public void show(Location origin) {
+        for (Player player : GeometryUtil.getNearbyPlayers(origin, 50)) {
+            show(player);
+        }
     }
 
     public ParticleBuilder setName(String name) {

@@ -1,5 +1,7 @@
 package com.dsh105.commodus.particle;
 
+import org.bukkit.entity.Player;
+
 public enum Particle {
 
     /*
@@ -93,7 +95,7 @@ public enum Particle {
             this.amount = amount;
         }
 
-        public ParticleBuilder builder() {
+        public DataParticleBuilder builder() {
             return new DataParticleBuilder(this.getName(), this.getSpeed(), this.getAmount());
         }
 
