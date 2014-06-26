@@ -1,18 +1,18 @@
 /*
- * This file is part of SimpleUtils.
+ * This file is part of Commodus.
  *
- * SimpleUtils is free software: you can redistribute it and/or modify
+ * Commodus is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * SimpleUtils is distributed in the hope that it will be useful,
+ * Commodus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with SimpleUtils.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Commodus.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package com.dsh105.commodus;
@@ -24,7 +24,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class PlayerIdent {
+public class IdentUtil {
 
     public static boolean supportsUuid() {
         try {
@@ -35,6 +35,14 @@ public class PlayerIdent {
         return GeneralUtil.numericValueOf(MinecraftReflection.getVersionTag()) >= 172;
     }
 
+    public static Object getIdentificationFor(String playerName) {
+        try {
+            return UUIDFetcher.getUUIDOf(playerName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return playerName;
+    }
 
     public static Object getIdentificationFor(OfflinePlayer player) {
         if (player instanceof Player) {
@@ -43,14 +51,8 @@ public class PlayerIdent {
             }
             return player.getName();
         } else {
-            try {
-                return UUIDFetcher.getUUIDOf(player.getName());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            return getIdentificationFor(player.getName());
         }
-        // As a last resort
-        return player.getName();
     }
 
     public static String getIdentificationForAsString(OfflinePlayer player) {
