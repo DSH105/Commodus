@@ -54,7 +54,6 @@ public class TimeUtil {
         return format.format(ticksToDate(ticks));
     }
 
-
     public static Date ticksToDate(long ticks) {
         // Assume the server time starts at 0. It would start on a day.
         // But we will simulate that the server started with 0 at midnight.

@@ -23,6 +23,7 @@ import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class StringUtil {
@@ -247,5 +248,23 @@ public class StringUtil {
             return null;
         }
         return join(Arrays.asList(array), separator);
+    }
+
+    /**
+     * Convert a String to a UUID
+     * This method will add the required dashes, if not found in String
+     *
+     * @param input
+     * @return UUID converted UUID
+     * @throws java.lang.IllegalArgumentException input could not be converted
+     */
+    public static UUID convertUUID(String input) throws IllegalArgumentException {
+        try {
+            return UUID.fromString(input);
+        } catch (IllegalArgumentException ex) {
+            return UUID.fromString(input.replaceAll(
+                    "(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})",
+                    "$1-$2-$3-$4-$5"));
+        }
     }
 }
