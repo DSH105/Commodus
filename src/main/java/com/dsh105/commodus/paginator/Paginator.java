@@ -39,7 +39,7 @@ public class Paginator<T extends Pageable> extends ObjectPaginator<T> {
     public Paginator(ArrayList<T> raw, int perPage) {
         super(raw, perPage);
     }
-    
+
     public void sendPage(CommandSender sender, int pageNumber) {
         sendPage(sender, pageNumber, getPerPage());
     }
