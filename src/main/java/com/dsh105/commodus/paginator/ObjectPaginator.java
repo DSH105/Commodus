@@ -60,16 +60,26 @@ public class ObjectPaginator<T> implements Iterable<T> {
         this.setRaw(raw);
     }
 
+    /**
+     * Gets how many entries are included per page
+     *
+     * @return Entries included per page
+     */
     public int getPerPage() {
         return perPage;
     }
 
+    /**
+     * Sets how many entries are included per page
+     *
+     * @param perPage Entries included per page
+     */
     public void setPerPage(int perPage) {
         this.perPage = perPage;
     }
 
     /**
-     * Sets new raw content
+     * Adds new raw content
      *
      * @param raw Raw content to be paginated
      */
