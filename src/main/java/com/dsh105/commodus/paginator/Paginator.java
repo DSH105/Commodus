@@ -17,6 +17,8 @@
 
 package com.dsh105.commodus.paginator;
 
+import org.bukkit.command.CommandSender;
+
 import java.util.ArrayList;
 
 /**
@@ -26,12 +28,34 @@ import java.util.ArrayList;
  */
 public class Paginator<T extends Pageable> extends ObjectPaginator<T> {
 
+    public Paginator() {
+        super();
+    }
+
     public Paginator(int perPage, T... raw) {
         super(perPage, raw);
     }
 
     public Paginator(ArrayList<T> raw, int perPage) {
         super(raw, perPage);
+    }
+    
+    public void sendPage(CommandSender sender, int pageNumber) {
+        sendPage(sender, pageNumber, getPerPage());
+    }
+
+    public void sendPage(CommandSender sender, int pageNumber, int perPage) {
+        sendPage(sender, pageNumber, perPage, false);
+    }
+
+    public void sendPage(CommandSender sender, int pageNumber, int perPage, boolean raw) {
+        for (T pageable : getRawPage(pageNumber, perPage)) {
+            if (raw) {
+                sender.sendMessage(pageable.toString());
+            } else {
+                pageable.send(sender);
+            }
+        }
     }
 
     @Override

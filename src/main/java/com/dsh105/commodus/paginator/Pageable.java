@@ -17,6 +17,8 @@
 
 package com.dsh105.commodus.paginator;
 
+import org.bukkit.command.CommandSender;
+
 /**
  * Represents a pageable object that can be used in a {@link com.dsh105.commodus.paginator.Paginator}
  */
@@ -28,4 +30,10 @@ public interface Pageable {
      * @return Content to paginate
      */
     public String getContent();
+
+    /**
+     * Sends this content to a {@link org.bukkit.command.CommandSender}
+     * @param sender Whom to send the content to
+     */
+    public void send(CommandSender sender);
 }

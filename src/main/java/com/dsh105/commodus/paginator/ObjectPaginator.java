@@ -18,16 +18,25 @@
 package com.dsh105.commodus.paginator;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Represents a Paginated list that can be used to systematically separate entries of a certain item
  *
  * @param <T> Type of item to separate
  */
-public class ObjectPaginator<T> {
+public class ObjectPaginator<T> implements Iterable<T> {
 
     private ArrayList<T> raw = new ArrayList<>();
     private int perPage;
+
+    /**
+     * Construct a new, empty Paginator
+     */
+    public ObjectPaginator() {
+    }
 
     /**
      * Construct a new Paginator from the given raw content
@@ -37,7 +46,7 @@ public class ObjectPaginator<T> {
      */
     public ObjectPaginator(int perPage, T... raw) {
         this.perPage = perPage;
-        this.setRaw(raw);
+        this.add(raw);
     }
 
     /**
@@ -51,15 +60,27 @@ public class ObjectPaginator<T> {
         this.setRaw(raw);
     }
 
+    public int getPerPage() {
+        return perPage;
+    }
+
+    public void setPerPage(int perPage) {
+        this.perPage = perPage;
+    }
+
     /**
      * Sets new raw content
      *
      * @param raw Raw content to be paginated
      */
-    public void setRaw(T... raw) {
+    public void add(T... raw) {
         for (T r : raw) {
             this.raw.add(r);
         }
+    }
+
+    public void clear() {
+        this.raw.clear();
     }
 
     /**
@@ -76,8 +97,8 @@ public class ObjectPaginator<T> {
      *
      * @return Raw content to be paginated
      */
-    public ArrayList<T> getRaw() {
-        return this.raw;
+    public List<T> getRaw() {
+        return Collections.unmodifiableList(this.raw);
     }
 
     /**
@@ -129,7 +150,17 @@ public class ObjectPaginator<T> {
      * @return Content of a certain page
      */
     public String[] getPage(int pageNumber, int perPage) {
-        return getPage(pageNumber, perPage, false);
+        if (pageNumber > getIndexAsDouble()) {
+            throw new IllegalArgumentException("Page does not exist!");
+        }
+        int index = perPage * (Math.abs(pageNumber) - 1);
+        ArrayList<String> list = new ArrayList<String>();
+        for (int i = index; i < (index + perPage); i++) {
+            if (this.raw.size() > i) {
+                list.add(getConvertedContent(this.raw.get(i)));
+            }
+        }
+        return list.toArray(new String[list.size()]);
     }
 
     /**
@@ -153,21 +184,12 @@ public class ObjectPaginator<T> {
         return list;
     }
 
-    public String[] getPage(int pageNumber, int perPage, boolean raw) {
-        if (pageNumber > getIndexAsDouble()) {
-            throw new IllegalArgumentException("Page does not exist!");
-        }
-        int index = perPage * (Math.abs(pageNumber) - 1);
-        ArrayList<String> list = new ArrayList<String>();
-        for (int i = index; i < (index + perPage); i++) {
-            if (this.raw.size() > i) {
-                list.add(getConvertedContent(this.raw.get(i)));
-            }
-        }
-        return list.toArray(new String[list.size()]);
-    }
-
     protected String getConvertedContent(T rawObject) {
         return rawObject.toString();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return getRaw().iterator();
     }
 }

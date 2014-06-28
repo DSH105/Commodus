@@ -24,6 +24,10 @@ import java.util.ArrayList;
  */
 public class StringPaginator extends ObjectPaginator<String> {
 
+    public StringPaginator() {
+        super();
+    }
+
     public StringPaginator(int perPage, String... raw) {
         super(perPage, raw);
     }
