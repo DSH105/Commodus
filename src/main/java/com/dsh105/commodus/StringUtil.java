@@ -18,6 +18,7 @@
 package com.dsh105.commodus;
 
 import org.apache.commons.lang.Validate;
+import org.bukkit.ChatColor;
 
 import java.text.Normalizer;
 import java.util.Arrays;
@@ -30,6 +31,14 @@ public class StringUtil {
 
     private static final String EMPTY = "";
     private static final Pattern DIACRITICS_AND_FRIENDS = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
+
+    public String removeColor(String input, ChatColor... colorsToRemove) {
+        String result = input;
+        for (ChatColor color : colorsToRemove) {
+            input = input.replaceAll("(?i)" + ChatColor.COLOR_CHAR + color.getChar(), "");
+        }
+        return result;
+    }
 
     public static String[] convert(Object... arrayToConvert) {
         if (arrayToConvert.length <= 0) {
