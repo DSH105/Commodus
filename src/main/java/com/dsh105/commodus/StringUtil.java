@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 
 public class StringUtil {
 
+    public static final String[] EMPTY_STRING_ARRAY = new String[0];
     private static final String EMPTY = "";
     private static final Pattern DIACRITICS_AND_FRIENDS = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
 
@@ -101,6 +102,10 @@ public class StringUtil {
     @Deprecated
     public static String combineSplit(int startIndex, String[] string, String separator) {
         return combineArray(startIndex, separator, string);
+    }
+
+    public static String combineArray(String separator, String... stringArray) {
+        return combineArray(0, separator, stringArray);
     }
 
     public static String combineArray(int startIndex, String separator, String... stringArray) {
