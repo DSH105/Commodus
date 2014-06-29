@@ -129,7 +129,7 @@ public class ObjectPaginator<T> implements Iterable<T> {
      *
      * @return Total page index
      */
-    public int getIndex() {
+    public int getPages() {
         return (int) getIndexAsDouble();
     }
 
@@ -140,6 +140,32 @@ public class ObjectPaginator<T> implements Iterable<T> {
      */
     public double getIndexAsDouble() {
         return (Math.ceil(this.raw.size() / ((double) this.perPage)));
+    }
+
+    /**
+     * Gets whether or not a certain page exists
+     *
+     * @param pageNumber Page number to retrieve content for
+     * @return True if the page exists
+     */
+    public boolean exists(int pageNumber) {
+        return exists(pageNumber, perPage);
+    }
+
+    /**
+     * Gets whether or not a certain page exists
+     *
+     * @param pageNumber Page number to retrieve content for
+     * @param perPage Amount of entries allowed per page
+     * @return True if the page exists
+     */
+    public boolean exists(int pageNumber, int perPage) {
+        try {
+            getPage(pageNumber, perPage);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     /**
