@@ -122,6 +122,14 @@ public class StringUtil {
         }
     }
 
+    public static String combine(String separator, Collection<String> stringCollection) {
+        return combineArray(separator, stringCollection.toArray(EMPTY_STRING_ARRAY));
+    }
+
+    public static String combine(int startIndex, String separator, Collection<String> stringCollection) {
+        return combineArray(startIndex, separator, stringCollection.toArray(EMPTY_STRING_ARRAY));
+    }
+
     public static String[] splitArgs(int startIndex, String separator, String... stringArray) {
         String combined = combineArray(startIndex, separator, stringArray);
         if (combined.isEmpty()) {
@@ -138,134 +146,8 @@ public class StringUtil {
     }
 
     /**
-     * Joins the elements of an iterator together separated by the given separator.
-     *
-     * @param iterator
-     * @param separator
-     * @return
-     */
-    public static String join(Iterator iterator, char separator) {
-        if (iterator == null) {
-            return null;
-        }
-        if (!iterator.hasNext()) {
-            return EMPTY;
-        }
-        Object first = iterator.next();
-        if (!iterator.hasNext()) {
-            return first.toString();
-        }
-
-        StringBuilder buf = new StringBuilder(256);
-        if (first != null) {
-            buf.append(first);
-        }
-
-        while (iterator.hasNext()) {
-            buf.append(separator);
-            Object obj = iterator.next();
-            if (obj != null) {
-                buf.append(obj);
-            }
-        }
-
-        return buf.toString();
-    }
-
-    /**
-     * Joins the elements of an iterator together separated by the given separator.
-     *
-     * @param iterator
-     * @param separator
-     * @return
-     */
-    public static String join(Iterator iterator, String separator) {
-        if (iterator == null) {
-            return null;
-        }
-        if (!iterator.hasNext()) {
-            return EMPTY;
-        }
-        Object first = iterator.next();
-        if (!iterator.hasNext()) {
-            return first.toString();
-        }
-
-        StringBuilder buf = new StringBuilder(256);
-        if (first != null) {
-            buf.append(first);
-        }
-
-        while (iterator.hasNext()) {
-            if (separator != null) {
-                buf.append(separator);
-            }
-            Object obj = iterator.next();
-            if (obj != null) {
-                buf.append(obj);
-            }
-        }
-        return buf.toString();
-    }
-
-    /**
-     * Joins the elements of a collection together separated by the given separator.
-     *
-     * @param collection
-     * @param separator
-     * @return
-     */
-    public static String join(Collection collection, char separator) {
-        if (collection == null) {
-            return null;
-        }
-        return join(collection.iterator(), separator);
-    }
-
-    /**
-     * Joins the elements of a collection together separated by the given separator.
-     *
-     * @param collection
-     * @param separator
-     * @return
-     */
-    public static String join(Collection collection, String separator) {
-        if (collection == null) {
-            return null;
-        }
-        return join(collection.iterator(), separator);
-    }
-
-    /**
-     * Joins the elements of an array together separated by the given separator.
-     *
-     * @param array
-     * @param separator
-     * @return
-     */
-    public static String join(Object[] array, char separator) {
-        if (array == null) {
-            return null;
-        }
-        return join(Arrays.asList(array), separator);
-    }
-
-    /**
-     * Joins the elements of an array together separated by the given separator.
-     *
-     * @param array
-     * @param separator
-     * @return
-     */
-    public static String join(Object[] array, String separator) {
-        if (array == null) {
-            return null;
-        }
-        return join(Arrays.asList(array), separator);
-    }
-
-    /**
      * Convert a String to a UUID
+     * </p>
      * This method will add the required dashes, if not found in String
      *
      * @param input
