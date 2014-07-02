@@ -27,7 +27,7 @@ import java.util.List;
  *
  * @param <T> Type of item to separate
  */
-public class ObjectPaginator<T> implements Iterable<T> {
+public class ObjectPaginator<T> implements Iterable<T>, Cloneable {
 
     private ArrayList<T> raw = new ArrayList<>();
     private int perPage;
@@ -227,5 +227,12 @@ public class ObjectPaginator<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return getRaw().iterator();
+    }
+
+    @Override
+    protected ObjectPaginator<T> clone() throws CloneNotSupportedException {
+        ObjectPaginator<T> paginator = (ObjectPaginator<T>) super.clone();
+        paginator.setRaw(this.raw);
+        return paginator;
     }
 }

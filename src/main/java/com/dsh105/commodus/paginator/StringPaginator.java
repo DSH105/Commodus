@@ -35,4 +35,9 @@ public class StringPaginator extends ObjectPaginator<String> {
     public StringPaginator(ArrayList<String> raw, int perPage) {
         super(raw, perPage);
     }
+
+    @Override
+    protected StringPaginator clone() throws CloneNotSupportedException {
+        return (StringPaginator) super.clone();
+    }
 }

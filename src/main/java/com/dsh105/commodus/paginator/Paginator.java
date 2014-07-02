@@ -62,4 +62,9 @@ public class Paginator<T extends Pageable> extends ObjectPaginator<T> {
     protected String getConvertedContent(T rawObject) {
         return rawObject.getContent();
     }
+
+    @Override
+    protected Paginator<T> clone() throws CloneNotSupportedException {
+        return (Paginator<T>) super.clone();
+    }
 }
