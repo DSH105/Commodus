@@ -20,10 +20,10 @@ package com.dsh105.commodus;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 
+import java.lang.IllegalArgumentException;
 import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -33,6 +33,13 @@ public class StringUtil {
     private static final String EMPTY = "";
     private static final Pattern DIACRITICS_AND_FRIENDS = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
 
+    /**
+     * Remove the specified ChatColors from a String
+     *
+     * @param input String to be sanitized
+     * @param colorsToRemove ChatColors to be removed
+     * @return sanitized input
+     */
     public String removeColor(String input, ChatColor... colorsToRemove) {
         String result = input;
         for (ChatColor color : colorsToRemove) {
@@ -41,6 +48,12 @@ public class StringUtil {
         return result;
     }
 
+    /**
+     * Convert a number of Objects into Strings
+     *
+     * @param arrayToConvert Objects to be converted
+     * @return String[] Objects converted into Strings
+     */
     public static String[] convert(Object... arrayToConvert) {
         if (arrayToConvert.length <= 0) {
             return new String[0];
@@ -152,7 +165,7 @@ public class StringUtil {
      *
      * @param input
      * @return UUID converted UUID
-     * @throws java.lang.IllegalArgumentException input could not be converted
+     * @throws IllegalArgumentException input could not be converted
      */
     public static UUID convertUUID(String input) throws IllegalArgumentException {
         try {
@@ -163,4 +176,34 @@ public class StringUtil {
                     "$1-$2-$3-$4-$5"));
         }
     }
+
+    /**
+     * Attempts to convert a string into an integer value using Regex
+     *
+     * @param string the String to be checked
+     * @throws java.lang.NumberFormatException
+     */
+    public static int toInteger(String string) throws NumberFormatException{
+        try {
+            return Integer.parseInt(string.replaceAll("[^\\d]", ""));
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException(string + " isn't a number!");
+        }
+    }
+
+    /**
+     * Attempts to convert a string into an double value using Regex
+     *
+     * @param string the String to be checked
+     * @return Double.MIN_VALUE if unable to convert
+     * @throws java.lang.NumberFormatException
+     */
+    public static double toDouble(String string) {
+        try {
+            return Double.parseDouble(string.replaceAll(".*?([\\d.]+).*", "$1"));
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException(string + " isn't a number!");
+        }
+    }
+
 }
