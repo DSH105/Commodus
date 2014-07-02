@@ -26,14 +26,14 @@ import java.util.ArrayList;
 
 public class Option<T> {
 
-    private String configFile;
+    private FileConfiguration config;
     private String path;
     private T defaultValue;
     private String[] comments;
     private Class<T> returnType;
 
-    public Option(String configFile, String path, Class<T> returnType, String... comments) {
-        this.configFile = configFile;
+    public Option(FileConfiguration configuration, String path, Class<T> returnType, String... comments) {
+        this.config = configuration;
         this.path = path;
         this.returnType = returnType;
 
@@ -58,13 +58,13 @@ public class Option<T> {
         this.comments = commentsList.toArray(new String[commentsList.size()]);
     }
 
-    public Option(String configFile, String path, T defaultValue, String... comments) {
-        this(configFile, path, (Class<T>) defaultValue.getClass(), comments);
+    public Option(FileConfiguration configuration, String path, T defaultValue, String... comments) {
+        this(configuration, path, (Class<T>) defaultValue.getClass(), comments);
         this.defaultValue = defaultValue;
     }
 
-    public String getConfigFile() {
-        return configFile;
+    public FileConfiguration getConfig() {
+        return config;
     }
 
     public String getPath() {
@@ -92,10 +92,7 @@ public class Option<T> {
     }
 
     public T getValue(Options options, Object... replacements) {
-        if (options.isLocked(this, replacements)) {
-            return options.getLockedValue(this);
-        }
-        return getValue(options.getConfig().config(), StringUtil.convert(replacements));
+        return getValue(options, null, replacements);
     }
 
     public T getValue(Options options, T defaultValue, Object... replacements) {
@@ -106,14 +103,14 @@ public class Option<T> {
     }
 
     public T getValue(FileConfiguration configuration, String... replacements) {
-        Object result = configuration.get(getPath(replacements), getDefaultValue());
-        if (result != null && (getReturnType().isInstance(result))) {
-            return (T) result;
-        }
-        return getDefaultValue();
+        return getValue(configuration, null, replacements);
     }
 
     public T getValue(FileConfiguration configuration, T defaultValue, String... replacements) {
+        String path = getPath(replacements);
+        if (path.contains("%s")) {
+            throw new IllegalArgumentException("Not enough path arguments provided");
+        }
         Object result = configuration.get(getPath(replacements));
         if (result != null && (getReturnType().isInstance(result))) {
             return (T) result;
@@ -134,29 +131,15 @@ public class Option<T> {
     }
 
     public static ArrayList<Option> getOptions(Class<? extends Options> optionsClass) {
-        return getOptions(optionsClass, Option.class, null);
+        return getOptions(optionsClass, Option.class);
     }
 
     public static <T extends Option> ArrayList<T> getOptions(Class<? extends Options> optionsClass, Class<T> classRestriction) {
-        return getOptions(optionsClass, classRestriction, null);
-    }
-
-    public static ArrayList<Option> getOptions(Class<? extends Options> optionsClass, String fileName) {
-        return getOptions(optionsClass, Option.class, fileName);
-    }
-
-    public static <T extends Option> ArrayList<T> getOptions(Class<? extends Options> optionsClass, Class<T> classRestriction, String fileName) {
         ArrayList<T> options = new ArrayList<>();
         for (SafeField safeField : new Reflection().reflect(optionsClass).getSafeFields()) {
             if (safeField.getType().isInstanceOf(classRestriction)) {
                 Option option = ((SafeField<Option>) safeField).getAccessor().getStatic();
-                if (fileName == null || fileName.isEmpty()) {
-                    options.add((T) option);
-                    continue;
-                }
-                if (option.getConfigFile().equals(fileName)) {
-                    options.add((T) option);
-                }
+                options.add((T) option);
             }
         }
         return options;

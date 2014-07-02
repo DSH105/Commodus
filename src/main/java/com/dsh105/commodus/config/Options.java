@@ -44,6 +44,10 @@ public abstract class Options {
         this.config.set(path, this.config.get(path, defObject), comments);
     }
 
+    public <T> void set(Option<T> option, String... pathReplacements) {
+        set(option.getPath(pathReplacements), get(option, pathReplacements), option.getComments());
+    }
+
     public boolean isLocked(Option option) {
         return LOCKED.containsKey(option);
     }
