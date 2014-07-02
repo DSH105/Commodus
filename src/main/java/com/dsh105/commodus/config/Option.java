@@ -84,7 +84,11 @@ public class Option<T> {
     }
 
     public String getPath(String... replacements) {
-        return String.format(getPath(), replacements);
+        String path = String.format(getPath(), replacements);
+        while (path.endsWith(".")) {
+            path = path.substring(0, path.length() - 2);
+        }
+        return path;
     }
 
     public T getValue(Options options, Object... replacements) {
