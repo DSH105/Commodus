@@ -28,6 +28,10 @@ public class StringPaginator extends ObjectPaginator<String> {
         super();
     }
 
+    public StringPaginator(int perPage) {
+        super(perPage);
+    }
+
     public StringPaginator(int perPage, String... raw) {
         super(perPage, raw);
     }

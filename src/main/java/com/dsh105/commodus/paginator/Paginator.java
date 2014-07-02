@@ -32,6 +32,10 @@ public class Paginator<T extends Pageable> extends ObjectPaginator<T> {
         super();
     }
 
+    public Paginator(int perPage) {
+        super(perPage);
+    }
+
     public Paginator(int perPage, T... raw) {
         super(perPage, raw);
     }

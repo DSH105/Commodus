@@ -39,6 +39,14 @@ public class ObjectPaginator<T> implements Iterable<T>, Cloneable {
     }
 
     /**
+     * Construct a new, empty Paginator
+     * @param perPage Amount of entries allowed per page
+     */
+    public ObjectPaginator(int perPage) {
+        this.perPage = perPage;
+    }
+
+    /**
      * Construct a new Paginator from the given raw content
      *
      * @param perPage Amount of entries allowed per page
