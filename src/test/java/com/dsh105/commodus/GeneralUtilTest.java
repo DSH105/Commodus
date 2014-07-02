@@ -35,7 +35,7 @@ public class GeneralUtilTest {
 
     @Test
     public void testNumericExtraction() {
-        Assert.assertEquals(100, GeneralUtil.numericValueOf("100"));
-        Assert.assertEquals(100, GeneralUtil.numericValueOf("Example Number (100)"));
+        Assert.assertEquals(100, GeneralUtil.toInteger("100"));
+        Assert.assertEquals(100, GeneralUtil.toInteger("Example Number (100)"));
     }
 }
