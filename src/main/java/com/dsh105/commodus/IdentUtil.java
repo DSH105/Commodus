@@ -32,7 +32,7 @@ public class IdentUtil {
         } catch (NoSuchMethodException e) {
             return false;
         }
-        return GeneralUtil.numericValueOf(MinecraftReflection.getVersionTag()) >= 172;
+        return GeneralUtil.toInteger(MinecraftReflection.getVersionTag()) >= 172;
     }
 
     public static Object getIdentificationFor(String playerName) {
