@@ -75,10 +75,6 @@ public class GeneralUtil {
         return true;
     }
 
-    public static int numericValueOf(String original) {
-        return Integer.valueOf(original.replaceAll("[^0-9]", ""));
-    }
-
     public static Location readLocation(int startIndex, String... args) {
         World world = Bukkit.getWorld(args[startIndex]);
         if (world == null) {
@@ -105,5 +101,34 @@ public class GeneralUtil {
             }
         }
         return null;
+    }
+
+    /**
+     * Attempts to convert a string into an integer value using Regex
+     *
+     * @param string the String to be checked
+     * @throws java.lang.NumberFormatException
+     */
+    public static int toInteger(String string) throws NumberFormatException{
+        try {
+            return Integer.parseInt(string.replaceAll("[^\\d]", ""));
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException(string + " isn't a number!");
+        }
+    }
+
+    /**
+     * Attempts to convert a string into an double value using Regex
+     *
+     * @param string the String to be checked
+     * @return Double.MIN_VALUE if unable to convert
+     * @throws java.lang.NumberFormatException
+     */
+    public static double toDouble(String string) {
+        try {
+            return Double.parseDouble(string.replaceAll(".*?([\\d.]+).*", "$1"));
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException(string + " isn't a number!");
+        }
     }
 }

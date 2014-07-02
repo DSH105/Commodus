@@ -176,34 +176,4 @@ public class StringUtil {
                     "$1-$2-$3-$4-$5"));
         }
     }
-
-    /**
-     * Attempts to convert a string into an integer value using Regex
-     *
-     * @param string the String to be checked
-     * @throws java.lang.NumberFormatException
-     */
-    public static int toInteger(String string) throws NumberFormatException{
-        try {
-            return Integer.parseInt(string.replaceAll("[^\\d]", ""));
-        } catch (NumberFormatException e) {
-            throw new NumberFormatException(string + " isn't a number!");
-        }
-    }
-
-    /**
-     * Attempts to convert a string into an double value using Regex
-     *
-     * @param string the String to be checked
-     * @return Double.MIN_VALUE if unable to convert
-     * @throws java.lang.NumberFormatException
-     */
-    public static double toDouble(String string) {
-        try {
-            return Double.parseDouble(string.replaceAll(".*?([\\d.]+).*", "$1"));
-        } catch (NumberFormatException e) {
-            throw new NumberFormatException(string + " isn't a number!");
-        }
-    }
-
 }
