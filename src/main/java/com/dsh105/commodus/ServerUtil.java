@@ -19,7 +19,14 @@ package com.dsh105.commodus;
 
 import com.captainbern.minecraft.reflection.MinecraftReflection;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,5 +49,32 @@ public class ServerUtil {
         } else {
             return "";
         }
+    }
+
+    public static Player getOnlinePlayer(int index) {
+        List<Player> onlinePlayers = getOnlinePlayers();
+        if (index >= onlinePlayers.size()) {
+            return null;
+        }
+        return onlinePlayers.get(index);
+    }
+
+    public static List<Player> getOnlinePlayers() {
+        List<Player> onlinePlayers = new ArrayList<>();
+        try {
+            Method onlinePlayersMethod = Bukkit.class.getMethod("getOnlinePlayers");
+            if (onlinePlayersMethod.getReturnType().equals(Collection.class)) {
+                Collection<Player> playerCollection = (Collection<Player>) onlinePlayersMethod.invoke(null, new Object[0]);
+                if (playerCollection instanceof List) {
+                    onlinePlayers = (List<Player>) playerCollection;
+                } else {
+                    onlinePlayers = new ArrayList<>(playerCollection);
+                }
+            } else {
+                onlinePlayers = Arrays.asList((Player[]) onlinePlayersMethod.invoke(null, new Object[0]));
+            }
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
+        }
+        return onlinePlayers;
     }
 }
