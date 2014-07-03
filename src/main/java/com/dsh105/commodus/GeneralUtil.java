@@ -109,7 +109,7 @@ public class GeneralUtil {
      * @param string the String to be checked
      * @throws java.lang.NumberFormatException
      */
-    public static int toInteger(String string) throws NumberFormatException{
+    public static int toInteger(String string) throws NumberFormatException {
         try {
             return Integer.parseInt(string.replaceAll("[^\\d]", ""));
         } catch (NumberFormatException e) {

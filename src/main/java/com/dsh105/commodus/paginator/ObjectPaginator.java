@@ -40,6 +40,7 @@ public class ObjectPaginator<T> implements Iterable<T>, Cloneable {
 
     /**
      * Construct a new, empty Paginator
+     *
      * @param perPage Amount of entries allowed per page
      */
     public ObjectPaginator(int perPage) {
@@ -50,7 +51,7 @@ public class ObjectPaginator<T> implements Iterable<T>, Cloneable {
      * Construct a new Paginator from the given raw content
      *
      * @param perPage Amount of entries allowed per page
-     * @param raw Raw content to paginate
+     * @param raw     Raw content to paginate
      */
     public ObjectPaginator(int perPage, T... raw) {
         this.perPage = perPage;
@@ -60,7 +61,7 @@ public class ObjectPaginator<T> implements Iterable<T>, Cloneable {
     /**
      * Construct a new Paginator from the given raw content
      *
-     * @param raw Raw content to paginate
+     * @param raw     Raw content to paginate
      * @param perPage Amount of entries allowed per page
      */
     public ObjectPaginator(ArrayList<T> raw, int perPage) {
@@ -164,7 +165,7 @@ public class ObjectPaginator<T> implements Iterable<T>, Cloneable {
      * Gets whether or not a certain page exists
      *
      * @param pageNumber Page number to retrieve content for
-     * @param perPage Amount of entries allowed per page
+     * @param perPage    Amount of entries allowed per page
      * @return True if the page exists
      */
     public boolean exists(int pageNumber, int perPage) {
@@ -190,7 +191,7 @@ public class ObjectPaginator<T> implements Iterable<T>, Cloneable {
      * Gets a certain page of content by page number
      *
      * @param pageNumber Page number to retrieve content for
-     * @param perPage Amount of entries allowed per page
+     * @param perPage    Amount of entries allowed per page
      * @return Content of a certain page
      */
     public String[] getPage(int pageNumber, int perPage) {
@@ -211,7 +212,7 @@ public class ObjectPaginator<T> implements Iterable<T>, Cloneable {
      * Gets a certain page of raw content by page number
      *
      * @param pageNumber Page number to retrieve raw content for
-     * @param perPage Amount of entries allowed per page
+     * @param perPage    Amount of entries allowed per page
      * @return Raw content of a certain page
      */
     public ArrayList<T> getRawPage(int pageNumber, int perPage) {

@@ -17,8 +17,6 @@
 
 package com.dsh105.commodus.particle;
 
-import org.bukkit.entity.Player;
-
 public class DataParticleBuilder extends ParticleBuilder {
 
     private int blockId;

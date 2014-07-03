@@ -20,7 +20,6 @@ package com.dsh105.commodus;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 
-import java.lang.IllegalArgumentException;
 import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.Collection;
@@ -36,7 +35,7 @@ public class StringUtil {
     /**
      * Remove the specified ChatColors from a String
      *
-     * @param input String to be sanitized
+     * @param input          String to be sanitized
      * @param colorsToRemove ChatColors to be removed
      * @return sanitized input
      */

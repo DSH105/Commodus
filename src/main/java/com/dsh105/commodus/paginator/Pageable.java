@@ -33,6 +33,7 @@ public interface Pageable {
 
     /**
      * Sends this content to a {@link org.bukkit.command.CommandSender}
+     *
      * @param sender Whom to send the content to
      */
     public Pageable send(CommandSender sender);

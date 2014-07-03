@@ -37,7 +37,7 @@ public class EnchantmentUtil {
      * Add a new set of values for conversion
      *
      * @param enchant matching {@link org.bukkit.enchantments.Enchantment}
-     * @param value String list to be used in conversion as key words
+     * @param value   String list to be used in conversion as key words
      */
     public void addValue(Enchantment enchant, String... value) {
         for (String s : value) {
