@@ -22,7 +22,6 @@ import org.bukkit.ChatColor;
 public enum Level {
 
     INFO(" [INFO] "),
-    NORMAL(ChatColor.GREEN + " [INFO] "),
     SEVERE(ChatColor.RED + " [SEVERE] "),
     WARNING(ChatColor.RED + " [WARNING] ");
 

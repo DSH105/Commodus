@@ -38,6 +38,22 @@ public class Log {
         this.plugin = plugin;
     }
 
+    public void log(String message) {
+        info(message);
+    }
+
+    public void info(String message) {
+        console(message);
+    }
+
+    public void warning(String message) {
+        console(Level.WARNING, message);
+    }
+
+    public void severe(String message) {
+        console(Level.SEVERE, message);
+    }
+
     public void console(String message) {
         console(Level.INFO, message);
     }
