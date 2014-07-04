@@ -22,8 +22,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class GeneralUtil {
 
@@ -130,5 +129,12 @@ public class GeneralUtil {
         } catch (NumberFormatException e) {
             throw new NumberFormatException(string + " isn't a number!");
         }
+    }
+
+    public static <T> List<T> merge(T[] first, T[] second) {
+        ArrayList<T> merged = new ArrayList<>();
+        Collections.addAll(merged, first);
+        Collections.addAll(merged, second);
+        return merged;
     }
 }
