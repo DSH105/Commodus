@@ -159,7 +159,7 @@ public class StringUtil {
 
     /**
      * Convert a String to a UUID
-     * </p>
+     * <p/>
      * This method will add the required dashes, if not found in String
      *
      * @param input

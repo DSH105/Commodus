@@ -24,6 +24,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
 
+import static com.captainbern.reflection.matcher.Matchers.withType;
+
 public class Option<T> {
 
     private FileConfiguration config;
@@ -136,11 +138,9 @@ public class Option<T> {
 
     public static <T extends Option> ArrayList<T> getOptions(Class<? extends Options> optionsClass, Class<T> classRestriction) {
         ArrayList<T> options = new ArrayList<>();
-        for (SafeField safeField : new Reflection().reflect(optionsClass).getSafeFields()) {
-            if (safeField.getType().isInstanceOf(classRestriction)) {
-                Option option = ((SafeField<Option>) safeField).getAccessor().getStatic();
-                options.add((T) option);
-            }
+        for (SafeField safeField : new Reflection().reflect(optionsClass).getSafeFields(withType(classRestriction))) {
+            Option option = ((SafeField<Option>) safeField).getAccessor().getStatic();
+            options.add((T) option);
         }
         return options;
     }
