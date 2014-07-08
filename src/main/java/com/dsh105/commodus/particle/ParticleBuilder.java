@@ -18,6 +18,7 @@
 package com.dsh105.commodus.particle;
 
 import com.captainbern.minecraft.protocol.PacketType;
+import com.captainbern.minecraft.reflection.MinecraftMethods;
 import com.captainbern.minecraft.wrapper.WrappedPacket;
 import com.dsh105.commodus.GeneralUtil;
 import com.dsh105.commodus.GeometryUtil;
@@ -72,7 +73,7 @@ public class ParticleBuilder implements Cloneable {
         packet.getFloats().write(5, getOffsetZ());
         packet.getFloats().write(6, getSpeed());
         packet.getIntegers().write(0, getAmount());
-        // TODO: send the packet
+        MinecraftMethods.sendPacket(player, packet.getHandle());
     }
 
     public void show(Location origin) {
@@ -120,7 +121,7 @@ public class ParticleBuilder implements Cloneable {
         return this;
     }
 
-    public ParticleBuilder setOffwithY(float offsetY) {
+    public ParticleBuilder withOffsetY(float offsetY) {
         this.offsetY = offsetY;
         return this;
     }
