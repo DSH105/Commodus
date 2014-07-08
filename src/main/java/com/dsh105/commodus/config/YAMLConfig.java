@@ -24,10 +24,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Set;
 
 public class YAMLConfig {
+
     private int comments;
     private YAMLConfigManager manager;
 
@@ -40,7 +42,7 @@ public class YAMLConfig {
         this.manager = new YAMLConfigManager(plugin);
 
         this.file = configFile;
-        this.config = YamlConfiguration.loadConfiguration(configStream);
+        this.config = YamlConfiguration.loadConfiguration(new InputStreamReader(configStream));
         this.plugin = plugin;
     }
 
@@ -116,29 +118,14 @@ public class YAMLConfig {
         this.config.set(path, value);
     }
 
-    public void set(String path, Object value, String comment) {
-        if (!this.config.contains(path)) {
-            this.config.set(manager.getPluginName() + "_COMMENT_" + comments, " " + comment);
-            comments++;
-        }
-
-        this.config.set(path, value);
-
-    }
-
-    public void set(String path, Object value, String... comment) {
-
-        for (String comm : comment) {
-
+    public void set(String path, Object value, String... comments) {
+        for (String comment : comments) {
             if (!this.config.contains(path)) {
-                this.config.set(manager.getPluginName() + "_COMMENT_" + comments, " " + comm);
-                comments++;
+                this.config.set(manager.getPluginName() + "_COMMENT_" + this.comments, " " + comment);
+                this.comments++;
             }
-
         }
-
         this.config.set(path, value);
-
     }
 
     public void setHeader(String[] header) {

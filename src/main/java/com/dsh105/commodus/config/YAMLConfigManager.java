@@ -31,7 +31,6 @@ public class YAMLConfigManager {
     }
 
     public YAMLConfig getNewConfig(String filePath, String[] header) {
-
         File file = this.getConfigFile(filePath);
 
         boolean fileExists = file.exists();
@@ -44,10 +43,7 @@ public class YAMLConfigManager {
 
         }
 
-        YAMLConfig config = new YAMLConfig(this.getConfigContent(filePath), file,
-                this.getCommentsNum(file), plugin);
-        return config;
-
+        return new YAMLConfig(this.getConfigContent(filePath), file, this.getCommentsNum(file), plugin);
     }
 
     public YAMLConfig getNewConfig(String filePath) {
@@ -55,23 +51,17 @@ public class YAMLConfigManager {
     }
 
     private File getConfigFile(String file) {
-
         if (file.isEmpty() || file == null) {
             return null;
         }
 
         File configFile;
-
         if (file.contains("/")) {
-
             if (file.startsWith("/")) {
-                configFile = new File(plugin.getDataFolder()
-                        + file.replace("/", File.separator));
+                configFile = new File(plugin.getDataFolder() + file.replace("/", File.separator));
             } else {
-                configFile = new File(plugin.getDataFolder() + File.separator
-                        + file.replace("/", File.separator));
+                configFile = new File(plugin.getDataFolder() + File.separator + file.replace("/", File.separator));
             }
-
         } else {
             configFile = new File(plugin.getDataFolder(), file);
         }
@@ -81,9 +71,7 @@ public class YAMLConfigManager {
     }
 
     public void prepareFile(String filePath, String resource) {
-
         File file = this.getConfigFile(filePath);
-
         if (file.exists()) {
             return;
         }
@@ -107,7 +95,6 @@ public class YAMLConfigManager {
     }
 
     public void setHeader(File file, String[] header) {
-
         if (!file.exists()) {
             return;
         }
@@ -130,10 +117,10 @@ public class YAMLConfigManager {
                     continue;
                 }
 
-                int lenght = (50 - line.length()) / 2;
+                int length = (50 - line.length()) / 2;
                 StringBuilder finalLine = new StringBuilder(line);
 
-                for (int i = 0; i < lenght; i++) {
+                for (int i = 0; i < length; i++) {
                     finalLine.append(" ");
                     finalLine.reverse();
                     finalLine.append(" ");
@@ -144,7 +131,7 @@ public class YAMLConfigManager {
                     finalLine.append(" ");
                 }
 
-                config.append("# < " + finalLine.toString() + " > #\n");
+                config.append("# < ").append(finalLine.toString()).append(" > #\n");
 
             }
 
@@ -162,7 +149,6 @@ public class YAMLConfigManager {
     }
 
     public InputStream getConfigContent(File file) {
-
         if (!file.exists()) {
             return null;
         }
@@ -180,8 +166,7 @@ public class YAMLConfigManager {
             while ((currentLine = reader.readLine()) != null) {
 
                 if (currentLine.startsWith("#")) {
-                    addLine = currentLine.replaceFirst("#", pluginName
-                            + "_COMMENT_" + commentNum + ":");
+                    addLine = currentLine.replaceFirst("#", pluginName + "_COMMENT_" + commentNum + ":");
                     whole.append(addLine + "\n");
                     commentNum++;
 
@@ -202,11 +187,9 @@ public class YAMLConfigManager {
             e.printStackTrace();
             return null;
         }
-
     }
 
     private int getCommentsNum(File file) {
-
         if (!file.exists()) {
             return 0;
         }
@@ -232,7 +215,6 @@ public class YAMLConfigManager {
             e.printStackTrace();
             return 0;
         }
-
     }
 
     public InputStream getConfigContent(String filePath) {
@@ -240,7 +222,6 @@ public class YAMLConfigManager {
     }
 
     private String prepareConfigString(String configString) {
-
         int lastLine = 0;
         int headerLine = 0;
 
@@ -261,13 +242,13 @@ public class YAMLConfigManager {
 					 */
 
                     if (headerLine == 0) {
-                        config.append(comment + "\n");
+                        config.append(comment).append("\n");
 
                         lastLine = 0;
                         headerLine = 1;
 
                     } else if (headerLine == 1) {
-                        config.append(comment + "\n\n");
+                        config.append(comment).append("\n\n");
 
                         lastLine = 0;
                         headerLine = 0;
@@ -291,9 +272,9 @@ public class YAMLConfigManager {
                     }
 
                     if (lastLine == 0) {
-                        config.append(normalComment + "\n");
+                        config.append(normalComment).append("\n");
                     } else if (lastLine == 1) {
-                        config.append("\n" + normalComment + "\n");
+                        config.append("\n").append(normalComment).append("\n");
                     }
 
                     lastLine = 0;
@@ -301,14 +282,13 @@ public class YAMLConfigManager {
                 }
 
             } else {
-                config.append(line + "\n");
+                config.append(line).append("\n");
                 lastLine = 1;
             }
 
         }
 
         return config.toString();
-
     }
 
     public void saveConfig(String configString, File file) {
@@ -331,7 +311,6 @@ public class YAMLConfigManager {
     }
 
     private void copyResource(InputStream resource, File file) {
-
         try {
             OutputStream out = new FileOutputStream(file);
 
@@ -348,6 +327,5 @@ public class YAMLConfigManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }
