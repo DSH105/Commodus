@@ -35,6 +35,10 @@ public class IdentUtil {
         return GeneralUtil.toInteger(MinecraftReflection.getVersionTag()) >= 172;
     }
 
+    public static boolean isIdentical(OfflinePlayer player, OfflinePlayer compareTo) {
+        return getIdentificationForAsString(player).equals(getIdentificationForAsString(compareTo));
+    }
+
     public static Object getIdentificationFor(String playerName) {
         try {
             return UUIDFetcher.getUUIDOf(playerName);
@@ -44,19 +48,31 @@ public class IdentUtil {
         return playerName;
     }
 
-    public static Object getIdentificationFor(OfflinePlayer player) {
+    public static Object getIdentificationFor(OfflinePlayer player, boolean enableFetching) {
         if (player instanceof Player) {
             if (supportsUuid()) {
                 return player.getUniqueId();
             }
             return player.getName();
         } else {
-            return getIdentificationFor(player.getName());
+            if (enableFetching) {
+                return getIdentificationFor(player.getName());
+            }
+            return null;
         }
     }
 
+    public static Object getIdentificationFor(OfflinePlayer player) {
+        return getIdentificationFor(player, true);
+    }
+
     public static String getIdentificationForAsString(OfflinePlayer player) {
-        return getIdentificationFor(player).toString();
+        return getIdentificationForAsString(player, true);
+    }
+
+    public static String getIdentificationForAsString(OfflinePlayer player, boolean enableFetching) {
+        Object ident = getIdentificationFor(player, enableFetching);
+        return ident == null ? null : ident.toString();
     }
 
     public static Player getPlayerOf(Object identification) {
