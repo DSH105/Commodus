@@ -80,7 +80,7 @@ public class IdentUtil {
             if (identification instanceof UUID) {
                 return Bukkit.getPlayer((UUID) identification);
             } else if (identification instanceof String) {
-                return Bukkit.getPlayer(UUID.fromString((String) identification));
+                return Bukkit.getPlayer(StringUtil.convertUUID((String) identification));
             }
         } else if (identification instanceof String) {
             return Bukkit.getPlayerExact((String) identification);
