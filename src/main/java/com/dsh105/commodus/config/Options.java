@@ -19,6 +19,7 @@ package com.dsh105.commodus.config;
 
 import org.apache.commons.lang.Validate;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public abstract class Options {
@@ -53,7 +54,7 @@ public abstract class Options {
     }
 
     public boolean isLocked(Option option, Object[] condition) {
-        return LOCKED.containsKey(option) && LOCKED_CONDITION.get(option).equals(condition);
+        return LOCKED.containsKey(option) && Arrays.equals(LOCKED_CONDITION.get(option), condition);
     }
 
     public <T> T getLockedValue(Option<T> option) {

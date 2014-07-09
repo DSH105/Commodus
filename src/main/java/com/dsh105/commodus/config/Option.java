@@ -32,14 +32,12 @@ public class Option<T> {
     private String path;
     private T defaultValue;
     private String[] comments;
-    private Class<T> returnType;
 
-    public Option(FileConfiguration configuration, String path, Class<T> returnType, String... comments) {
+    public Option(FileConfiguration configuration, String path, String... comments) {
         this.config = configuration;
         this.path = path;
-        this.returnType = returnType;
 
-        ArrayList<String> commentsList = new ArrayList<String>();
+        ArrayList<String> commentsList = new ArrayList<>();
         for (String comment : comments) {
             if (comment.length() <= 50) {
                 commentsList.add(comment);
@@ -61,7 +59,7 @@ public class Option<T> {
     }
 
     public Option(FileConfiguration configuration, String path, T defaultValue, String... comments) {
-        this(configuration, path, (Class<T>) defaultValue.getClass(), comments);
+        this(configuration, path, comments);
         this.defaultValue = defaultValue;
     }
 
@@ -79,10 +77,6 @@ public class Option<T> {
 
     public String[] getComments() {
         return comments;
-    }
-
-    public Class<T> getReturnType() {
-        return returnType;
     }
 
     public String getPath(String... replacements) {
@@ -114,8 +108,11 @@ public class Option<T> {
             throw new IllegalArgumentException("Not enough path arguments provided");
         }
         Object result = configuration.get(getPath(replacements));
-        if (result != null && (getReturnType().isInstance(result))) {
-            return (T) result;
+        if (result != null) {
+            try {
+                return (T) result;
+            } catch (ClassCastException ignored) {
+            }
         }
         if (getDefaultValue() == null) {
             return defaultValue;
@@ -124,8 +121,12 @@ public class Option<T> {
     }
 
     public void setValue(Options options, T value, Object... replacements) {
-        setValue(options.getConfig().config(), value, StringUtil.convert(replacements));
-        options.getConfig().saveConfig();
+        setValue(options.getConfig(), value, StringUtil.convert(replacements));
+    }
+
+    public void setValue(YAMLConfig yamlConfig, T value, Object... replacements) {
+        setValue(yamlConfig.config(), value, StringUtil.convert(replacements));
+        yamlConfig.saveConfig();
     }
 
     public void setValue(FileConfiguration configuration, T value, String... replacements) {
