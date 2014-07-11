@@ -32,11 +32,31 @@ import java.util.regex.Pattern;
 
 public class ServerUtil {
 
+    @Deprecated
+    private static String MC_PACKAGE_NAME;
+
     public static int MC_VERSION_NUMERIC = Integer.valueOf(getServerVersion().replaceAll("[^0-9]", ""));
     public static int BUKKIT_VERSION_NUMERIC = Integer.valueOf(getBukkitVersion().replaceAll("[^0-9]", ""));
 
+    public static boolean isCauldron() {
+        // "meh"
+        return Bukkit.getServer().getVersion().contains("Cauldron") || Bukkit.getServer().getVersion().contains("MCPC-Plus");
+    }
+
     public static String getServerVersion() {
-        return MinecraftReflection.getVersionTag();
+        try {
+            return MinecraftReflection.getVersionTag();
+        } catch (NoClassDefFoundError e) {
+            return getMCPackage();
+        }
+    }
+
+    @Deprecated
+    public static String getMCPackage() {
+        if (MC_PACKAGE_NAME == null) {
+            MC_PACKAGE_NAME = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+        }
+        return MC_PACKAGE_NAME;
     }
 
     // Thanks ProtocolLib <3

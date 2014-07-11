@@ -62,10 +62,7 @@ public class GeometryUtil {
     public static boolean isInBorder(Location center, Location toCheck, int range) {
         int x = center.getBlockX(), z = center.getBlockZ();
         int x1 = toCheck.getBlockX(), z1 = toCheck.getBlockZ();
-        if (x1 >= (x + range) || z1 >= (z + range) || x1 <= (x - range) || z1 <= (z - range)) {
-            return false;
-        }
-        return true;
+        return !(x1 >= (x + range) || z1 >= (z + range) || x1 <= (x - range) || z1 <= (z - range));
     }
 
     public static <T extends Entity> List<T> getNearbyEntities(Class<T> entityType, Location origin, int range) {
