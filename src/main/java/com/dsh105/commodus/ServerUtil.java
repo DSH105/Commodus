@@ -18,6 +18,7 @@
 package com.dsh105.commodus;
 
 import com.captainbern.minecraft.reflection.MinecraftReflection;
+import com.dsh105.commodus.reflection.Reflection;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -55,6 +56,10 @@ public class ServerUtil {
     public static String getMCPackage() {
         if (MC_PACKAGE_NAME == null) {
             MC_PACKAGE_NAME = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+            if (MC_PACKAGE_NAME == null || MC_PACKAGE_NAME.isEmpty()) {
+                // Cauldron/MCPC+ hack
+                MC_PACKAGE_NAME = (String) Reflection.invokeStatic(Reflection.getMethod(Reflection.getClass("org.bukkit.plugin.java.PluginClassLoader"), "getNativeVersion"));
+            }
         }
         return MC_PACKAGE_NAME;
     }

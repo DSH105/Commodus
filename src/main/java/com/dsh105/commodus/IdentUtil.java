@@ -17,7 +17,6 @@
 
 package com.dsh105.commodus;
 
-import com.captainbern.minecraft.reflection.MinecraftReflection;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -32,7 +31,7 @@ public class IdentUtil {
         } catch (NoSuchMethodException e) {
             return false;
         }
-        return GeneralUtil.toInteger(MinecraftReflection.getVersionTag()) >= 172;
+        return GeneralUtil.toInteger(ServerUtil.getServerVersion()) >= 172;
     }
 
     public static boolean isIdentical(OfflinePlayer player, OfflinePlayer compareTo) {

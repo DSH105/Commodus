@@ -59,6 +59,7 @@
             <groupId>com.captainbern</groupId>
             <artifactId>Minecraft-Reflection</artifactId>
             <version>1.0.0</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 

@@ -18,6 +18,7 @@
 package com.dsh105.commodus.reflection;
 
 import com.dsh105.commodus.ServerUtil;
+import com.dsh105.commodus.exceptions.RemapperUnavailableException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -28,45 +29,74 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Some simple reflection stuff. Nothing fancy here
+ */
 public class Reflection {
 
-    private static Map<String, Class> LOADED_NMS_CLASSES = new HashMap<>();
-    private static Map<String, Class> LOADED_OBC_CLASSES = new HashMap<>();
+    private static RemappedClassLoader REMAPPED_CLASS_LOADER;
+    private static boolean INITIALISED;
+
+    private static Map<String, Class> LOADED_CLASSES = new HashMap<>();
     private static Map<Class, Map<String, Map<Class<?>[], Method>>> LOADED_METHODS = new HashMap<>();
     private static Map<Class, Map<String, Field>> LOADED_FIELDS = new HashMap<>();
 
-    public static Class<?> getNMSClass(String className) {
-        // TODO: This needs MCPC+/Cauldron support
-        if (LOADED_NMS_CLASSES.containsKey(className)) {
-            return LOADED_NMS_CLASSES.get(className);
+    private static RemappedClassLoader getRemappedClassLoader() {
+        if (!INITIALISED && REMAPPED_CLASS_LOADER == null) {
+            try {
+                REMAPPED_CLASS_LOADER = new RemappedClassLoader();
+            } catch (RemapperUnavailableException ignored) {
+                // Cauldron probably isn't enabled
+                REMAPPED_CLASS_LOADER = null;
+            }
+            INITIALISED = true;
+        }
+        return REMAPPED_CLASS_LOADER;
+    }
+
+    public static Class<?> getClass(String className) {
+        if (LOADED_CLASSES.containsKey(className)) {
+            return LOADED_CLASSES.get(className);
         }
         try {
-            Class nmsClass = Class.forName("net.minecraft.server." + ServerUtil.getMCPackage() + "." + className);
-            if (nmsClass != null) {
-                LOADED_NMS_CLASSES.put(className, nmsClass);
+            Class clazz = Class.forName(className);
+            if (clazz != null) {
+                LOADED_CLASSES.put(className, clazz);
             }
-            return nmsClass;
+            return clazz;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;
     }
 
+    public static Class<?> getNMSClass(String className) {
+        String fullName = "net.minecraft.server." + ServerUtil.getServerVersion() + "." + className;
+        if (getRemappedClassLoader() != null) {
+            try {
+                return getRemappedClassLoader().loadClass(fullName);
+            } catch (ClassNotFoundException ignored) {
+            }
+        }
+        return getClass(fullName);
+    }
+
     public static Class<?> getOBCClass(String className) {
-        if (LOADED_OBC_CLASSES.containsKey(className)) {
-            return LOADED_OBC_CLASSES.get(className);
+        String fullName = "org.bukkit.craftbukkit." + ServerUtil.getServerVersion() + "." + className;
+        if (getRemappedClassLoader() != null) {
+            try {
+                return getRemappedClassLoader().loadClass(fullName);
+            } catch (ClassNotFoundException ignored) {
+            }
         }
-        Class obcClass = null;
-        try {
-            obcClass = Class.forName("org.bukkit.craftbukkit." + ServerUtil.getMCPackage() + "." + className);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        LOADED_OBC_CLASSES.put(className, obcClass);
-        return obcClass;
+        return getClass(fullName);
     }
 
     public static Method getMethod(Class<?> clazz, String methodName, Class<?>... parameters) {
+        if (getRemappedClassLoader() != null) {
+            methodName = getRemappedClassLoader().getRemappedMethodName(clazz, methodName, parameters);
+        }
+
         Class<?>[] params = parameters == null ? new Class<?>[0] : parameters;
         Map<String, Map<Class<?>[], Method>> loadedMethodNames = getLoadedMethods(clazz);
         Map<Class<?>[], Method> loadedMethodParams = getLoadedMethods(clazz, methodName);
@@ -107,6 +137,10 @@ public class Reflection {
     }
 
     public static Field getField(Class<?> clazz, String fieldName) {
+        if (getRemappedClassLoader() != null) {
+            fieldName = getRemappedClassLoader().getRemappedFieldName(clazz, fieldName);
+        }
+
         Map<String, Field> loadedFields = getLoadedFields(clazz);
         if (loadedFields.containsKey(fieldName)) {
             return loadedFields.get(fieldName);
