@@ -102,6 +102,14 @@ public class GeneralUtil {
         return null;
     }
 
+    public static <V, K> Map<V, K> invertMap(Map<K, V> map) {
+        Map<V, K> inverted = new HashMap<V, K>();
+        for (Map.Entry<K, V> entry : map.entrySet()) {
+            inverted.put(entry.getValue(), entry.getKey());
+        }
+        return inverted;
+    }
+
     /**
      * Attempts to convert a string into an integer value using Regex
      *
