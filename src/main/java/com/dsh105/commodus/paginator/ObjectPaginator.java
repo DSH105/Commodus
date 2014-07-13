@@ -198,6 +198,9 @@ public class ObjectPaginator<T> implements Iterable<T>, Cloneable {
         if (pageNumber > getIndexAsDouble()) {
             throw new IllegalArgumentException("Page does not exist!");
         }
+        if (pageNumber <= 0) {
+            throw new IllegalArgumentException("Page cannot be less than (or equal to) 0!");
+        }
         int index = perPage * (Math.abs(pageNumber) - 1);
         ArrayList<String> list = new ArrayList<String>();
         for (int i = index; i < (index + perPage); i++) {
