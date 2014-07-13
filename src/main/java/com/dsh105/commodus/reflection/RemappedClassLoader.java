@@ -75,14 +75,17 @@ public class RemappedClassLoader {
             throw new RemapperUnavailableException(RemapperUnavailableException.Reason.REMAPPER_DISABLED);
         }
 
+        // https://github.com/md-5/SpecialSource/blob/master/src/main/java/net/md_5/specialsource/JarRemapper.java#L87
         mapType = Reflection.getMethod(classRemapper.getClass(), "map", String.class);
+
+        // https://github.com/md-5/SpecialSource/blob/master/src/main/java/net/md_5/specialsource/JarRemapper.java#L157
+        mapField = Reflection.getMethod(classRemapper.getClass(), "mapFieldName", String.class, String.class, String.class, int.class);
+
+        //https://github.com/md-5/SpecialSource/blob/master/src/main/java/net/md_5/specialsource/JarRemapper.java#L163
+        mapMethod = Reflection.getMethod(classRemapper.getClass(), "mapMethodName", String.class, String.class, String.class, int.class);
 
         // https://github.com/md-5/SpecialSource/blob/master/src/main/java/net/md_5/specialsource/JarRemapper.java#L50
         Object jarMapping = Reflection.getFieldValue(classRemapper, "jarMapping");
-
-        // https://github.com/md-5/SpecialSource/blob/master/src/main/java/net/md_5/specialsource/JarRemapper.java#L157
-        mapField = Reflection.getMethod(jarMapping.getClass(), "mapFieldName", String.class, String.class, String.class, int.class);
-        mapMethod = Reflection.getMethod(jarMapping.getClass(), "mapMethodName", String.class, String.class, String.class, int.class);
 
         // https://github.com/md-5/SpecialSource/blob/master/src/main/java/net/md_5/specialsource/JarMapping.java#L48-L50
         remappedClasses = (Map<String, String>) Reflection.getFieldValue(jarMapping, "classes");
