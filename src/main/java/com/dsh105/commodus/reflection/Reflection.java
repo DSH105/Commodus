@@ -43,13 +43,13 @@ public class Reflection {
 
     private static RemappedClassLoader getRemappedClassLoader() {
         if (!INITIALISED && REMAPPED_CLASS_LOADER == null) {
+            INITIALISED = true;
             try {
                 REMAPPED_CLASS_LOADER = new RemappedClassLoader();
             } catch (RemapperUnavailableException ignored) {
                 // Cauldron probably isn't enabled
                 REMAPPED_CLASS_LOADER = null;
             }
-            INITIALISED = true;
         }
         return REMAPPED_CLASS_LOADER;
     }
