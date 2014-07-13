@@ -106,16 +106,12 @@ public class RemappedClassLoader {
         return (String) Reflection.invoke(mapField, classRemapper, getUnmappedClassName(clazz), fieldName, null, -1);
     }
 
-    public String getRemappedMethodName(Class<?> clazz, String methodName) {
-        return (String) Reflection.invoke(mapMethod, classRemapper, getUnmappedClassName(clazz), methodName, null, -1);
-    }
-
     public String getRemappedMethodName(Class<?> clazz, String methodName, Class<?>... args) {
         String path = getUnmappedClassName(clazz) + "/" + methodName + " ";
         for (Map.Entry<String, String> entry : remappedMethods.entrySet()) {
             if (entry.getKey().startsWith(path)) {
                 try {
-                    clazz.getDeclaredMethod(methodName, args);
+                    clazz.getDeclaredMethod(entry.getValue(), args);
                     // This looks like the one
                     return entry.getValue();
                 } catch (NoSuchMethodException ignored) {
