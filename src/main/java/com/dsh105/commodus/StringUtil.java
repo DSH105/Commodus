@@ -64,16 +64,20 @@ public class StringUtil {
         return stringArray;
     }
 
+    public static String capitalise(String string) {
+        return capitalise(string, true);
+    }
+
     /**
      * Capitalizes the first letter of a String
      *
      * @param string the String to be capitalized
      * @return capitalized String
      */
-    public static String capitalise(String string) {
+    public static String capitalise(String string, boolean forceLowerCase) {
         String[] parts = string.split(" ");
         for (int i = 0; i < parts.length; i++) {
-            parts[i] = parts[i].substring(0, 1).toUpperCase() + parts[i].substring(1);
+            parts[i] = parts[i].substring(0, 1).toUpperCase() + (forceLowerCase ? parts[i].substring(1).toLowerCase() : parts[i].substring(1));
         }
         return combineArray(0, " ", parts);
     }
@@ -83,9 +87,7 @@ public class StringUtil {
             return new String[0];
         }
         String[] str = new String[string.length - startIndex];
-        for (int i = startIndex; i < string.length; i++) {
-            str[i] = string[i];
-        }
+        System.arraycopy(string, startIndex, str, startIndex, string.length - startIndex);
         return str;
     }
 
