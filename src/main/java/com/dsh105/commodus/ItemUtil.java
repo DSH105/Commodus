@@ -19,10 +19,15 @@ package com.dsh105.commodus;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ItemUtil {
 
@@ -43,5 +48,60 @@ public class ItemUtil {
             i.setItemMeta(meta);
         }
         return i;
+    }
+
+    public static ItemStack getItem(ConfigurationSection section, EnchantmentUtil enchantmentUtil) {
+        String itemName = ChatColor.translateAlternateColorCodes('&', section.getString("name", null));
+        int itemID = section.getInt("id", -1);
+        Byte itemData = (byte) section.getInt("data", -1);
+
+        HashMap<Enchantment, Integer> itemEnchantments = new HashMap<>();
+        for (String id : section.getStringList("enchants")) {
+            try {
+                Enchantment e = enchantmentUtil.getEnchantmentFromName(id.split(":")[0]);
+
+                if (e != null) {
+                    itemEnchantments.put(e, GeneralUtil.toInteger(id.split(":")[1]));
+                }
+            } catch (IndexOutOfBoundsException | NumberFormatException ignored) {
+
+            }
+        }
+
+        List<String> itemLore = new ArrayList<>();
+        for (String l : section.getStringList("lore")) {
+            itemLore.add(ChatColor.translateAlternateColorCodes('&', l));
+        }
+
+        ItemStack item;
+        if (itemData > 0) {
+            item = new ItemStack(Material.getMaterial(itemID), 1, itemData);
+        } else {
+            item = new ItemStack(Material.getMaterial(itemID), 1);
+        }
+
+        ItemMeta itemMeta = item.getItemMeta();
+
+        if (itemName != null && !itemName.isEmpty()) {
+            itemMeta.setDisplayName(itemName);
+        }
+
+        if (!itemLore.isEmpty()) {
+            itemMeta.setLore(itemLore);
+        }
+
+        item.setItemMeta(itemMeta);
+
+        if (!itemEnchantments.isEmpty()) {
+            for (Map.Entry<Enchantment, Integer> enchant : itemEnchantments.entrySet()) {
+                try {
+                    item.addEnchantment(enchant.getKey(), enchant.getValue());
+                } catch (IllegalArgumentException ex) {
+                    item.addUnsafeEnchantment(enchant.getKey(), enchant.getValue());
+                }
+            }
+        }
+
+        return item;
     }
 }
