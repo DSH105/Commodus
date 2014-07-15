@@ -28,6 +28,10 @@ public class EnchantmentUtil {
         addValue(Enchantment.ARROW_INFINITE, "Infinity");
         addValue(Enchantment.LUCK, "Luck of the Sea");
         addValue(Enchantment.ARROW_INFINITE, "Infinity");
+
+        for (Enchantment e : Enchantment.values()) {
+            addValue(e, e.getName());
+        }
     }
 
     /**
@@ -38,7 +42,7 @@ public class EnchantmentUtil {
      */
     public static void addValue(Enchantment enchant, String... value) {
         for (String s : value) {
-            enchantmentAsscoations.put(s.toLowerCase().replace(" ", ""), enchant);
+            enchantmentAsscoations.put(s.toLowerCase().replace(" ", "").replace("_", ""), enchant);
         }
     }
 
@@ -53,7 +57,7 @@ public class EnchantmentUtil {
             return null;
         }
 
-        input = input.toLowerCase().replace(" ", "");
+        input = input.toLowerCase().replace(" ", "").replace("_", "");
 
         if (enchantmentAsscoations.containsKey(input)) {
             return enchantmentAsscoations.get(input);
