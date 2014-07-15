@@ -20,9 +20,11 @@ package com.dsh105.commodus.config;
 import com.captainbern.reflection.Reflection;
 import com.captainbern.reflection.SafeField;
 import com.dsh105.commodus.StringUtil;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static com.captainbern.reflection.matcher.Matchers.withType;
 
@@ -39,21 +41,7 @@ public class Option<T> {
 
         ArrayList<String> commentsList = new ArrayList<>();
         for (String comment : comments) {
-            if (comment.length() <= 50) {
-                commentsList.add(comment);
-                continue;
-            }
-
-            String[] split = comment.split("\\s+");
-            StringBuilder builder = new StringBuilder();
-            for (String word : split) {
-                if (builder.length() > 45) {
-                    commentsList.add(builder.toString());
-                    builder.delete(0, builder.length() - 1);
-                }
-                builder.append(word);
-            }
-            commentsList.add(builder.toString());
+            Collections.addAll(commentsList, WordUtils.wrap(comment, 30, "\n", false).split("\n"));
         }
         this.comments = commentsList.toArray(new String[commentsList.size()]);
     }
@@ -92,10 +80,10 @@ public class Option<T> {
     }
 
     public T getValue(Options options, T defaultValue, Object... replacements) {
-        if (options.isLocked(this, replacements)) {
+        if (options != null && options.isLocked(this, replacements)) {
             return options.getLockedValue(this);
         }
-        return getValue(options.getConfig().config(), defaultValue, StringUtil.convert(replacements));
+        return getValue(options == null ? null : options.getConfig().config(), defaultValue, StringUtil.convert(replacements));
     }
 
     public T getValue(FileConfiguration configuration, String... replacements) {
@@ -107,11 +95,13 @@ public class Option<T> {
         if (path.contains("%s")) {
             throw new IllegalArgumentException("Not enough path arguments provided");
         }
-        Object result = configuration.get(getPath(replacements));
-        if (result != null) {
-            try {
-                return (T) result;
-            } catch (ClassCastException ignored) {
+        if (configuration != null) {
+            Object result = configuration.get(getPath(replacements));
+            if (result != null) {
+                try {
+                    return (T) result;
+                } catch (ClassCastException ignored) {
+                }
             }
         }
         if (getDefaultValue() == null) {
