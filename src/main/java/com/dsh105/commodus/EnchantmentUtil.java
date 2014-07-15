@@ -3,9 +3,11 @@ package com.dsh105.commodus;
 import org.bukkit.enchantments.Enchantment;
 
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 public class EnchantmentUtil {
     private static HashMap<String, Enchantment> enchantmentAsscoations = new HashMap<>();
+    private static Pattern REPLACE_FORMAT = Pattern.compile("[\\s_]");
 
     static {
         addValue(Enchantment.OXYGEN, "Respiration", "Underwater");
@@ -42,7 +44,7 @@ public class EnchantmentUtil {
      */
     public static void addValue(Enchantment enchant, String... value) {
         for (String s : value) {
-            enchantmentAsscoations.put(s.toLowerCase().replace(" ", "").replace("_", ""), enchant);
+            enchantmentAsscoations.put(s.toLowerCase().replaceAll(REPLACE_FORMAT.pattern(), ""), enchant);
         }
     }
 
@@ -57,7 +59,7 @@ public class EnchantmentUtil {
             return null;
         }
 
-        input = input.toLowerCase().replace(" ", "").replace("_", "");
+        input = input.toLowerCase().replaceAll(REPLACE_FORMAT.pattern(), "");
 
         if (enchantmentAsscoations.containsKey(input)) {
             return enchantmentAsscoations.get(input);
