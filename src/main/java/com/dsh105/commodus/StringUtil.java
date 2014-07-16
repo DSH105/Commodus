@@ -177,4 +177,19 @@ public class StringUtil {
                     "$1-$2-$3-$4-$5"));
         }
     }
+
+    /**
+     * Limits a String to an amount of characters
+     *
+     * @param input
+     * @param maxLength
+     * @return
+     */
+    public static String limitCharacters(String input, int maxLength) {
+        if (input.length() <= maxLength) {
+            return input;
+        }
+
+        return input.substring(0, maxLength);
+    }
 }

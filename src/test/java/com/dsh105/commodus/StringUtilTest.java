@@ -31,4 +31,9 @@ public class StringUtilTest {
         Assert.assertEquals("one, two and three", StringUtil.buildSentenceList("one", "two", "three"));
         Assert.assertEquals("one and two", StringUtil.buildSentenceList("one", "two"));
     }
+
+    @Test
+    public void testLimitCharacters() {
+        Assert.assertEquals("Lorem", StringUtil.limitCharacters("Lorem ipsum dolor sit amet,", 5));
+    }
 }
