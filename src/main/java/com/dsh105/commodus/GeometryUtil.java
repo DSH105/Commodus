@@ -27,6 +27,9 @@ import java.util.List;
 
 public class GeometryUtil {
 
+    private GeometryUtil() {
+    }
+
     public static float generateRandomFloat(float min, float max) {
         float f = min + (GeneralUtil.random().nextFloat() * ((1 + max) - min));
         return GeneralUtil.random().nextBoolean() ? f : -f;

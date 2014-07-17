@@ -42,6 +42,9 @@ public class TimeUtil {
         SDFTwentyFour.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
+    private TimeUtil() {
+    }
+
     public static String format12(final long ticks) {
         return formatDate(ticks, SDFTwelve);
     }

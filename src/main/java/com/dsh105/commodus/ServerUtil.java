@@ -33,6 +33,9 @@ import java.util.regex.Pattern;
 
 public class ServerUtil {
 
+    private ServerUtil() {
+    }
+
     @Deprecated
     private static String MC_PACKAGE_NAME;
 

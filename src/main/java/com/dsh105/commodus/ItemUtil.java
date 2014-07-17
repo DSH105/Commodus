@@ -31,6 +31,9 @@ import java.util.Map;
 
 public class ItemUtil {
 
+    private ItemUtil() {
+    }
+
     public static ItemStack getItem(String... content) {
         ItemStack i = new ItemStack(Material.SNOW, 1, (short) 0);
         ItemMeta meta = i.getItemMeta();

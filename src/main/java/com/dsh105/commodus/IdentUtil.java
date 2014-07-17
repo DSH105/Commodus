@@ -25,6 +25,9 @@ import java.util.UUID;
 
 public class IdentUtil {
 
+    private IdentUtil() {
+    }
+
     public static boolean supportsUuid() {
         try {
             Bukkit.class.getDeclaredMethod("getPlayer", UUID.class);

@@ -26,6 +26,9 @@ import java.util.*;
 
 public class GeneralUtil {
 
+    private GeneralUtil() {
+    }
+
     private static Random RANDOM;
 
     public static Random random() {

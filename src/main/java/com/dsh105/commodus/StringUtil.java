@@ -32,6 +32,9 @@ public class StringUtil {
     private static final String EMPTY = "";
     private static final Pattern DIACRITICS_AND_FRIENDS = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
 
+    private StringUtil() {
+    }
+
     /**
      * Remove the specified ChatColors from a String
      *

@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.regex.Pattern;
 
 public class EnchantmentUtil {
+
+    private EnchantmentUtil() {
+    }
+
     private static HashMap<String, Enchantment> enchantmentAsscoations = new HashMap<>();
     private static Pattern REPLACE_FORMAT = Pattern.compile("[\\s_]");
 

@@ -24,7 +24,10 @@ import java.io.IOException;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 
-public class Manifest {
+public class ManifestUtil {
+
+    private ManifestUtil() {
+    }
 
     public static java.util.jar.Manifest getManifest(String path) throws IOException {
         File jar = new File(path);
@@ -36,7 +39,7 @@ public class Manifest {
 
     public static String getAttribute(String attributePath) {
         try {
-            String filePath = Manifest.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+            String filePath = ManifestUtil.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
             Attributes attributes = getManifest(filePath).getMainAttributes();
             return attributes.getValue(attributePath);
         } catch (Exception e) {
