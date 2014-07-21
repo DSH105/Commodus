@@ -29,6 +29,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <distributionManagement>
+         <repository>
+             <id>dsh-repo</id>
+             <url>http://repo.dsh105.com</url>
+         </repository>
+     </distributionManagement>
+
     <!-- Repositories -->
     <repositories>
         <!-- Bukkit -->
