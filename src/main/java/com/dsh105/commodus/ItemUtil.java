@@ -56,6 +56,7 @@ public class ItemUtil {
     public static ItemStack getItem(ConfigurationSection section, EnchantmentUtil enchantmentUtil) {
         String itemName = ChatColor.translateAlternateColorCodes('&', section.getString("name", null));
         int itemID = section.getInt("id", -1);
+        int itemAmount = section.getInt("amount", 1);
         Byte itemData = (byte) section.getInt("data", -1);
 
         HashMap<Enchantment, Integer> itemEnchantments = new HashMap<>();
@@ -78,9 +79,9 @@ public class ItemUtil {
 
         ItemStack item;
         if (itemData > 0) {
-            item = new ItemStack(Material.getMaterial(itemID), 1, itemData);
+            item = new ItemStack(Material.getMaterial(itemID), itemAmount, itemData);
         } else {
-            item = new ItemStack(Material.getMaterial(itemID), 1);
+            item = new ItemStack(Material.getMaterial(itemID), itemAmount);
         }
 
         ItemMeta itemMeta = item.getItemMeta();
