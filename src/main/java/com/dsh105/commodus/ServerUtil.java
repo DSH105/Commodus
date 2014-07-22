@@ -39,12 +39,42 @@ public class ServerUtil {
     @Deprecated
     private static String MC_PACKAGE_NAME;
 
-    public static int MC_VERSION_NUMERIC = Integer.valueOf(getServerVersion().replaceAll("[^0-9]", ""));
-    public static int BUKKIT_VERSION_NUMERIC = Integer.valueOf(getBukkitVersion().replaceAll("[^0-9]", ""));
+    private static Version SERVER_VERSION;
+    private static Version BUKKIT_VERSION;
 
     public static boolean isCauldron() {
         // "meh"
         return Bukkit.getServer().getVersion().contains("Cauldron") || Bukkit.getServer().getVersion().contains("MCPC-Plus");
+    }
+
+    public static Version getVersion() {
+        if (SERVER_VERSION == null) {
+            SERVER_VERSION = new Version(getServerVersion());
+        }
+        return SERVER_VERSION;
+    }
+
+    // Thanks ProtocolLib <3
+    public static Version getBukkitVersion() {
+        if (BUKKIT_VERSION == null) {
+            Pattern versionPattern = Pattern.compile(".*\\(.*MC.\\s*([a-zA-z0-9\\-\\.]+)\\s*\\)");
+            Matcher version = versionPattern.matcher(Bukkit.getServer().getVersion());
+
+            if (version.matches() && version.group(1) != null) {
+                BUKKIT_VERSION = new Version(version.group(1));
+            } else {
+                return null;
+            }
+        }
+        return BUKKIT_VERSION;
+    }
+
+    public static int[] getNumericServerVersion() {
+        return getVersion().getNumericVersion();
+    }
+
+    public static int[] getNumericServerVersion(String serverVersion) {
+        return new Version(serverVersion).getNumericVersion();
     }
 
     public static String getServerVersion() {
@@ -65,18 +95,6 @@ public class ServerUtil {
             }
         }
         return MC_PACKAGE_NAME;
-    }
-
-    // Thanks ProtocolLib <3
-    public static String getBukkitVersion() {
-        Pattern versionPattern = Pattern.compile(".*\\(.*MC.\\s*([a-zA-z0-9\\-\\.]+)\\s*\\)");
-        Matcher version = versionPattern.matcher(Bukkit.getServer().getVersion());
-
-        if (version.matches() && version.group(1) != null) {
-            return version.group(1);
-        } else {
-            return "";
-        }
     }
 
     public static Player getOnlinePlayer(int index) {

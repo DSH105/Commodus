@@ -142,6 +142,23 @@ public class GeneralUtil {
         }
     }
 
+    public static int[] toDigits(int number) {
+        ArrayList<Integer> digitsList = new ArrayList<>();
+        if (number == 0) {
+            return new int[]{0};
+        }
+        while (number != 0) {
+            digitsList.add(number % 10);
+            number /= 10;
+        }
+
+        int[] digits = new int[digitsList.size()];
+        for (int i = digitsList.size() - 1; i >= 0; i--) {
+            digits[i] = digitsList.get(digitsList.size() - i);
+        }
+        return digits;
+    }
+
     public static <T> List<T> merge(T[] first, T[] second) {
         ArrayList<T> merged = new ArrayList<>();
         Collections.addAll(merged, first);

@@ -42,7 +42,11 @@ public class YAMLConfig {
         this.manager = new YAMLConfigManager(plugin);
 
         this.file = configFile;
-        this.config = YamlConfiguration.loadConfiguration(new InputStreamReader(configStream));
+        try {
+            this.config = YamlConfiguration.loadConfiguration(new InputStreamReader(configStream));
+        } catch (NoSuchMethodError e) {
+            this.config = YamlConfiguration.loadConfiguration(configStream);
+        }
         this.plugin = plugin;
     }
 

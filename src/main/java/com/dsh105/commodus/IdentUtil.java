@@ -34,7 +34,7 @@ public class IdentUtil {
         } catch (NoSuchMethodException e) {
             return false;
         }
-        return GeneralUtil.toInteger(ServerUtil.getServerVersion()) >= 172;
+        return ServerUtil.getVersion().isCompatible("1.7.2");
     }
 
     public static boolean isIdentical(OfflinePlayer player, OfflinePlayer compareTo) {
