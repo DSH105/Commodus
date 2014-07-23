@@ -31,8 +31,8 @@
 
     <distributionManagement>
          <repository>
-             <id>dsh-repo</id>
-             <url>http://repo.dsh105.com</url>
+             <id>dsh105-ftp</id>
+             <url>ftp://repo.dsh105.com/</url>
          </repository>
      </distributionManagement>
 
@@ -144,6 +144,14 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ftp</artifactId>
+                <version>1.0-beta-6</version>
+            </extension>
+        </extensions>
     </build>
 
     <!-- JavaDoc -->
