@@ -53,7 +53,7 @@ public class ItemUtil {
         return i;
     }
 
-    public static ItemStack getItem(ConfigurationSection section, EnchantmentUtil enchantmentUtil) {
+    public static ItemStack getItem(ConfigurationSection section) {
         String itemName = ChatColor.translateAlternateColorCodes('&', section.getString("name", null));
         int itemID = section.getInt("id", -1);
         int itemAmount = section.getInt("amount", 1);
@@ -62,7 +62,7 @@ public class ItemUtil {
         HashMap<Enchantment, Integer> itemEnchantments = new HashMap<>();
         for (String id : section.getStringList("enchants")) {
             try {
-                Enchantment e = enchantmentUtil.getEnchantmentFromName(id.split(":")[0]);
+                Enchantment e = EnchantmentUtil.getEnchantmentFromName(id.split(":")[0]);
 
                 if (e != null) {
                     itemEnchantments.put(e, GeneralUtil.toInteger(id.split(":")[1]));
