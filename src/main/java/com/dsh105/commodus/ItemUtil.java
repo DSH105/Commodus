@@ -110,11 +110,15 @@ public class ItemUtil {
 
         if (!itemEnchantments.isEmpty()) {
             for (Map.Entry<Enchantment, Integer> enchant : itemEnchantments.entrySet()) {
-                try {
-                    item.addEnchantment(enchant.getKey(), enchant.getValue());
-                } catch (IllegalArgumentException ex) {
-                    item.addUnsafeEnchantment(enchant.getKey(), enchant.getValue());
-                }
+	            if (enchant != null && enchant.getKey() != null) {
+		            try {
+			            item.addEnchantment(enchant.getKey(), enchant.getValue());
+		            } catch (IllegalArgumentException ex) {
+			            item.addUnsafeEnchantment(enchant.getKey(), enchant.getValue());
+		            }
+	            } else {
+		            throw new IllegalArgumentException("Enchantment is null!");
+	            }
             }
         }
 
