@@ -59,6 +59,14 @@ public class ItemUtil {
         int itemAmount = section.getInt("amount", 1);
         Byte itemData = (byte) section.getInt("data", -1);
 
+	    if (itemID == -1) {
+		    throw new NullPointerException("Item has no specified ID!");
+	    }
+
+	    if (itemAmount == -1) {
+		    throw new NullPointerException("Item has no specified amount!");
+	    }
+
         HashMap<Enchantment, Integer> itemEnchantments = new HashMap<>();
         for (String id : section.getStringList("enchants")) {
             try {
