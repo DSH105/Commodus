@@ -73,6 +73,7 @@ public class ItemUtil {
                 Enchantment e = EnchantmentUtil.getEnchantmentFromName(id.split(":")[0]);
 
                 if (e != null) {
+	                System.out.println("enchantment " + e.getName());
                     itemEnchantments.put(e, GeneralUtil.toInteger(id.split(":")[1]));
                 }
             } catch (IndexOutOfBoundsException | NumberFormatException ignored) {
@@ -108,6 +109,8 @@ public class ItemUtil {
 
         item.setItemMeta(itemMeta);
 
+	    System.out.println(itemMeta.getDisplayName() + " NAME ");
+
         if (!itemEnchantments.isEmpty()) {
             for (Map.Entry<Enchantment, Integer> enchant : itemEnchantments.entrySet()) {
 	            if (enchant != null && enchant.getKey() != null) {
@@ -124,4 +127,64 @@ public class ItemUtil {
 
         return item;
     }
+
+	/**
+	 * Verify if two item stacks have the same contents
+	 * </p>This means the lore and enchants can be in any order
+	 *
+	 * @param one the first ItemStack
+	 * @param two the second ItemStack
+	 * @return true if same
+	 */
+	public static boolean areSame(ItemStack one, ItemStack two) {
+		if (one != null && two != null) {
+			if (one.getType() != two.getType()) {
+				return false;
+			}
+
+			if (one.getDurability() != two.getDurability()) {
+				return false;
+			}
+
+			if (one.hasItemMeta() != two.hasItemMeta()) {
+				return false;
+			}
+
+			if (one.hasItemMeta() && two.hasItemMeta()) {
+				if (!one.getItemMeta().getDisplayName().equals(two.getItemMeta().getDisplayName())) {
+					return false;
+				}
+
+				if (one.getItemMeta().getLore().size() != two.getItemMeta().getLore().size()) {
+					return false;
+				}
+
+				for (String lore : one.getItemMeta().getLore()) {
+					if (!two.getItemMeta().getLore().contains(lore)) {
+						return false;
+					}
+				}
+			}
+
+			if (one.getEnchantments().size() != two.getEnchantments().size()) {
+				return false;
+			}
+
+			for (Map.Entry<Enchantment, Integer> enchantment : one.getEnchantments().entrySet()) {
+				if (two.getEnchantments().containsKey(enchantment.getKey())) {
+					int twoEnchantmentLevel = two.getEnchantments().get(enchantment.getKey());
+
+					if (twoEnchantmentLevel != enchantment.getValue()) {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			}
+		} else {
+			return false;
+		}
+
+		return true;
+	}
 }
