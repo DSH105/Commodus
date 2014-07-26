@@ -92,6 +92,10 @@ public class ItemUtil {
             item = new ItemStack(Material.getMaterial(itemID), itemAmount);
         }
 
+	    if (item.getType() == null) {
+		    throw new IllegalArgumentException("Item has null type!");
+	    }
+
         ItemMeta itemMeta = item.getItemMeta();
 
         if (itemName != null && !itemName.isEmpty()) {
