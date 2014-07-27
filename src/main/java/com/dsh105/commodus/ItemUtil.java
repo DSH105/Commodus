@@ -133,7 +133,7 @@ public class ItemUtil {
 	 * @param two the second ItemStack
 	 * @return true if same
 	 */
-	public static boolean areSame(ItemStack one, ItemStack two) {
+	public static boolean areIdentical(ItemStack one, ItemStack two) {
 		if (one != null && two != null) {
 			if (one.getType() != two.getType()) {
 				return false;
