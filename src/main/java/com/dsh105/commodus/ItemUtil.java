@@ -73,7 +73,6 @@ public class ItemUtil {
                 Enchantment e = EnchantmentUtil.getEnchantmentFromName(id.split(":")[0]);
 
                 if (e != null) {
-	                System.out.println("enchantment " + e.getName());
                     itemEnchantments.put(e, GeneralUtil.toInteger(id.split(":")[1]));
                 }
             } catch (IndexOutOfBoundsException | NumberFormatException ignored) {
@@ -108,8 +107,6 @@ public class ItemUtil {
         }
 
         item.setItemMeta(itemMeta);
-
-	    System.out.println(itemMeta.getDisplayName() + " NAME ");
 
         if (!itemEnchantments.isEmpty()) {
             for (Map.Entry<Enchantment, Integer> enchant : itemEnchantments.entrySet()) {
