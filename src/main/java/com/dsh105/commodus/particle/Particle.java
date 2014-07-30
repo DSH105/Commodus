@@ -46,7 +46,7 @@ public enum Particle {
     SPARKLE("happyVillager", 0F, 20),
     VOID("townaura", 1F, 100),
     NOTE("note", 1F, 1),
-    PORTAL("largesmoke", 1F, 100),
+    PORTAL("portal", 1F, 100),
     MAGIC_RUNES("enchantmenttable", 1F, 100),
     FIRE("flame", 0.05F, 100),
     LAVA_SPARK("lava", 0F, 4),

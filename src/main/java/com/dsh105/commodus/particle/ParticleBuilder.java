@@ -23,14 +23,11 @@ import com.captainbern.minecraft.wrapper.WrappedPacket;
 import com.dsh105.commodus.GeneralUtil;
 import com.dsh105.commodus.GeometryUtil;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class ParticleBuilder implements Cloneable {
-
-    /*
-     * Allows creation of new particles outside of the enum
-     */
 
     private String name;
     private float x;
@@ -60,6 +57,10 @@ public class ParticleBuilder implements Cloneable {
 
     public ParticleBuilder(String name, float speed, int amount) {
         this(name, 0, 0, 0, GeneralUtil.random().nextFloat(), GeneralUtil.random().nextFloat(), GeneralUtil.random().nextFloat(), speed, amount);
+    }
+
+    public static ParticleBuilder build(Particle particle) {
+        return new ParticleBuilder(particle.getName(), particle.getSpeed(), particle.getAmount());
     }
 
     public void show(Player player) {
@@ -145,6 +146,10 @@ public class ParticleBuilder implements Cloneable {
         return name;
     }
 
+    public Location getLocation(World world) {
+        return new Location(world, getX(), getY(), getZ());
+    }
+
     public float getX() {
         return x;
     }
@@ -178,7 +183,7 @@ public class ParticleBuilder implements Cloneable {
     }
 
     @Override
-    protected ParticleBuilder clone() throws CloneNotSupportedException {
+    public ParticleBuilder clone() throws CloneNotSupportedException {
         return (ParticleBuilder) super.clone();
     }
 }

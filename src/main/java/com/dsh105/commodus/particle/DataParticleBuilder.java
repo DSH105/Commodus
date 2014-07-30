@@ -52,6 +52,18 @@ public class DataParticleBuilder extends ParticleBuilder {
         super(name, speed, amount);
     }
 
+    public static DataParticleBuilder build(Particle particle) {
+        return build(particle, 0);
+    }
+
+    public static DataParticleBuilder build(Particle particle, int blockId) {
+        return build(particle, blockId, 0);
+    }
+
+    public static DataParticleBuilder build(Particle particle, int blockId, int metaId) {
+        return new DataParticleBuilder(particle.getName(), particle.getSpeed(), particle.getAmount(), blockId, metaId);
+    }
+
     public DataParticleBuilder withBlockId(int blockId) {
         this.blockId = blockId;
         this.setName(getName() + "_" + getBlockId() + "_" + getMetaId());
