@@ -17,14 +17,45 @@
 
 package com.dsh105.commodus;
 
+/**
+ * Converts between various time formats ranging from milliseconds to years
+ */
 public enum TimeUnit {
 
+    /**
+     * Represents milliseconds
+     */
     MILLISECONDS(1),
+
+    /**
+     * Represents seconds
+     */
     SECONDS(MILLISECONDS.multiplier * 1000),
+
+    /**
+     * Represents minutes
+     */
     MINUTES(SECONDS.multiplier * 60),
+
+    /**
+     * Represents hours
+     */
     HOURS(MINUTES.multiplier * 60),
+
+    /**
+     * Represents days
+     */
     DAYS(HOURS.multiplier * 24),
-    WEEKS(DAYS.multiplier * 7);
+
+    /**
+     * Represents weeks
+     */
+    WEEKS(DAYS.multiplier * 7),
+
+    /**
+     * Represents years
+     */
+    YEARS(DAYS.multiplier * 52);
 
     private int multiplier;
 
@@ -32,10 +63,22 @@ public enum TimeUnit {
         this.multiplier = multiplier;
     }
 
+    /**
+     * Converts a given amount of time in this unit to milliseconds
+     *
+     * @param time amount of time in terms of this unit
+     * @return the time given converted to milliseconds
+     */
     public long toMilliseconds(long time) {
         return time * multiplier;
     }
 
+    /**
+     * Converts a given amount of time in milliseconds into this unit
+     *
+     * @param milliseconds amount of time to convert
+     * @return the time given converted from milliseconds to this unit
+     */
     public long getTime(long milliseconds) {
         return milliseconds / multiplier;
     }

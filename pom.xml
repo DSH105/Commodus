@@ -30,11 +30,11 @@
     </properties>
 
     <distributionManagement>
-         <repository>
-             <id>dsh105-ftp</id>
-             <url>ftp://repo.dsh105.com/</url>
-         </repository>
-     </distributionManagement>
+        <repository>
+            <id>dsh105-ftp</id>
+            <url>ftp://repo.dsh105.com/</url>
+        </repository>
+    </distributionManagement>
 
     <!-- Repositories -->
     <repositories>

@@ -89,7 +89,7 @@ public class RemappedClassLoader {
 
         // https://github.com/md-5/SpecialSource/blob/master/src/main/java/net/md_5/specialsource/JarMapping.java#L48-L50
         remappedClasses = (Map<String, String>) Reflection.getFieldValue(jarMapping, "classes");
-        remappedFields = (Map<String, String>)Reflection.getFieldValue(jarMapping, "fields");
+        remappedFields = (Map<String, String>) Reflection.getFieldValue(jarMapping, "fields");
         remappedMethods = (Map<String, String>) Reflection.getFieldValue(jarMapping, "methods");
     }
 

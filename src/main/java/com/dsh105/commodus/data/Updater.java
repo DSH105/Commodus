@@ -49,7 +49,8 @@ import java.util.zip.ZipFile;
  * If you fail to include this option in your config, your plugin will be <b>REJECTED</b> when you attempt to submit it
  * to dev.bukkit.org.
  * <p/>
- * An example of a good configuration option would be something similar to 'auto-update: true' - if this value is set to
+ * An example of a good configuration option would be something similar to 'auto-update: true' - if this value is set
+ * to
  * false you may NOT run the auto-updater.
  * <br>
  * If you are unsure about these rules, please read the plugin submission guidelines: http://goo.gl/8iU5l
@@ -185,8 +186,8 @@ public class Updater {
         this.config = YamlConfiguration.loadConfiguration(updaterConfigFile);
 
         this.config.options().header("This configuration file affects all plugins using the Updater system (version 2+ - http://forums.bukkit.org/threads/96681/ )" + '\n'
-                + "If you wish to use your API key, read http://wiki.bukkit.org/ServerMods_API and place it below." + '\n'
-                + "Some updating systems will not adhere to the disabled value, but these may be turned off in their plugin's configuration.");
+                                             + "If you wish to use your API key, read http://wiki.bukkit.org/ServerMods_API and place it below." + '\n'
+                                             + "Some updating systems will not adhere to the disabled value, but these may be turned off in their plugin's configuration.");
         this.config.addDefault("api-key", "PUT_API_KEY_HERE");
         this.config.addDefault("disable", false);
 

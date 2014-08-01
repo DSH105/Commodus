@@ -17,14 +17,14 @@
 
 package com.dsh105.commodus;
 
-// http://math.hws.edu/eck/cs124/javanotes6/c8/ex3-ans.html
-
 /**
  * An object of type RomanNumeral is an integer between 1 and 3999.  It can
  * be constructed either from an integer or from a string that represents
  * a Roman numeral in this range.  The function toString() will return a
  * standardized Roman numeral representation of the number.  The function
  * toInt() will return the number as a value of type int.
+ * <p/>
+ * From http://math.hws.edu/eck/cs124/javanotes6/c8/ex3-ans.html
  */
 public class RomanNumeral {
 
@@ -45,10 +45,12 @@ public class RomanNumeral {
      * not in the range 1 to 3999 inclusive.
      */
     public RomanNumeral(int arabic) {
-        if (arabic < 1)
+        if (arabic < 1) {
             throw new NumberFormatException("Value of RomanNumeral must be positive.");
-        if (arabic > 3999)
+        }
+        if (arabic > 3999) {
             throw new NumberFormatException("Value of RomanNumeral must be 3999 or less.");
+        }
         num = arabic;
     }
 
@@ -61,8 +63,9 @@ public class RomanNumeral {
      */
     public RomanNumeral(String roman) {
 
-        if (roman.length() == 0)
+        if (roman.length() == 0) {
             throw new NumberFormatException("An empty string does not define a Roman numeral.");
+        }
 
         roman = roman.toUpperCase();  // Convert to upper case letters.
 
@@ -98,8 +101,9 @@ public class RomanNumeral {
 
         }  // end while
 
-        if (arabic > 3999)
+        if (arabic > 3999) {
             throw new NumberFormatException("Roman numeral must have value 3999 or less.");
+        }
 
         num = arabic;
 

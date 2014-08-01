@@ -31,6 +31,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Utilities for gaining and manipulating server information
+ */
 public class ServerUtil {
 
     private ServerUtil() {
@@ -42,11 +45,23 @@ public class ServerUtil {
     private static Version SERVER_VERSION;
     private static Version BUKKIT_VERSION;
 
+    /**
+     * Gets whether the server running is a Cauldron (MCPC+) server
+     * <p/>
+     * Cauldrons and Bukkits hold different things; Bukkits usually hold cats
+     *
+     * @return true if this server is a Cauldron instead of a Bukkit
+     */
     public static boolean isCauldron() {
         // "meh"
         return Bukkit.getServer().getVersion().contains("Cauldron") || Bukkit.getServer().getVersion().contains("MCPC-Plus");
     }
 
+    /**
+     * Returns a Version to represent the currently running server version
+     *
+     * @return Version object representative of this server's installed version
+     */
     public static Version getVersion() {
         if (SERVER_VERSION == null) {
             SERVER_VERSION = new Version(getServerVersion());
@@ -54,8 +69,14 @@ public class ServerUtil {
         return SERVER_VERSION;
     }
 
-    // Thanks ProtocolLib <3
+    /**
+     * Returns the server's Bukkit version as a Version object
+     *
+     * @return a Version object representing the server's Bukkit version
+     */
     public static Version getBukkitVersion() {
+        // Thanks ProtocolLib <3
+
         if (BUKKIT_VERSION == null) {
             Pattern versionPattern = Pattern.compile(".*\\(.*MC.\\s*([a-zA-z0-9\\-\\.]+)\\s*\\)");
             Matcher version = versionPattern.matcher(Bukkit.getServer().getVersion());
@@ -69,14 +90,41 @@ public class ServerUtil {
         return BUKKIT_VERSION;
     }
 
+    /**
+     * Returns the server's Bukkit version as a numeric array
+     *
+     * @return numeric array representing the server version currently running
+     */
     public static int[] getNumericServerVersion() {
         return getVersion().getNumericVersion();
     }
 
+    /**
+     * Returns the given version as a numeric array
+     *
+     * @param serverVersion version to convert to a numeric array
+     * @return numeric array representing the given  version currently running
+     */
     public static int[] getNumericServerVersion(String serverVersion) {
         return new Version(serverVersion).getNumericVersion();
     }
 
+    /**
+     * Returns the package tag of the currently running server version, commonly used in accessing NMS/OBC classes
+     *
+     * @return the package tag of the currently running server version
+     */
+    public static String getVersionTag() {
+        return getServerVersion();
+    }
+
+    /**
+     * Returns the package tag of the currently running server version, commonly used in accessing NMS/OBC classes
+     *
+     * @return the package tag of the currently running server version
+     * @deprecated use {@link #getVersionTag()}
+     */
+    @Deprecated
     public static String getServerVersion() {
         try {
             return MinecraftReflection.getVersionTag();
@@ -85,6 +133,12 @@ public class ServerUtil {
         }
     }
 
+    /**
+     * Returns the package tag of the currently running server version, commonly used in accessing NMS/OBC classes
+     *
+     * @return the package tag of the currently running server version
+     * @deprecated use {@link #getVersionTag()} for a safer, more accurate implementation
+     */
     @Deprecated
     public static String getMCPackage() {
         if (MC_PACKAGE_NAME == null) {
@@ -97,6 +151,12 @@ public class ServerUtil {
         return MC_PACKAGE_NAME;
     }
 
+    /**
+     * Returns the player online at the given index in the {@link #getOnlinePlayers()} list
+     *
+     * @param index index to retrieve
+     * @return online player at the given index
+     */
     public static Player getOnlinePlayer(int index) {
         List<Player> onlinePlayers = getOnlinePlayers();
         if (index >= onlinePlayers.size()) {
@@ -105,6 +165,17 @@ public class ServerUtil {
         return onlinePlayers.get(index);
     }
 
+    /**
+     * Gets a list of players currently online
+     * <p/>
+     * This implementation includes a workaround for {@link org.bukkit.Bukkit#getOnlinePlayers()} returning an array in
+     * older releases of CraftBukkit, instead of a Collection in more recent releases. Essentially, this adds backwards
+     * compatibility with older versions of CraftBukkit without having to adjust much in your plugin.
+     * <p/>
+     * It's ugly, but it works and provides backwards compatibility
+     *
+     * @return a list of all online players
+     */
     public static List<Player> getOnlinePlayers() {
         List<Player> onlinePlayers = new ArrayList<>();
         try {

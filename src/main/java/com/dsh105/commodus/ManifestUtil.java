@@ -21,28 +21,53 @@ import com.dsh105.commodus.exceptions.ManifestAttributeNotFoundException;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
+/**
+ * Utilities for managing the Manifest file in a compiled JAR at runtime
+ */
 public class ManifestUtil {
 
     private ManifestUtil() {
     }
 
-    public static java.util.jar.Manifest getManifest(String path) throws IOException {
+    /**
+     * Returns the Manifest file at a given path
+     *
+     * @param path path to search for the file
+     * @return the manifest file at the given file path
+     * @throws IOException if the file cannot be found
+     */
+    public static Manifest getManifest(String path) throws IOException {
         File jar = new File(path);
         JarFile jf = new JarFile(new File(path));
-        java.util.jar.Manifest mf = new JarFile(jar).getManifest();
+        Manifest mf = new JarFile(jar).getManifest();
         jf.close();
         return mf;
     }
 
-    public static String getAttribute(String attributePath) {
+    /**
+     * Returns an attribute in the manifest file of this compiled JAR file at runtime
+     *
+     * @param attributePath path of the attribute to find
+     * @return the value of a attribute as specified in the manifest of this JAR file
+     */
+    public static String getAttribute(String filePath, String attributePath) {
         try {
-            String filePath = ManifestUtil.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
             Attributes attributes = getManifest(filePath).getMainAttributes();
             return attributes.getValue(attributePath);
         } catch (Exception e) {
+            throw new ManifestAttributeNotFoundException(e);
+        }
+    }
+
+    public static String getAttribute(String attributePath) {
+        try {
+            return getAttribute(ManifestUtil.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), attributePath);
+        } catch (URISyntaxException e) {
             throw new ManifestAttributeNotFoundException(e);
         }
     }

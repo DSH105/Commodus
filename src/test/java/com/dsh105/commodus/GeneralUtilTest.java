@@ -21,6 +21,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 public class GeneralUtilTest {
+
     @Test
     public void testIntegerValidation() {
         Assert.assertEquals(true, GeneralUtil.isInt("100"));

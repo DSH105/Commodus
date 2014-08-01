@@ -29,11 +29,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Utilities for item manipulation
+ */
 public class ItemUtil {
 
     private ItemUtil() {
     }
 
+    /**
+     * Builds a placeholder item, utilising the given {@code content} as the name and lore of the item
+     * <p/>
+     * Not really useful, except for in the PowerMessage library (https://github.com/DSH105/PowerMessage)
+     *
+     * @param content content to include in the name and lore of the built item
+     * @return an item built from the given {@code content}
+     */
     public static ItemStack getItem(String... content) {
         ItemStack i = new ItemStack(Material.SNOW, 1, (short) 0);
         ItemMeta meta = i.getItemMeta();
@@ -59,13 +70,13 @@ public class ItemUtil {
         int itemAmount = section.getInt("amount", 1);
         Byte itemData = (byte) section.getInt("data", -1);
 
-	    if (itemID == -1) {
-		    throw new IllegalArgumentException("Item has no specified ID!");
-	    }
+        if (itemID == -1) {
+            throw new IllegalArgumentException("Item has no specified ID!");
+        }
 
-	    if (itemAmount == -1) {
-		    throw new IllegalArgumentException("Item has no specified amount!");
-	    }
+        if (itemAmount == -1) {
+            throw new IllegalArgumentException("Item has no specified amount!");
+        }
 
         HashMap<Enchantment, Integer> itemEnchantments = new HashMap<>();
         for (String id : section.getStringList("enchants")) {
@@ -92,9 +103,9 @@ public class ItemUtil {
             item = new ItemStack(Material.getMaterial(itemID), itemAmount);
         }
 
-	    if (item.getType() == null) {
-		    throw new IllegalArgumentException("Item has null type!");
-	    }
+        if (item.getType() == null) {
+            throw new IllegalArgumentException("Item has null type!");
+        }
 
         ItemMeta itemMeta = item.getItemMeta();
 
@@ -110,78 +121,79 @@ public class ItemUtil {
 
         if (!itemEnchantments.isEmpty()) {
             for (Map.Entry<Enchantment, Integer> enchant : itemEnchantments.entrySet()) {
-	            if (enchant != null && enchant.getKey() != null) {
-		            try {
-			            item.addEnchantment(enchant.getKey(), enchant.getValue());
-		            } catch (IllegalArgumentException ex) {
-			            item.addUnsafeEnchantment(enchant.getKey(), enchant.getValue());
-		            }
-	            } else {
-		            throw new IllegalArgumentException("Enchantment is null!");
-	            }
+                if (enchant != null && enchant.getKey() != null) {
+                    try {
+                        item.addEnchantment(enchant.getKey(), enchant.getValue());
+                    } catch (IllegalArgumentException ex) {
+                        item.addUnsafeEnchantment(enchant.getKey(), enchant.getValue());
+                    }
+                } else {
+                    throw new IllegalArgumentException("Enchantment is null!");
+                }
             }
         }
 
         return item;
     }
 
-	/**
-	 * Verify if two item stacks have the same contents
-	 * </p>This means the lore and enchants can be in any order
-	 *
-	 * @param one the first ItemStack
-	 * @param two the second ItemStack
-	 * @return true if same
-	 */
-	public static boolean areIdentical(ItemStack one, ItemStack two) {
-		if (one != null && two != null) {
-			if (one.getType() != two.getType()) {
-				return false;
-			}
+    /**
+     * Verify if two item stacks have the same contents
+     * <p/>
+     * This means the lore and enchants can be in any order
+     *
+     * @param one the first ItemStack
+     * @param two the second ItemStack
+     * @return true if same
+     */
+    public static boolean areIdentical(ItemStack one, ItemStack two) {
+        if (one != null && two != null) {
+            if (one.getType() != two.getType()) {
+                return false;
+            }
 
-			if (one.getDurability() != two.getDurability()) {
-				return false;
-			}
+            if (one.getDurability() != two.getDurability()) {
+                return false;
+            }
 
-			if (one.hasItemMeta() != two.hasItemMeta()) {
-				return false;
-			}
+            if (one.hasItemMeta() != two.hasItemMeta()) {
+                return false;
+            }
 
-			if (one.hasItemMeta() && two.hasItemMeta()) {
-				if (!one.getItemMeta().getDisplayName().equals(two.getItemMeta().getDisplayName())) {
-					return false;
-				}
+            if (one.hasItemMeta() && two.hasItemMeta()) {
+                if (!one.getItemMeta().getDisplayName().equals(two.getItemMeta().getDisplayName())) {
+                    return false;
+                }
 
-				if (one.getItemMeta().getLore().size() != two.getItemMeta().getLore().size()) {
-					return false;
-				}
+                if (one.getItemMeta().getLore().size() != two.getItemMeta().getLore().size()) {
+                    return false;
+                }
 
-				for (String lore : one.getItemMeta().getLore()) {
-					if (!two.getItemMeta().getLore().contains(lore)) {
-						return false;
-					}
-				}
-			}
+                for (String lore : one.getItemMeta().getLore()) {
+                    if (!two.getItemMeta().getLore().contains(lore)) {
+                        return false;
+                    }
+                }
+            }
 
-			if (one.getEnchantments().size() != two.getEnchantments().size()) {
-				return false;
-			}
+            if (one.getEnchantments().size() != two.getEnchantments().size()) {
+                return false;
+            }
 
-			for (Map.Entry<Enchantment, Integer> enchantment : one.getEnchantments().entrySet()) {
-				if (two.getEnchantments().containsKey(enchantment.getKey())) {
-					int twoEnchantmentLevel = two.getEnchantments().get(enchantment.getKey());
+            for (Map.Entry<Enchantment, Integer> enchantment : one.getEnchantments().entrySet()) {
+                if (two.getEnchantments().containsKey(enchantment.getKey())) {
+                    int twoEnchantmentLevel = two.getEnchantments().get(enchantment.getKey());
 
-					if (twoEnchantmentLevel != enchantment.getValue()) {
-						return false;
-					}
-				} else {
-					return false;
-				}
-			}
-		} else {
-			return false;
-		}
+                    if (twoEnchantmentLevel != enchantment.getValue()) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 }

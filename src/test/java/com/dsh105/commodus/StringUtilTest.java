@@ -21,6 +21,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 public class StringUtilTest {
+
     @Test
     public void testCapitalization() {
         Assert.assertEquals("Test Message", StringUtil.capitalise("test message"));

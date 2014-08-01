@@ -24,9 +24,10 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * https://github.com/essentials/Essentials/blob/2.x/Essentials/src/com/earth2me/essentials/utils/DescParseTickFormat.java
+ * Utilities for converting in-game Minecraft time to real time
+ * <p/>
+ * Kindly provided by https://github.com/essentials/Essentials/blob/2.x/Essentials/src/com/earth2me/essentials/utils/DescParseTickFormat.java
  */
-
 public class TimeUtil {
 
     public static final int ticksAtMidnight = 18000;

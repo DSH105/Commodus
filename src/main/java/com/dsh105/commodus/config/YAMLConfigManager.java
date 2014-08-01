@@ -265,7 +265,7 @@ public class YAMLConfigManager {
 
                     if (comment.startsWith("# ' ")) {
                         normalComment = comment.substring(0,
-                                comment.length() - 1)
+                                                          comment.length() - 1)
                                 .replaceFirst("# ' ", "# ");
                     } else {
                         normalComment = comment;

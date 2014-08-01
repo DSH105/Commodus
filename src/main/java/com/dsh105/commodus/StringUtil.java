@@ -26,10 +26,15 @@ import java.util.Collection;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+/**
+ * Utilities for manipulation of strings (for the uninitiated)
+ */
 public class StringUtil {
 
+    /**
+     * Represents an empty array of strings
+     */
     public static final String[] EMPTY_STRING_ARRAY = new String[0];
-    private static final String EMPTY = "";
     private static final Pattern DIACRITICS_AND_FRIENDS = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
 
     private StringUtil() {
@@ -85,6 +90,13 @@ public class StringUtil {
         return combineArray(0, " ", parts);
     }
 
+    /**
+     * Separates a string array from the given start index
+     *
+     * @param startIndex index to begin the separation at, inclusive
+     * @param string     string array to separate
+     * @return the new separated array of strings
+     */
     public static String[] separate(int startIndex, String... string) {
         if (startIndex >= string.length || string.length <= 0) {
             return new String[0];
@@ -116,15 +128,39 @@ public class StringUtil {
         }
     }
 
+    /**
+     * Combines a set of strings into a single string, separated by the given character set
+     *
+     * @param startIndex index to begin the separation at, inclusive
+     * @param string     array to combine
+     * @param separator  character set included between each part of the given array
+     * @return the combined string
+     * @deprecated use {@link #combineArray(int, String, String...)}
+     */
     @Deprecated
     public static String combineSplit(int startIndex, String[] string, String separator) {
         return combineArray(startIndex, separator, string);
     }
 
+    /**
+     * Combines a set of strings into a single string, separated by the given character set
+     *
+     * @param separator   character set included between each part of the given array
+     * @param stringArray array to combine
+     * @return the combined string
+     */
     public static String combineArray(String separator, String... stringArray) {
         return combineArray(0, separator, stringArray);
     }
 
+    /**
+     * Combines a set of strings into a single string, separated by the given character set
+     *
+     * @param startIndex  index to begin the separation at, inclusive
+     * @param separator   character set included between each part of the given array
+     * @param stringArray array to combine
+     * @return the combined string
+     */
     public static String combineArray(int startIndex, String separator, String... stringArray) {
         if (stringArray == null || startIndex >= stringArray.length) {
             return "";
@@ -139,14 +175,38 @@ public class StringUtil {
         }
     }
 
+    /**
+     * Combines a collection of strings into a single string, separated by the given character set
+     *
+     * @param separator        character set included between each part of the given array
+     * @param stringCollection collection of strings to combine
+     * @return the combined string
+     */
     public static String combine(String separator, Collection<String> stringCollection) {
         return combineArray(separator, stringCollection.toArray(EMPTY_STRING_ARRAY));
     }
 
+    /**
+     * Combines a collection of strings into a single string, separated by the given character set
+     *
+     * @param startIndex       index to begin the separation at, inclusive
+     * @param separator        character set included between each part of the given array
+     * @param stringCollection collection of strings to combine
+     * @return the combined string
+     */
     public static String combine(int startIndex, String separator, Collection<String> stringCollection) {
         return combineArray(startIndex, separator, stringCollection.toArray(EMPTY_STRING_ARRAY));
     }
 
+    /**
+     * Combines and splits a set of strings into a new array, such that the length of the new array is
+     * originalLength-{@code startIndex}
+     *
+     * @param startIndex  index to begin the separation at, inclusive
+     * @param separator   character set included between each part of the given array
+     * @param stringArray array to combine and split
+     * @return the newly formed array
+     */
     public static String[] splitArgs(int startIndex, String separator, String... stringArray) {
         String combined = combineArray(startIndex, separator, stringArray);
         if (combined.isEmpty()) {
@@ -155,11 +215,18 @@ public class StringUtil {
         return combined.split(separator);
     }
 
-    // http://stackoverflow.com/a/1453284
-    public static String stripDiacritics(String str) {
-        str = Normalizer.normalize(str, Normalizer.Form.NFD);
-        str = DIACRITICS_AND_FRIENDS.matcher(str).replaceAll("");
-        return str;
+    /**
+     * Strips all diacritics (special characters) from the given string
+     * <p/>
+     * From http://stackoverflow.com/a/1453284
+     *
+     * @param input string to remove diacritics from
+     * @return the stripped string
+     */
+    public static String stripDiacritics(String input) {
+        input = Normalizer.normalize(input, Normalizer.Form.NFD);
+        input = DIACRITICS_AND_FRIENDS.matcher(input).replaceAll("");
+        return input;
     }
 
     /**
@@ -167,9 +234,9 @@ public class StringUtil {
      * <p/>
      * This method will add the required dashes, if not found in String
      *
-     * @param input
+     * @param input UUID to convert
      * @return UUID converted UUID
-     * @throws IllegalArgumentException input could not be converted
+     * @throws IllegalArgumentException if the input could not be converted
      */
     public static UUID convertUUID(String input) throws IllegalArgumentException {
         try {
@@ -184,9 +251,9 @@ public class StringUtil {
     /**
      * Limits a String to an amount of characters
      *
-     * @param input
-     * @param maxLength
-     * @return
+     * @param input     string to limit character length
+     * @param maxLength maximum length of characters allowed
+     * @return the {@code input} limited to {@code maxLength} characters
      */
     public static String limitCharacters(String input, int maxLength) {
         if (input.length() <= maxLength) {
