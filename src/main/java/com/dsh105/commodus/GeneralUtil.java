@@ -69,7 +69,7 @@ public class GeneralUtil {
      * @return an Enum constant belonging to the provided Enum class, or null if the given String does not belong to the
      * enum provided
      */
-    public static <T extends Enum> T toEnumType(Class<T> clazz, String nameValue) {
+    public static <T extends Enum<T>> T toEnumType(Class<T> clazz, String nameValue) {
         try {
             return Enum.valueOf(clazz, nameValue.toUpperCase());
         } catch (Exception e) {
