@@ -19,11 +19,25 @@ package com.dsh105.commodus.logging;
 
 import org.bukkit.ChatColor;
 
+/**
+ * Represents the logging level of a certain record
+ */
 public enum Level {
 
+    /**
+     * Basic information logging
+     */
     INFO(" [INFO] "),
-    SEVERE(ChatColor.RED + " [SEVERE] "),
-    WARNING(ChatColor.RED + " [WARNING] ");
+
+    /**
+     * Warning messages - coloured red
+     */
+    WARNING(ChatColor.RED + " [WARNING] "),
+
+    /**
+     * Severe messages - coloured red
+     */
+    SEVERE(ChatColor.RED + " [SEVERE] ");
 
     private String prefix;
 
@@ -31,6 +45,11 @@ public enum Level {
         this.prefix = prefix;
     }
 
+    /**
+     * Gets the logging prefix for this level
+     *
+     * @return logging prefix
+     */
     public String getPrefix() {
         return prefix;
     }

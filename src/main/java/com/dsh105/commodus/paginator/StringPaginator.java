@@ -41,7 +41,7 @@ public class StringPaginator extends ObjectPaginator<String> {
     }
 
     @Override
-    protected StringPaginator clone() throws CloneNotSupportedException {
+    public StringPaginator clone() throws CloneNotSupportedException {
         return (StringPaginator) super.clone();
     }
 }

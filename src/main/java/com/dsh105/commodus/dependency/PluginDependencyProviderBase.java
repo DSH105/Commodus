@@ -49,11 +49,9 @@ public abstract class PluginDependencyProviderBase<T extends Plugin> implements 
                 if (this.dependency != null && this.dependency.isEnabled()) {
                     this.hooked = true;
                     onHook();
-                    //EchoPet.getPlugin().getModuleLogger().info("[" + this.dependency.getName() + "] Successfully hooked");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                //EchoPet.getPlugin().getReflectionLogger().warning("Could not create a PluginDependencyProvider for: " + getDependencyName() + "! (Are you sure the type is valid?)");
             }
         }
 
@@ -66,7 +64,6 @@ public abstract class PluginDependencyProviderBase<T extends Plugin> implements 
                         dependency = (T) event.getPlugin();
                         hooked = true;
                         onHook();
-                        //EchoPet.getPlugin().getModuleLogger().info("[" + getDependencyName() + "] Successfully hooked");
                     } catch (Exception e) {
                         throw new RuntimeException("Failed to hook plugin: " + event.getPlugin().getName());
                     }
@@ -79,7 +76,6 @@ public abstract class PluginDependencyProviderBase<T extends Plugin> implements 
                     dependency = null;
                     hooked = false;
                     onUnhook();
-                    //EchoPet.getPlugin().getModuleLogger().info("[" + getDependencyName() + "] Successfully unhooked");
                 }
             }
         }, getHandlingPlugin());

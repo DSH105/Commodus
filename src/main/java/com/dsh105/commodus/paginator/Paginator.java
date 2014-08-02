@@ -68,7 +68,7 @@ public class Paginator<T extends Pageable> extends ObjectPaginator<T> {
     }
 
     @Override
-    protected Paginator<T> clone() throws CloneNotSupportedException {
+    public Paginator<T> clone() throws CloneNotSupportedException {
         return (Paginator<T>) super.clone();
     }
 }

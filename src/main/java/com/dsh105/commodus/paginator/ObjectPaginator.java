@@ -242,7 +242,7 @@ public class ObjectPaginator<T> implements Iterable<T>, Cloneable {
     }
 
     @Override
-    protected ObjectPaginator<T> clone() throws CloneNotSupportedException {
+    public ObjectPaginator<T> clone() throws CloneNotSupportedException {
         ObjectPaginator<T> paginator = (ObjectPaginator<T>) super.clone();
         paginator.setRaw(this.raw);
         return paginator;

@@ -19,13 +19,38 @@ package com.dsh105.commodus.dependency;
 
 import org.bukkit.plugin.Plugin;
 
+/**
+ * Represents a dependency provider for a particular plugin
+ *
+ * @param <T> plugin represented by this provider
+ */
 public interface PluginDependencyProvider<T extends Plugin> {
 
+    /**
+     * Gets the plugin being depended upon
+     *
+     * @return plugin dependency
+     */
     public T getDependency();
 
+    /**
+     * Gets whether the plugin has been successfully hooked into
+     *
+     * @return true if the plugin has been hooked successfully
+     */
     public boolean isHooked();
 
+    /**
+     * Gets the plugin handling this dependency
+     *
+     * @return plugin handling this dependency
+     */
     public Plugin getHandlingPlugin();
 
+    /**
+     * Gets the name of the dependency
+     *
+     * @return dependency name
+     */
     public String getDependencyName();
 }

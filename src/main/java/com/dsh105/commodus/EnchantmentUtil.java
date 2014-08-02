@@ -5,12 +5,15 @@ import org.bukkit.enchantments.Enchantment;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
+/**
+ * Utilities for managing item enchantments
+ */
 public class EnchantmentUtil {
 
     private EnchantmentUtil() {
     }
 
-    private static HashMap<String, Enchantment> enchantmentAsscoations = new HashMap<>();
+    private static HashMap<String, Enchantment> enchantmentAssociations = new HashMap<>();
     private static Pattern REPLACE_FORMAT = Pattern.compile("[\\s_]");
 
     static {
@@ -48,7 +51,7 @@ public class EnchantmentUtil {
      */
     public static void addValue(Enchantment enchant, String... value) {
         for (String s : value) {
-            enchantmentAsscoations.put(s.toLowerCase().replaceAll(REPLACE_FORMAT.pattern(), ""), enchant);
+            enchantmentAssociations.put(s.toLowerCase().replaceAll(REPLACE_FORMAT.pattern(), ""), enchant);
         }
     }
 
@@ -65,8 +68,8 @@ public class EnchantmentUtil {
 
         input = input.toLowerCase().replaceAll(REPLACE_FORMAT.pattern(), "");
 
-        if (enchantmentAsscoations.containsKey(input)) {
-            return enchantmentAsscoations.get(input);
+        if (enchantmentAssociations.containsKey(input)) {
+            return enchantmentAssociations.get(input);
         } else {
             return Enchantment.getByName(input);
         }
