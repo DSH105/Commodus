@@ -60,7 +60,7 @@ public class GeometryUtil {
      *
      * @param origin     origin or centre of the circle
      * @param radius     radius of the circle
-     * @param height     height of the circle. If {@code height} > 1, the circle will become a cylinder
+     * @param height     height of the circle. If {@code height > 1}, the circle will become a cylinder
      * @param hollow     true if the generated circle is to be hollow
      * @param sphere     true if the shape generated is spherical
      * @param includeAir true if air can be included in the list of locations

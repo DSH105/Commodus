@@ -167,6 +167,7 @@ public class Version implements Comparable<Version> {
      * to than this version. For example, if this version is 1.7.9, a version of 1.7.8 or 1.7.6 will be considered
      * supported, whereas 1.7.10 will not
      *
+     * @param latestAllowedVersion server version to make a comparison against e.g. 1.7.10-R0.1
      * @return true if {@code latestAllowedVersion} is supported by this version
      */
     public boolean isSupported(String latestAllowedVersion) {
@@ -206,6 +207,7 @@ public class Version implements Comparable<Version> {
      * to than this version. For example, if this version is 1.7.9, a version of 1.7.8 or 1.7.6 will be considered
      * supported, whereas 1.7.10 will not
      *
+     * @param latestAllowedVersion server version to make a comparison against e.g. 1.7.10-R0.1
      * @return true if {@code latestAllowedVersion} is supported by this version
      */
     public boolean isSupported(int latestAllowedVersion) {
@@ -245,6 +247,7 @@ public class Version implements Comparable<Version> {
      * to than this version. For example, if this version is 1.7.9, a version of 1.7.8 or 1.7.6 will be considered
      * supported, whereas 1.7.10 will not
      *
+     * @param latestAllowedVersion server version to make a comparison against e.g. 1.7.10-R0.1
      * @return true if {@code latestAllowedVersion} is supported by this version
      */
     public boolean isSupported(Version latestAllowedVersion) {

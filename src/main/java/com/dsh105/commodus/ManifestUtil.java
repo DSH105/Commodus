@@ -50,10 +50,11 @@ public class ManifestUtil {
     }
 
     /**
-     * Returns an attribute in the manifest file of this compiled JAR file at runtime
+     * Returns an attribute in the manifest file of the given compiled JAR file at runtime
      *
+     * @param filePath path of the file to retrieve the manifest for
      * @param attributePath path of the attribute to find
-     * @return the value of a attribute as specified in the manifest of this JAR file
+     * @return the value of a attribute as specified in the manifest of the given JAR file path
      */
     public static String getAttribute(String filePath, String attributePath) {
         try {
@@ -64,6 +65,12 @@ public class ManifestUtil {
         }
     }
 
+    /**
+     * Returns an attribute in the manifest file of this compiled JAR file at runtime
+     *
+     * @param attributePath path of the attribute to find
+     * @return the value of a attribute as specified in the manifest of this JAR file
+     */
     public static String getAttribute(String attributePath) {
         try {
             return getAttribute(ManifestUtil.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), attributePath);

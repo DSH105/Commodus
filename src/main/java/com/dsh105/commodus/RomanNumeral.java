@@ -43,6 +43,7 @@ public class RomanNumeral {
      * Constructor.  Creates the Roman number with the int value specified
      * by the parameter.  Throws a NumberFormatException if arabic is
      * not in the range 1 to 3999 inclusive.
+     * @param arabic the int value as an arabic number
      */
     public RomanNumeral(int arabic) {
         if (arabic < 1) {
@@ -158,6 +159,7 @@ public class RomanNumeral {
 
     /**
      * Return the value of this Roman numeral as an int.
+     * @return numeric value of this Roman numeral
      */
     public int toInt() {
         return num;

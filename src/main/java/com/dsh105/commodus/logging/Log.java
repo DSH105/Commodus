@@ -90,6 +90,7 @@ public class Log {
     /**
      * Logs a coloured message to the console with the given level
      *
+     * @param level level to log the message at
      * @param message message to log
      */
     public void console(Level level, String message) {

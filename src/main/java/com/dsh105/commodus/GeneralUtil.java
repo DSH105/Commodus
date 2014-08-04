@@ -66,6 +66,7 @@ public class GeneralUtil {
      *
      * @param clazz     Enum to convert to
      * @param nameValue String value to convert
+     *                  @param <T> enum type
      * @return an Enum constant belonging to the provided Enum class, or null if the given String does not belong to the
      * enum provided
      */
@@ -190,6 +191,7 @@ public class GeneralUtil {
      * Attempts to convert a string into an integer value using Regex
      *
      * @param string the String to be checked
+     *               @return the converted integer
      * @throws java.lang.NumberFormatException if the conversion failed
      */
     public static int toInteger(String string) throws NumberFormatException {
@@ -204,7 +206,7 @@ public class GeneralUtil {
      * Attempts to convert a string into an double value using Regex
      *
      * @param string the String to be checked
-     * @return Double.MIN_VALUE if unable to convert
+     * @return the converted double
      * @throws java.lang.NumberFormatException if the conversion failed
      */
     public static double toDouble(String string) {

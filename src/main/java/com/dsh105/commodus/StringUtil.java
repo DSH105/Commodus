@@ -84,6 +84,7 @@ public class StringUtil {
      * Capitalizes the first letter of a String
      *
      * @param string the String to be capitalized
+     *               @param forceLowerCase whether to force lower case on other parts of the String
      * @return capitalized String
      */
     public static String capitalise(String string, boolean forceLowerCase) {
