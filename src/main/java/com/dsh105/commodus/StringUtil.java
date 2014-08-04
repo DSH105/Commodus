@@ -221,7 +221,7 @@ public class StringUtil {
 
     /**
      * Strips all diacritics (special characters) from the given string
-     * <p/>
+     * <p>
      * From http://stackoverflow.com/a/1453284
      *
      * @param input string to remove diacritics from
@@ -235,7 +235,7 @@ public class StringUtil {
 
     /**
      * Convert a String to a UUID
-     * <p/>
+     * <p>
      * This method will add the required dashes, if not found in String
      *
      * @param input UUID to convert

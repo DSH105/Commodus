@@ -47,7 +47,7 @@ public class ServerUtil {
 
     /**
      * Gets whether the server running is a Cauldron (MCPC+) server
-     * <p/>
+     * <p>
      * Cauldrons and Bukkits hold different things; Bukkits usually hold cats
      *
      * @return true if this server is a Cauldron instead of a Bukkit
@@ -167,11 +167,11 @@ public class ServerUtil {
 
     /**
      * Gets a list of players currently online
-     * <p/>
+     * <p>
      * This implementation includes a workaround for {@link org.bukkit.Bukkit#getOnlinePlayers()} returning an array in
      * older releases of CraftBukkit, instead of a Collection in more recent releases. Essentially, this adds backwards
      * compatibility with older versions of CraftBukkit without having to adjust much in your plugin.
-     * <p/>
+     * <p>
      * It's ugly, but it works and provides backwards compatibility
      *
      * @return a list of all online players

@@ -23,7 +23,7 @@ package com.dsh105.commodus;
  * a Roman numeral in this range.  The function toString() will return a
  * standardized Roman numeral representation of the number.  The function
  * toInt() will return the number as a value of type int.
- * <p/>
+ * <p>
  * From http://math.hws.edu/eck/cs124/javanotes6/c8/ex3-ans.html
  */
 public class RomanNumeral {

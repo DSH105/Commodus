@@ -48,7 +48,7 @@ public class GeneralUtil {
 
     /**
      * Tests whether or not the given String is an value in a particular Enum
-     * <p/>
+     * <p>
      * {@code nameValue} is converted to upper case before being tested
      *
      * @param clazz     Enum to test
@@ -61,7 +61,7 @@ public class GeneralUtil {
 
     /**
      * Converts the given String to an Enum constant
-     * <p/>
+     * <p>
      * {@code nameValue} is converted to upper case before being converted
      *
      * @param clazz     Enum to convert to
@@ -109,7 +109,7 @@ public class GeneralUtil {
 
     /**
      * Parses a location from a set of String arguments
-     * <p/>
+     * <p>
      * Arguments must be in the following order:
      * <ul>
      * <li>World name
@@ -147,7 +147,7 @@ public class GeneralUtil {
 
     /**
      * Gets the key at the specified value in a key-value map
-     * <p/>
+     * <p>
      * <strong>This does NOT take into account the existence of multiple keys with the same value</strong>
      *
      * @param map   key-value map to search in
@@ -170,7 +170,7 @@ public class GeneralUtil {
 
     /**
      * Inverts the given map from key-value mappings to value-key mappings
-     * <p/>
+     * <p>
      * Note: this may have unintended results if a certain value is included in the map more than once
      *
      * @param map map to invert

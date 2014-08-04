@@ -25,13 +25,13 @@ import java.util.Map;
 
 /**
  * Accesses Cauldron/MCPC remapping for classes, fields and methods
- * <p/>
+ * <p>
  * Credits go to Protocol Lib for most of the stuff here:
  * https://github.com/aadnk/ProtocolLib/blob/master/ProtocolLib/src/main/java/com/comphenix/protocol/utility/RemappedClassSource.java
- * <p/>
+ * <p>
  * And more credits to CaptainBern's magical reflection library for the field and method stuff:
  * https://github.com/CaptainBern/Reflection/blob/master/Minecraft-Reflection/src/main/java/com/captainbern/minecraft/reflection/providers/remapper/RemappedReflectionProvider.java
- * <p/>
+ * <p>
  * The source of all this wonderful remapping stuff:
  * https://github.com/MinecraftPortCentral/Cauldron/blob/master/patches/org/bukkit/plugin/java/PluginClassLoader.java.patch
  */

@@ -39,7 +39,7 @@ public class ItemUtil {
 
     /**
      * Builds a placeholder item, utilising the given {@code content} as the name and lore of the item
-     * <p/>
+     * <p>
      * Not really useful, except for in the PowerMessage library (https://github.com/DSH105/PowerMessage)
      *
      * @param content content to include in the name and lore of the built item
@@ -138,7 +138,7 @@ public class ItemUtil {
 
     /**
      * Verify if two item stacks have the same contents
-     * <p/>
+     * <p>
      * This means the lore and enchants can be in any order
      *
      * @param one the first ItemStack

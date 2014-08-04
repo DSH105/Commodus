@@ -25,7 +25,7 @@ import java.util.TimeZone;
 
 /**
  * Utilities for converting in-game Minecraft time to real time
- * <p/>
+ * <p>
  * Kindly provided by https://github.com/essentials/Essentials/blob/2.x/Essentials/src/com/earth2me/essentials/utils/DescParseTickFormat.java
  */
 public class TimeUtil {

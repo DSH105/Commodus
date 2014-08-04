@@ -23,7 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Basic logging to a server console
- * <p/>
+ * <p>
  * Supports chat colours :)
  */
 public class Log {
