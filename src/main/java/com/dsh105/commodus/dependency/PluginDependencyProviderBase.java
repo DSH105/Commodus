@@ -49,8 +49,10 @@ public abstract class PluginDependencyProviderBase<T extends Plugin> implements 
                 if (this.dependency != null && this.dependency.isEnabled()) {
                     this.hooked = true;
                     onHook();
+                    getHandlingPlugin().getLogger().info("[" + this.dependency.getName() + "] Successfully hooked");
                 }
             } catch (Exception e) {
+                getHandlingPlugin().getLogger().warning("Could not create a PluginDependencyProvider for: " + getDependencyName() + "! (Are you sure the type is valid?)");
                 e.printStackTrace();
             }
         }
@@ -64,6 +66,7 @@ public abstract class PluginDependencyProviderBase<T extends Plugin> implements 
                         dependency = (T) event.getPlugin();
                         hooked = true;
                         onHook();
+                        getHandlingPlugin().getLogger().info("[" + getDependencyName() + "] Successfully hooked");
                     } catch (Exception e) {
                         throw new RuntimeException("Failed to hook plugin: " + event.getPlugin().getName());
                     }
@@ -76,6 +79,7 @@ public abstract class PluginDependencyProviderBase<T extends Plugin> implements 
                     dependency = null;
                     hooked = false;
                     onUnhook();
+                    getHandlingPlugin().getLogger().info("[" + getDependencyName() + "] Successfully unhooked");
                 }
             }
         }, getHandlingPlugin());
