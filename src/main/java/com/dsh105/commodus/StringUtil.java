@@ -62,6 +62,10 @@ public class StringUtil {
      * @return String[] Objects converted into Strings
      */
     public static String[] convert(Object... arrayToConvert) {
+        if (arrayToConvert instanceof String[]) {
+            return (String[]) arrayToConvert;
+        }
+
         if (arrayToConvert.length <= 0) {
             return new String[0];
         }
