@@ -123,11 +123,11 @@ public class Option<T> {
         configuration.set(getPath(replacements), value);
     }
 
-    public static ArrayList<Option> getOptions(Class<? extends Options> optionsClass) {
+    public static ArrayList<Option> getOptions(Class<?> optionsClass) {
         return getOptions(optionsClass, Option.class);
     }
 
-    public static <T extends Option> ArrayList<T> getOptions(Class<? extends Options> optionsClass, Class<T> classRestriction) {
+    public static <T extends Option> ArrayList<T> getOptions(Class<?> optionsClass, Class<T> classRestriction) {
         ArrayList<T> options = new ArrayList<>();
         for (SafeField safeField : new Reflection().reflect(optionsClass).getSafeFields(withType(classRestriction))) {
             Option option = ((SafeField<Option>) safeField).getAccessor().getStatic();
