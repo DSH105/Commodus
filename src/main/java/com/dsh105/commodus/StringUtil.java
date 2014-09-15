@@ -23,6 +23,7 @@ import org.bukkit.ChatColor;
 import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -58,6 +59,23 @@ public class StringUtil {
     /**
      * Convert a number of Objects into Strings
      *
+     * @param listToConvert Objects to be converted
+     * @return String[] Objects converted into Strings
+     */
+    public static String[] convert(List<?> listToConvert) {
+        if (listToConvert.size() <= 0) {
+            return StringUtil.EMPTY_STRING_ARRAY;
+        }
+        String[] stringArray = new String[listToConvert.size()];
+        for (int i = 0; i < stringArray.length; i++) {
+            stringArray[i] = listToConvert.get(i).toString();
+        }
+        return stringArray;
+    }
+
+    /**
+     * Convert a number of Objects into Strings
+     *
      * @param arrayToConvert Objects to be converted
      * @return String[] Objects converted into Strings
      */
@@ -65,15 +83,7 @@ public class StringUtil {
         if (arrayToConvert instanceof String[]) {
             return (String[]) arrayToConvert;
         }
-
-        if (arrayToConvert.length <= 0) {
-            return new String[0];
-        }
-        String[] stringArray = new String[arrayToConvert.length];
-        for (int i = 0; i < stringArray.length; i++) {
-            stringArray[i] = arrayToConvert[i].toString();
-        }
-        return stringArray;
+        return convert(Arrays.asList(arrayToConvert));
     }
 
     public static String capitalise(String string) {
@@ -83,8 +93,8 @@ public class StringUtil {
     /**
      * Capitalizes the first letter of a String
      *
-     * @param string the String to be capitalized
-     *               @param forceLowerCase whether to force lower case on other parts of the String
+     * @param string         the String to be capitalized
+     * @param forceLowerCase whether to force lower case on other parts of the String
      * @return capitalized String
      */
     public static String capitalise(String string, boolean forceLowerCase) {
@@ -167,11 +177,24 @@ public class StringUtil {
      * @return the combined string
      */
     public static String combineArray(int startIndex, String separator, String... stringArray) {
-        if (stringArray == null || startIndex >= stringArray.length) {
+        return combineArray(startIndex, stringArray.length, separator, stringArray);
+    }
+
+    /**
+     * Combines a set of strings into a single string, separated by the given character set
+     *
+     * @param startIndex  index to begin the separation at, inclusive
+     * @param endIndex    index to end the separation at, exclusive
+     * @param separator   character set included between each part of the given array
+     * @param stringArray array to combine
+     * @return the combined string
+     */
+    public static String combineArray(int startIndex, int endIndex, String separator, String... stringArray) {
+        if (stringArray == null || startIndex >= endIndex) {
             return "";
         } else {
             StringBuilder builder = new StringBuilder();
-            for (int i = startIndex; i < stringArray.length; i++) {
+            for (int i = startIndex; i < endIndex; i++) {
                 builder.append(stringArray[i]);
                 builder.append(separator);
             }
@@ -204,6 +227,19 @@ public class StringUtil {
     }
 
     /**
+     * Combines a collection of strings into a single string, separated by the given character set
+     *
+     * @param startIndex       index to begin the separation at, inclusive
+     * @param endIndex         index to end the separation at, exclusive
+     * @param separator        character set included between each part of the given array
+     * @param stringCollection collection of strings to combine
+     * @return the combined string
+     */
+    public static String combine(int startIndex, int endIndex, String separator, Collection<String> stringCollection) {
+        return combineArray(startIndex, endIndex, separator, stringCollection.toArray(EMPTY_STRING_ARRAY));
+    }
+
+    /**
      * Combines and splits a set of strings into a new array, such that the length of the new array is
      * originalLength-{@code startIndex}
      *
@@ -213,7 +249,21 @@ public class StringUtil {
      * @return the newly formed array
      */
     public static String[] splitArgs(int startIndex, String separator, String... stringArray) {
-        String combined = combineArray(startIndex, separator, stringArray);
+        return splitArgs(startIndex, stringArray.length, separator, stringArray);
+    }
+
+    /**
+     * Combines and splits a set of strings into a new array, such that the length of the new array is
+     * originalLength-{@code startIndex}
+     *
+     * @param startIndex  index to begin the separation at, inclusive
+     * @param endIndex    index to end the separation at, exclusive
+     * @param separator   character set included between each part of the given array
+     * @param stringArray array to combine and split
+     * @return the newly formed array
+     */
+    public static String[] splitArgs(int startIndex, int endIndex, String separator, String... stringArray) {
+        String combined = combineArray(startIndex, endIndex, separator, stringArray);
         if (combined.isEmpty()) {
             return new String[0];
         }
@@ -222,7 +272,7 @@ public class StringUtil {
 
     /**
      * Strips all diacritics (special characters) from the given string
-     * <p>
+     * <p/>
      * From http://stackoverflow.com/a/1453284
      *
      * @param input string to remove diacritics from
@@ -236,7 +286,7 @@ public class StringUtil {
 
     /**
      * Convert a String to a UUID
-     * <p>
+     * <p/>
      * This method will add the required dashes, if not found in String
      *
      * @param input UUID to convert
