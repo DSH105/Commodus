@@ -93,11 +93,19 @@ public class ObjectPaginator<T> implements Iterable<T>, Cloneable {
      * @param raw Raw content to be paginated
      */
     public void add(T... raw) {
-        for (T r : raw) {
-            this.raw.add(r);
-        }
+        Collections.addAll(this.raw, raw);
     }
 
+    public void set(int index, T content) {
+        if (index >= raw.size()) {
+            throw new IllegalArgumentException("Content at index does not exist.");
+        }
+        this.raw.set(index, content);
+    }
+
+    /**
+     * Clears all content
+     */
     public void clear() {
         this.raw.clear();
     }
@@ -209,6 +217,16 @@ public class ObjectPaginator<T> implements Iterable<T>, Cloneable {
             }
         }
         return list.toArray(new String[list.size()]);
+    }
+
+    /**
+     * Gets a certain page of raw content by page number
+     *
+     * @param pageNumber Page number to retrieve raw content for
+     * @return Raw content of a certain page
+     */
+    public ArrayList<T> getRawPage(int pageNumber) {
+        return this.getRawPage(pageNumber, perPage);
     }
 
     /**

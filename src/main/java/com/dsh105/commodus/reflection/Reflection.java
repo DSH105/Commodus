@@ -30,7 +30,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Some simple reflection stuff. Nothing fancy here
+ * Simple reflection utilities, built from a Minecraft-oriented perspective
+ * <p/>
+ * Supports MCPC+/Cauldron remappings, through the {@link com.dsh105.commodus.reflection.RemappedClassLoader}
  */
 public class Reflection {
 

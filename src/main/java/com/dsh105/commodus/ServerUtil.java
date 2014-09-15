@@ -142,7 +142,7 @@ public class ServerUtil {
     @Deprecated
     public static String getMCPackage() {
         if (MC_PACKAGE_NAME == null) {
-            MC_PACKAGE_NAME = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+            MC_PACKAGE_NAME = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
             if (MC_PACKAGE_NAME == null || MC_PACKAGE_NAME.isEmpty()) {
                 // Cauldron/MCPC+ hack
                 MC_PACKAGE_NAME = (String) Reflection.invokeStatic(Reflection.getMethod(Reflection.getClass("org.bukkit.plugin.java.PluginClassLoader"), "getNativeVersion"));

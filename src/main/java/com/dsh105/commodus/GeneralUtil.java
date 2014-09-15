@@ -135,7 +135,7 @@ public class GeneralUtil {
         for (int i = startIndex + 1, index = 0; i < startIndex + 6; i++, index++) {
             try {
                 coords[index] = toDouble(args[i]);
-            } catch (NumberFormatException ignored) {
+            } catch (NumberFormatException | ArrayIndexOutOfBoundsException ignored) {
                 if (i <= startIndex + 3) {
                     // coords MUST exist
                     return null;
