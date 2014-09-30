@@ -47,8 +47,8 @@ public abstract class PluginDependencyProviderBase<T extends Plugin> implements 
                 dependency = (T) Bukkit.getPluginManager().getPlugin(getDependencyName());
 
                 if (this.dependency != null && this.dependency.isEnabled()) {
-                    this.hooked = true;
                     onHook();
+                    this.hooked = true;
                     getHandlingPlugin().getLogger().info("[" + this.dependency.getName() + "] Successfully hooked");
                 }
             } catch (Exception e) {
@@ -64,8 +64,8 @@ public abstract class PluginDependencyProviderBase<T extends Plugin> implements 
                 if ((dependency == null) && (event.getPlugin().getName().equalsIgnoreCase(getDependencyName()))) {
                     try {
                         dependency = (T) event.getPlugin();
-                        hooked = true;
                         onHook();
+                        hooked = true;
                         getHandlingPlugin().getLogger().info("[" + getDependencyName() + "] Successfully hooked");
                     } catch (Exception e) {
                         throw new RuntimeException("Failed to hook plugin: " + event.getPlugin().getName());
@@ -77,8 +77,8 @@ public abstract class PluginDependencyProviderBase<T extends Plugin> implements 
             protected void onDisable(PluginDisableEvent event) {
                 if ((dependency != null) && (event.getPlugin().getName().equalsIgnoreCase(getDependencyName()))) {
                     dependency = null;
-                    hooked = false;
                     onUnhook();
+                    hooked = false;
                     getHandlingPlugin().getLogger().info("[" + getDependencyName() + "] Successfully unhooked");
                 }
             }
