@@ -52,7 +52,7 @@ public abstract class PluginDependencyProviderBase<T extends Plugin> implements 
                     getHandlingPlugin().getLogger().info("[" + this.dependency.getName() + "] Successfully hooked");
                 }
             } catch (Exception e) {
-                getHandlingPlugin().getLogger().warning("Could not create a PluginDependencyProvider for: " + getDependencyName() + "! (Are you sure the type is valid?)");
+                getHandlingPlugin().getLogger().warning("Could not create a PluginDependencyProvider for: " + getDependencyName() + "! (Are you sure the type is valid?) - " + e.getMessage());
                 e.printStackTrace();
             }
         }
