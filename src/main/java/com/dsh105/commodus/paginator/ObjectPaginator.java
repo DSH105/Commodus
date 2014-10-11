@@ -96,6 +96,10 @@ public class ObjectPaginator<T> implements Iterable<T>, Cloneable {
         Collections.addAll(this.raw, raw);
     }
 
+    public boolean remove(T raw) {
+        return this.raw.remove(raw);
+    }
+
     public void set(int index, T content) {
         if (index >= raw.size()) {
             throw new IllegalArgumentException("Content at index does not exist.");
