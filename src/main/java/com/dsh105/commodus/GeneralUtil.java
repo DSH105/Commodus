@@ -118,7 +118,7 @@ public class GeneralUtil {
      * <li>Y coordinate
      * <li>Z coordinate
      * <li><b>Optional: </b>Yaw
-     * <li><b>Optional: </b>Yaw
+     * <li><b>Optional: </b>Pitch
      * </ul>
      *
      * @param startIndex index to start parsing location from
