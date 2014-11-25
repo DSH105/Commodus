@@ -65,15 +65,15 @@ public class ParticleBuilder implements Cloneable {
 
     public void show(Player player) {
         WrappedPacket packet = new WrappedPacket(PacketType.Play.Server.WORLD_PARTICLES);
-        packet.getStrings().write(0, getName());
-        packet.getFloats().write(0, getX());
-        packet.getFloats().write(1, getY());
-        packet.getFloats().write(2, getZ());
-        packet.getFloats().write(3, getOffsetX());
-        packet.getFloats().write(4, getOffsetY());
-        packet.getFloats().write(5, getOffsetZ());
-        packet.getFloats().write(6, getSpeed());
-        packet.getIntegers().write(0, getAmount());
+        packet.getStrings().write(0, name);
+        packet.getFloats().write(0, x);
+        packet.getFloats().write(1, y);
+        packet.getFloats().write(2, z);
+        packet.getFloats().write(3, offsetX);
+        packet.getFloats().write(4, offsetY);
+        packet.getFloats().write(5, offsetZ);
+        packet.getFloats().write(6, speed);
+        packet.getIntegers().write(0, amount);
         MinecraftMethods.sendPacket(player, packet.getHandle());
     }
 
@@ -147,7 +147,7 @@ public class ParticleBuilder implements Cloneable {
     }
 
     public Location getLocation(World world) {
-        return new Location(world, getX(), getY(), getZ());
+        return new Location(world, x, y, z);
     }
 
     public float getX() {

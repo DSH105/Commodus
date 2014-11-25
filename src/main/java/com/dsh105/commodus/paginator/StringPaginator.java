@@ -18,6 +18,7 @@
 package com.dsh105.commodus.paginator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a Paginator for an array of Strings
@@ -36,7 +37,7 @@ public class StringPaginator extends ObjectPaginator<String> {
         super(perPage, raw);
     }
 
-    public StringPaginator(ArrayList<String> raw, int perPage) {
+    public StringPaginator(List<String> raw, int perPage) {
         super(raw, perPage);
     }
 

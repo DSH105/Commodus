@@ -20,6 +20,7 @@ package com.dsh105.commodus.paginator;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a Paginator for {@link Pageable} objects
@@ -40,7 +41,7 @@ public class Paginator<T extends Pageable> extends ObjectPaginator<T> {
         super(perPage, raw);
     }
 
-    public Paginator(ArrayList<T> raw, int perPage) {
+    public Paginator(List<T> raw, int perPage) {
         super(raw, perPage);
     }
 

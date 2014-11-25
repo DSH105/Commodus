@@ -66,13 +66,13 @@ public class DataParticleBuilder extends ParticleBuilder {
 
     public DataParticleBuilder withBlockId(int blockId) {
         this.blockId = blockId;
-        this.setName(getName() + "_" + getBlockId() + "_" + getMetaId());
+        this.setName(getName() + "_" + this.blockId + "_" + metaId);
         return this;
     }
 
     public DataParticleBuilder withMetaId(int metaId) {
         this.metaId = metaId;
-        this.setName(getName() + "_" + getBlockId() + "_" + getMetaId());
+        this.setName(getName() + "_" + blockId + "_" + this.metaId);
         return this;
     }
 

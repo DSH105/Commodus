@@ -72,7 +72,7 @@ public enum Particle {
     }
 
     public ParticleBuilder builder() {
-        return new ParticleBuilder(this.getName(), this.getSpeed(), this.getAmount());
+        return new ParticleBuilder(name, speed, amount);
     }
 
     public String getName() {
@@ -89,7 +89,7 @@ public enum Particle {
 
     public static Particle fromName(String name) {
         for (Particle type : Particle.values()) {
-            if (type.getName().equalsIgnoreCase(name)) {
+            if (type.name.equalsIgnoreCase(name)) {
                 return type;
             }
         }
@@ -111,7 +111,7 @@ public enum Particle {
         }
 
         public DataParticleBuilder builder() {
-            return new DataParticleBuilder(this.getName(), this.getSpeed(), this.getAmount());
+            return new DataParticleBuilder(name, speed, amount);
         }
 
         public String getName() {

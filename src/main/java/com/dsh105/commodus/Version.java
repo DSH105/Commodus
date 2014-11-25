@@ -260,8 +260,8 @@ public class Version implements Comparable<Version> {
 
     @Override
     public int compareTo(Version minimumRequiredVersion) {
-        int[] numericVersion = ServerUtil.getNumericServerVersion(getVersion());
-        int[] numericVersionToCompare = minimumRequiredVersion.getNumericVersion();
+        int[] numericVersion = ServerUtil.getNumericServerVersion(version);
+        int[] numericVersionToCompare = minimumRequiredVersion.numericVersion;
         int maxLength = Math.max(numericVersion.length, numericVersionToCompare.length);
         for (int i = 0; i < maxLength; i++) {
             int versionPart = i < numericVersion.length ? numericVersion[i] : 0;

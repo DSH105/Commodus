@@ -79,10 +79,10 @@ public abstract class Options {
     }
 
     public <T> T get(Option<T> option, String... pathReplacements) {
-        return option.getValue(getConfig().config(), pathReplacements);
+        return option.getValue(this.config.config(), pathReplacements);
     }
 
     public <T> T get(Option<T> option, T defaultValue, String... pathReplacements) {
-        return option.getValue(getConfig().config(), defaultValue, pathReplacements);
+        return option.getValue(this.config.config(), defaultValue, pathReplacements);
     }
 }

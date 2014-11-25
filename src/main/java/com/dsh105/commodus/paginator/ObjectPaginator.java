@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class ObjectPaginator<T> implements Iterable<T>, Cloneable {
 
-    private ArrayList<T> raw = new ArrayList<>();
+    private List<T> raw = new ArrayList<>();
     private int perPage;
 
     /**
@@ -64,9 +64,9 @@ public class ObjectPaginator<T> implements Iterable<T>, Cloneable {
      * @param raw     Raw content to paginate
      * @param perPage Amount of entries allowed per page
      */
-    public ObjectPaginator(ArrayList<T> raw, int perPage) {
+    public ObjectPaginator(List<T> raw, int perPage) {
         this.perPage = perPage;
-        this.setRaw(raw);
+        this.raw = raw;
     }
 
     /**
@@ -119,7 +119,7 @@ public class ObjectPaginator<T> implements Iterable<T>, Cloneable {
      *
      * @param raw Raw content to be paginated
      */
-    public void setRaw(ArrayList<T> raw) {
+    public void setRaw(List<T> raw) {
         this.raw = raw;
     }
 
@@ -266,7 +266,7 @@ public class ObjectPaginator<T> implements Iterable<T>, Cloneable {
     @Override
     public ObjectPaginator<T> clone() throws CloneNotSupportedException {
         ObjectPaginator<T> paginator = (ObjectPaginator<T>) super.clone();
-        paginator.setRaw(this.raw);
+        paginator.raw = this.raw;
         return paginator;
     }
 }

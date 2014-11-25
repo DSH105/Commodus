@@ -104,10 +104,10 @@ public class Option<T> {
                 }
             }
         }
-        if (getDefaultValue() == null) {
+        if (this.defaultValue == null) {
             return defaultValue;
         }
-        return getDefaultValue();
+        return this.defaultValue;
     }
 
     public void setValue(Options options, T value, Object... replacements) {
