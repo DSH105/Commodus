@@ -29,7 +29,7 @@ public class Version implements Comparable<Version> {
      * Constructs a new Version from the current server version running
      */
     public Version() {
-        this(ServerUtil.getServerVersion());
+        this(ServerUtil.getBukkitVersion().getVersion());
     }
 
     /**
@@ -44,7 +44,7 @@ public class Version implements Comparable<Version> {
 
     /**
      * Constructs a new Version from the given numeric server version
-     * <p>
+     * <p/>
      * <strong>Not recommended for public API consumption</strong>
      *
      * @param numericVersion numeric server version e.g. 1.7.10-R0.1 would be 171001
@@ -101,8 +101,21 @@ public class Version implements Comparable<Version> {
     }
 
     /**
+     * Returns {@code getNumericVersion()} as a string value
+     *
+     * @return a string representing the numeric form of this version
+     */
+    public String getNumericVersionString() {
+        StringBuilder builder = new StringBuilder();
+        for (int part : numericVersion) {
+            builder.append(part);
+        }
+        return builder.toString();
+    }
+
+    /**
      * Returns whether or not this version is identical to the currently running server version
-     * <p>
+     * <p/>
      * For example: 1.7.10 matches 1.7.10, but not 1.7.9 or 1.7.8
      *
      * @return true if the two versions are identical
@@ -113,7 +126,7 @@ public class Version implements Comparable<Version> {
 
     /**
      * Returns whether or not the currently running server version is compatible with this version
-     * <p>
+     * <p/>
      * Makes a comparison to see if the version currently running on the server is more recent (compatible) or
      * identical
      * to than this version. For example, if this version is 1.7.9, a server
@@ -127,7 +140,7 @@ public class Version implements Comparable<Version> {
 
     /**
      * Returns whether or not this version supports the currently running server version
-     * <p>
+     * <p/>
      * Makes a comparison to see if the version currently running on the server is earlier (supported) or identical
      * to than this version. For example, if this version is 1.7.9, a server
      * running 1.7.8 or 1.7.6 will be considered supported, whereas a server running 1.7.10 will not
@@ -140,7 +153,7 @@ public class Version implements Comparable<Version> {
 
     /**
      * Returns whether or not this version is identical to the given version
-     * <p>
+     * <p/>
      * For example: 1.7.10 matches 1.7.10, but not 1.7.9 or 1.7.8
      *
      * @param version server version to make a comparison against e.g. 1.7.10-R0.1
@@ -152,7 +165,7 @@ public class Version implements Comparable<Version> {
 
     /**
      * Returns whether or not the given version is compatible with this version
-     * <p>
+     * <p/>
      * Makes a comparison to see if the given version is more recent (compatible) or identical
      * to than this version. For example, if this version is 1.7.9, a version of 1.7.10 or 1.7.9 will be considered
      * compatible, whereas 1.7.8 will not
@@ -166,7 +179,7 @@ public class Version implements Comparable<Version> {
 
     /**
      * Returns whether or not this version supports the given version
-     * <p>
+     * <p/>
      * Makes a comparison to see if the version given is earlier (supported) or identical
      * to than this version. For example, if this version is 1.7.9, a version of 1.7.8 or 1.7.6 will be considered
      * supported, whereas 1.7.10 will not
@@ -180,7 +193,7 @@ public class Version implements Comparable<Version> {
 
     /**
      * Returns whether or not this version is identical to the given version
-     * <p>
+     * <p/>
      * For example: 1.7.10 matches 1.7.10, but not 1.7.9 or 1.7.8
      *
      * @param version server version to make a comparison against e.g. 1.7.10-R0.1
@@ -192,7 +205,7 @@ public class Version implements Comparable<Version> {
 
     /**
      * Returns whether or not the given version is compatible with this version
-     * <p>
+     * <p/>
      * Makes a comparison to see if the given version is more recent (compatible) or identical
      * to than this version. For example, if this version is 1.7.9, a version of 1.7.10 or 1.7.9 will be considered
      * compatible, whereas 1.7.8 will not
@@ -206,7 +219,7 @@ public class Version implements Comparable<Version> {
 
     /**
      * Returns whether or not this version supports the given version
-     * <p>
+     * <p/>
      * Makes a comparison to see if the version given is earlier (supported) or identical
      * to than this version. For example, if this version is 1.7.9, a version of 1.7.8 or 1.7.6 will be considered
      * supported, whereas 1.7.10 will not
@@ -220,7 +233,7 @@ public class Version implements Comparable<Version> {
 
     /**
      * Returns whether or not this version is identical to the given version
-     * <p>
+     * <p/>
      * For example: 1.7.10 matches 1.7.10, but not 1.7.9 or 1.7.8
      *
      * @param version server version to make a comparison against e.g. 1.7.10-R0.1
@@ -232,7 +245,7 @@ public class Version implements Comparable<Version> {
 
     /**
      * Returns whether or not the given version is compatible with this version
-     * <p>
+     * <p/>
      * Makes a comparison to see if the given version is more recent (compatible) or identical
      * to than this version. For example, if this version is 1.7.9, a version of 1.7.10 or 1.7.9 will be considered
      * compatible, whereas 1.7.8 will not
@@ -246,7 +259,7 @@ public class Version implements Comparable<Version> {
 
     /**
      * Returns whether or not this version supports the given version
-     * <p>
+     * <p/>
      * Makes a comparison to see if the version given is earlier (supported) or identical
      * to than this version. For example, if this version is 1.7.9, a version of 1.7.8 or 1.7.6 will be considered
      * supported, whereas 1.7.10 will not
