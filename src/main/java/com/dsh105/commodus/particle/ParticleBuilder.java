@@ -22,14 +22,20 @@ import com.captainbern.minecraft.reflection.MinecraftMethods;
 import com.captainbern.minecraft.wrapper.WrappedPacket;
 import com.dsh105.commodus.GeneralUtil;
 import com.dsh105.commodus.GeometryUtil;
+import com.dsh105.commodus.ServerUtil;
+import com.dsh105.commodus.Version;
+import com.dsh105.commodus.reflection.Reflection;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.lang.reflect.Method;
+
 public class ParticleBuilder implements Cloneable {
 
-    private String name;
+    private Particle type;
     private float x;
     private float y;
     private float z;
@@ -38,9 +44,26 @@ public class ParticleBuilder implements Cloneable {
     private float offsetZ;
     private float speed;
     private int amount;
+    private boolean force; // force display
+    private int[] data = new int[0];
 
+    @Deprecated
     public ParticleBuilder(String name, float x, float y, float z, float offsetX, float offsetY, float offsetZ, float speed, int amount) {
-        this.name = name;
+        this(Particle.fromName(name), x, y, z, offsetX, offsetY, offsetZ, speed, amount);
+    }
+
+    @Deprecated
+    public ParticleBuilder(String name, float x, float y, float z, float speed, int amount) {
+        this(Particle.fromName(name), x, y, z, speed, amount);
+    }
+
+    @Deprecated
+    public ParticleBuilder(String name, float speed, int amount) {
+        this(Particle.fromName(name), speed, amount);
+    }
+
+    public ParticleBuilder(Particle type, float x, float y, float z, float offsetX, float offsetY, float offsetZ, float speed, int amount) {
+        this.type = type;
         this.x = x;
         this.y = y;
         this.z = z;
@@ -51,12 +74,12 @@ public class ParticleBuilder implements Cloneable {
         this.amount = amount;
     }
 
-    public ParticleBuilder(String name, float x, float y, float z, float speed, int amount) {
-        this(name, x, y, z, GeneralUtil.random().nextFloat(), GeneralUtil.random().nextFloat(), GeneralUtil.random().nextFloat(), speed, amount);
+    public ParticleBuilder(Particle type, float x, float y, float z, float speed, int amount) {
+        this(type, x, y, z, GeneralUtil.random().nextFloat(), GeneralUtil.random().nextFloat(), GeneralUtil.random().nextFloat(), speed, amount);
     }
 
-    public ParticleBuilder(String name, float speed, int amount) {
-        this(name, 0, 0, 0, GeneralUtil.random().nextFloat(), GeneralUtil.random().nextFloat(), GeneralUtil.random().nextFloat(), speed, amount);
+    public ParticleBuilder(Particle type, float speed, int amount) {
+        this(type, 0, 0, 0, GeneralUtil.random().nextFloat(), GeneralUtil.random().nextFloat(), GeneralUtil.random().nextFloat(), speed, amount);
     }
 
     public static ParticleBuilder build(Particle particle) {
@@ -65,7 +88,7 @@ public class ParticleBuilder implements Cloneable {
 
     public void show(Player player) {
         WrappedPacket packet = new WrappedPacket(PacketType.Play.Server.WORLD_PARTICLES);
-        packet.getStrings().write(0, name);
+        packet.getAccessor().write(0, getNMSParticleType());
         packet.getFloats().write(0, x);
         packet.getFloats().write(1, y);
         packet.getFloats().write(2, z);
@@ -74,7 +97,23 @@ public class ParticleBuilder implements Cloneable {
         packet.getFloats().write(5, offsetZ);
         packet.getFloats().write(6, speed);
         packet.getIntegers().write(0, amount);
+        if (new Version("1.8").isCompatible()) {
+            packet.getIntegerArrays().write(0, data);
+            packet.getBooleans().write(0, this.force); // TODO
+        }
         MinecraftMethods.sendPacket(player, packet.getHandle());
+    }
+
+    private Object getNMSParticleType() {
+        if (new Version("1.8").isCompatible()) {
+            Class<?> enumParticle = Reflection.getNMSClass("EnumParticle");
+            return enumParticle.getEnumConstants()[type.getId()];
+        }
+        String name = type.getName();
+        for (int i : data) {
+            name += "_" + i;
+        }
+        return name;
     }
 
     public void show(Location origin) {
@@ -83,67 +122,61 @@ public class ParticleBuilder implements Cloneable {
         }
     }
 
-    public ParticleBuilder setName(String name) {
-        this.name = name;
+    public ParticleBuilder ofType(Particle type) {
+        this.type = type;
         return this;
     }
 
-    public ParticleBuilder withLocation(Vector vector) {
-        this.x = (float) vector.getX();
-        this.y = (float) vector.getY();
-        this.z = (float) vector.getZ();
+    public ParticleBuilder at(Vector vector) {
+        this.at((float) vector.getX(), (float) vector.getY(), (float) vector.getZ());
         return this;
     }
 
-    public ParticleBuilder withX(float x) {
+    public ParticleBuilder at(float x, float y, float z) {
         this.x = x;
-        return this;
-    }
-
-    public ParticleBuilder withY(float y) {
         this.y = y;
-        return this;
-    }
-
-    public ParticleBuilder withZ(float z) {
         this.z = z;
         return this;
     }
 
-    public ParticleBuilder withOffset(Vector vector) {
-        this.offsetX = (float) vector.getX();
-        this.offsetY = (float) vector.getY();
-        this.offsetZ = (float) vector.getZ();
+    public ParticleBuilder offset(Vector vector) {
+        this.offset((float) vector.getX(), (float) vector.getY(), (float) vector.getZ());
         return this;
     }
 
-    public ParticleBuilder withOffsetX(float offsetX) {
-        this.offsetX = offsetX;
+    public ParticleBuilder offset(float x, float y, float z) {
+        this.offsetX = x;
+        this.offsetY = y;
+        this.offsetZ = z;
         return this;
     }
 
-    public ParticleBuilder withOffsetY(float offsetY) {
-        this.offsetY = offsetY;
-        return this;
-    }
-
-    public ParticleBuilder withOffsetZ(float offsetZ) {
-        this.offsetZ = offsetZ;
-        return this;
-    }
-
-    public ParticleBuilder withSpeed(float speed) {
+    public ParticleBuilder atSpeed(float speed) {
         this.speed = speed;
         return this;
     }
 
-    public ParticleBuilder withAmount(int amount) {
+    public ParticleBuilder ofAmount(int amount) {
         this.amount = amount;
         return this;
     }
 
-    public String getName() {
-        return name;
+    public ParticleBuilder withData(int... data) {
+        this.data = data != null ? data : new int[0];
+        return this;
+    }
+
+    public ParticleBuilder ofBlockType(Material material) {
+        return this.ofBlockType(material, 0);
+    }
+
+    public ParticleBuilder ofBlockType(Material material, int metadata) {
+        this.data = new int[]{material.getId(), metadata};
+        return this;
+    }
+
+    public Particle getType() {
+        return type;
     }
 
     public Location getLocation(World world) {
