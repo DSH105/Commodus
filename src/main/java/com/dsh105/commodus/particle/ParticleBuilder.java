@@ -97,7 +97,7 @@ public class ParticleBuilder implements Cloneable {
         packet.getFloats().write(5, offsetZ);
         packet.getFloats().write(6, speed);
         packet.getIntegers().write(0, amount);
-        if (new Version("1.8").isCompatible()) {
+        if (new Version().isCompatible("1.8")) {
             packet.getIntegerArrays().write(0, data);
             packet.getBooleans().write(0, this.force); // TODO
         }
@@ -105,7 +105,7 @@ public class ParticleBuilder implements Cloneable {
     }
 
     private Object getNMSParticleType() {
-        if (new Version("1.8").isCompatible()) {
+        if (new Version().isCompatible("1.8")) {
             Class<?> enumParticle = Reflection.getNMSClass("EnumParticle");
             return enumParticle.getEnumConstants()[type.getId()];
         }
