@@ -17,6 +17,7 @@
 
 package com.dsh105.commodus;
 
+import com.captainbern.minecraft.reflection.MinecraftMethods;
 import com.captainbern.minecraft.reflection.MinecraftReflection;
 import com.dsh105.commodus.reflection.Reflection;
 import org.bukkit.Bukkit;
@@ -201,6 +202,13 @@ public class ServerUtil {
      * @param packet packet to send
      */
     public static void sendPacket(Object packet, Player player) {
+        try {
+            MinecraftMethods.sendPacket(player, packet);
+            return;
+        } catch (Exception e) {
+            // do nothing, continue with the backup plan
+        }
+
         Class<?> packetClass = Reflection.getNMSClass("Packet");
         if (!packetClass.isAssignableFrom(packet.getClass())) {
             throw new IllegalArgumentException("Object to send must be a subclass of " + packetClass.getCanonicalName());
