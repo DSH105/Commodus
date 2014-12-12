@@ -22,6 +22,7 @@ import com.dsh105.commodus.reflection.Reflection;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -36,18 +37,16 @@ import java.util.regex.Pattern;
  */
 public class ServerUtil {
 
+    @Deprecated
+    private static String MC_PACKAGE_NAME;
+    private static Version SERVER_VERSION;
+    private static Version BUKKIT_VERSION;
     private ServerUtil() {
     }
 
-    @Deprecated
-    private static String MC_PACKAGE_NAME;
-
-    private static Version SERVER_VERSION;
-    private static Version BUKKIT_VERSION;
-
     /**
      * Gets whether the server running is a Cauldron (MCPC+) server
-     * <p>
+     * <p/>
      * Cauldrons and Bukkits hold different things; Bukkits usually hold cats
      *
      * @return true if this server is a Cauldron instead of a Bukkit
@@ -167,11 +166,11 @@ public class ServerUtil {
 
     /**
      * Gets a list of players currently online
-     * <p>
+     * <p/>
      * This implementation includes a workaround for {@link org.bukkit.Bukkit#getOnlinePlayers()} returning an array in
      * older releases of CraftBukkit, instead of a Collection in more recent releases. Essentially, this adds backwards
      * compatibility with older versions of CraftBukkit without having to adjust much in your plugin.
-     * <p>
+     * <p/>
      * It's ugly, but it works and provides backwards compatibility
      *
      * @return a list of all online players
@@ -193,5 +192,49 @@ public class ServerUtil {
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
         }
         return onlinePlayers;
+    }
+
+    /**
+     * Sends the given packet to a certain player
+     *
+     * @param player player to send the packet to
+     * @param packet packet to send
+     */
+    public static void sendPacket(Object packet, Player player) {
+        Class<?> packetClass = Reflection.getNMSClass("Packet");
+        if (!packetClass.isAssignableFrom(packet.getClass())) {
+            throw new IllegalArgumentException("Object to send must be a subclass of " + packetClass.getCanonicalName());
+        }
+
+        Method getHandle = Reflection.getMethod(player.getClass(), "getHandle");
+        Field connection = Reflection.getField(Reflection.getNMSClass("EntityPlayer"), "playerConnection");
+        Method sendPacket = Reflection.getMethod(connection.getType(), "sendPacket", packetClass);
+        Object playerHandle = Reflection.invoke(getHandle, player);
+        Object playerConnection = Reflection.getFieldValue(connection, playerHandle);
+        Reflection.invoke(sendPacket, playerConnection, packet);
+    }
+
+    /**
+     * Sends the given packet to certain set of players
+     *
+     * @param players players to send the packet to
+     * @param packet  packet to send
+     */
+    public static void sendPacket(Object packet, Collection<Player> players) {
+        for (Player player : players) {
+            sendPacket(packet, player);
+        }
+    }
+
+    /**
+     * Sends the given packet to certain set of players
+     *
+     * @param players players to send the packet to
+     * @param packet  packet to send
+     */
+    public static void sendPacket(Object packet, Player... players) {
+        if (players != null) {
+            sendPacket(packet, Arrays.asList(players));
+        }
     }
 }
