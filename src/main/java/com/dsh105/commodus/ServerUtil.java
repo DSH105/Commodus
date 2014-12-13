@@ -205,7 +205,7 @@ public class ServerUtil {
         try {
             MinecraftMethods.sendPacket(player, packet);
             return;
-        } catch (Exception e) {
+        } catch (NoClassDefFoundError e) {
             // do nothing, continue with the backup plan
         }
 
