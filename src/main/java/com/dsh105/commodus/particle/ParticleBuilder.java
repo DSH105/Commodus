@@ -149,10 +149,6 @@ public class ParticleBuilder implements Cloneable {
         return type;
     }
 
-    public Location getLocation(World world) {
-        return new Location(world, x, y, z);
-    }
-
     public Location getPosition() {
         return position;
     }
