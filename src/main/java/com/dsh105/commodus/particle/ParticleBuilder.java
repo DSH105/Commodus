@@ -31,55 +31,29 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class ParticleBuilder implements Cloneable {
 
     private Particle type;
-    private float x;
-    private float y;
-    private float z;
-    private float offsetX;
-    private float offsetY;
-    private float offsetZ;
+    private Location position;
+    private Vector offset;
     private float speed;
     private int amount;
     private boolean force; // force display
     private int[] data = new int[0];
 
     @Deprecated
-    public ParticleBuilder(String name, float x, float y, float z, float offsetX, float offsetY, float offsetZ, float speed, int amount) {
-        this(Particle.fromName(name), x, y, z, offsetX, offsetY, offsetZ, speed, amount);
-    }
-
-    @Deprecated
-    public ParticleBuilder(String name, float x, float y, float z, float speed, int amount) {
-        this(Particle.fromName(name), x, y, z, speed, amount);
-    }
-
-    @Deprecated
     public ParticleBuilder(String name, float speed, int amount) {
         this(Particle.fromName(name), speed, amount);
     }
 
-    public ParticleBuilder(Particle type, float x, float y, float z, float offsetX, float offsetY, float offsetZ, float speed, int amount) {
-        this.type = type;
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.offsetX = offsetX;
-        this.offsetY = offsetY;
-        this.offsetZ = offsetZ;
-        this.speed = speed;
-        this.amount = amount;
-    }
-
-    public ParticleBuilder(Particle type, float x, float y, float z, float speed, int amount) {
-        this(type, x, y, z, GeneralUtil.random().nextFloat(), GeneralUtil.random().nextFloat(), GeneralUtil.random().nextFloat(), speed, amount);
-    }
-
     public ParticleBuilder(Particle type, float speed, int amount) {
-        this(type, 0, 0, 0, GeneralUtil.random().nextFloat(), GeneralUtil.random().nextFloat(), GeneralUtil.random().nextFloat(), speed, amount);
+        this.ofType(type)
+                .offset(GeneralUtil.random().nextFloat(), GeneralUtil.random().nextFloat(), GeneralUtil.random().nextFloat())
+                .atSpeed(speed)
+                .ofAmount(amount);
     }
 
     public static ParticleBuilder build(Particle particle) {
@@ -89,12 +63,12 @@ public class ParticleBuilder implements Cloneable {
     public void show(Player player) {
         WrappedPacket packet = new WrappedPacket(PacketType.Play.Server.WORLD_PARTICLES);
         packet.getAccessor().write(0, getNMSParticleType());
-        packet.getFloats().write(0, x);
-        packet.getFloats().write(1, y);
-        packet.getFloats().write(2, z);
-        packet.getFloats().write(3, offsetX);
-        packet.getFloats().write(4, offsetY);
-        packet.getFloats().write(5, offsetZ);
+        packet.getFloats().write(0, (float) position.getX());
+        packet.getFloats().write(1, (float) position.getY());
+        packet.getFloats().write(2, (float) position.getZ());
+        packet.getFloats().write(3, (float) offset.getX());
+        packet.getFloats().write(4, (float) offset.getY());
+        packet.getFloats().write(5, (float) offset.getZ());
         packet.getFloats().write(6, speed);
         packet.getIntegers().write(0, amount);
         if (new Version().isCompatible("1.8")) {
@@ -116,8 +90,8 @@ public class ParticleBuilder implements Cloneable {
         return name;
     }
 
-    public void show(Location origin) {
-        for (Player player : GeometryUtil.getNearbyPlayers(origin, 50)) {
+    public void show() {
+        for (Player player : GeometryUtil.getNearbyPlayers(position, 50)) {
             show(player);
         }
     }
@@ -127,27 +101,23 @@ public class ParticleBuilder implements Cloneable {
         return this;
     }
 
-    public ParticleBuilder at(Vector vector) {
-        this.at((float) vector.getX(), (float) vector.getY(), (float) vector.getZ());
+    public ParticleBuilder at(Location position) {
+        this.position = position.clone();
         return this;
     }
 
-    public ParticleBuilder at(float x, float y, float z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public ParticleBuilder at(World world, float x, float y, float z) {
+        this.position = new Location(world, x, y, z);
         return this;
     }
 
-    public ParticleBuilder offset(Vector vector) {
-        this.offset((float) vector.getX(), (float) vector.getY(), (float) vector.getZ());
+    public ParticleBuilder offset(Vector offset) {
+        this.offset = offset.clone();
         return this;
     }
 
     public ParticleBuilder offset(float x, float y, float z) {
-        this.offsetX = x;
-        this.offsetY = y;
-        this.offsetZ = z;
+        this.offset(new Vector(x, y, z));
         return this;
     }
 
@@ -183,28 +153,12 @@ public class ParticleBuilder implements Cloneable {
         return new Location(world, x, y, z);
     }
 
-    public float getX() {
-        return x;
+    public Location getPosition() {
+        return position;
     }
 
-    public float getY() {
-        return y;
-    }
-
-    public float getZ() {
-        return z;
-    }
-
-    public float getOffsetX() {
-        return offsetX;
-    }
-
-    public float getOffsetY() {
-        return offsetY;
-    }
-
-    public float getOffsetZ() {
-        return offsetZ;
+    public Vector getOffset() {
+        return offset;
     }
 
     public float getSpeed() {

@@ -217,6 +217,7 @@ public class ServerUtil {
         Method getHandle = Reflection.getMethod(player.getClass(), "getHandle");
         Field connection = Reflection.getField(Reflection.getNMSClass("EntityPlayer"), "playerConnection");
         Method sendPacket = Reflection.getMethod(connection.getType(), "sendPacket", packetClass);
+
         Object playerHandle = Reflection.invoke(getHandle, player);
         Object playerConnection = Reflection.getFieldValue(connection, playerHandle);
         Reflection.invoke(sendPacket, playerConnection, packet);
