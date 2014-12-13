@@ -101,7 +101,7 @@ public class ParticleBuilder implements Cloneable {
             packet.getIntegerArrays().write(0, data);
             packet.getBooleans().write(0, this.force); // TODO
         }
-        MinecraftMethods.sendPacket(player, packet.getHandle());
+        ServerUtil.sendPacket(packet.getHandle(), player);
     }
 
     private Object getNMSParticleType() {
