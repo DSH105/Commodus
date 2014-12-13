@@ -61,12 +61,18 @@ public class Affirm {
         }
     }
 
-    public static void checkInstanceOf(Class<?> type, Object instance) {
+    public static void checkInstanceOf(Class<?> type, Object instance, boolean allowNull) {
         Affirm.notNull(type);
-        Affirm.notNull(instance);
+        if (!allowNull) {
+            Affirm.notNull(instance);
+        }
         if (!type.isAssignableFrom(instance.getClass())) {
             throwException(new IllegalStateException(instance.getClass().getCanonicalName() + " must be a subclass of " + type.getCanonicalName()));
         }
+    }
+
+    public static void checkInstanceOf(Class<?> type, Object instance) {
+        checkInstanceOf(type, instance, false);
     }
 
     private static void throwException(RuntimeException defThrowable) {
