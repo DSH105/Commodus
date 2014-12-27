@@ -17,26 +17,26 @@
 
 package com.dsh105.commodus;
 
-import org.apache.commons.lang.NullArgumentException;
-
-import java.util.concurrent.Callable;
+import java.util.Collection;
 
 /**
  * Basic independent utilities for affirming certain cases
  */
 public class Affirm {
 
-    private static volatile AffirmationCallable<?> errorCallable;
+    // TODO: docs?
+
+    private static volatile AffirmationCallable errorCallable;
 
     private Affirm() {
 
     }
 
-    public static AffirmationCallable<?> getErrorCallable() {
+    public static AffirmationCallable getErrorCallable() {
         return errorCallable;
     }
 
-    public static void setErrorCallable(AffirmationCallable<?> errorCallable) {
+    public static void setErrorCallable(AffirmationCallable errorCallable) {
         Affirm.errorCallable = errorCallable;
     }
 
@@ -46,9 +46,31 @@ public class Affirm {
 
     public static <T> T notNull(T object, String message) {
         if (object == null) {
-            throwException(new NullArgumentException(message));
+            throwException(new NullPointerException(message));
         }
         return object;
+    }
+
+    public static <T> T[] notEmpty(T[] array) {
+        return notEmpty(array, null);
+    }
+
+    public static <T> T[] notEmpty(T[] array, String message) {
+        if (array == null || array.length == 0) {
+            throwException(new IllegalArgumentException(message));
+        }
+        return array;
+    }
+
+    public static <T> Collection<T> notEmpty(Collection<T> collection) {
+        return notEmpty(collection, null);
+    }
+
+    public static <T> Collection<T> notEmpty(Collection<T> collection, String message) {
+        if (collection == null || collection.size() == 0) {
+            throwException(new IllegalArgumentException(message));
+        }
+        return collection;
     }
 
     public static void isTrue(boolean expression) {

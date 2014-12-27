@@ -19,6 +19,8 @@ package com.dsh105.commodus.particle;
 
 public enum Particle {
 
+    // TODO: docs + separate into Bukkit/Sponge components
+
     DEATH_CLOUD(0, "explode", 0.1F, 10),
     EXPLOSION(1, "largeexplode", 0.1F, 1),
     HUGE_EXPLOSION(2, "hugeexplosion", 0.1F, 1),

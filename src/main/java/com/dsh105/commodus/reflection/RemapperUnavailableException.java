@@ -15,40 +15,30 @@
  * along with Commodus.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.dsh105.commodus.logging;
+package com.dsh105.commodus.reflection;
 
-/**
- * Represents the logging level of a certain record
- */
-public enum Level {
+public class RemapperUnavailableException extends RuntimeException {
 
-    /**
-     * Basic information logging
-     */
-    INFO("[INFO] "),
-
-    /**
-     * Warning messages - coloured red
-     */
-    WARNING("[WARNING] "),
-
-    /**
-     * Severe messages - coloured red
-     */
-    SEVERE("[SEVERE] ");
-
-    private String prefix;
-
-    Level(String prefix) {
-        this.prefix = prefix;
+    public RemapperUnavailableException(Reason reason) {
+        super(reason.getMessage());
     }
 
-    /**
-     * Gets the logging prefix for this level
-     *
-     * @return Logging prefix
-     */
-    public String getPrefix() {
-        return prefix;
+    public RemapperUnavailableException(String s, Throwable throwable) {
+        super(s, throwable);
+    }
+
+    public enum Reason {
+        CAULDRON_NOT_PRESET("Cauldron/MCPC+ is not present!"),
+        REMAPPER_DISABLED("Cauldron/MCPC+ detected, but the remapper is disabled!");
+
+        private String message;
+
+        Reason(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
     }
 }

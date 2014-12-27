@@ -15,40 +15,28 @@
  * along with Commodus.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.dsh105.commodus.logging;
+package com.dsh105.commodus.container;
 
-/**
- * Represents the logging level of a certain record
- */
-public enum Level {
+import com.flowpowered.math.vector.Vector2f;
+import org.spongepowered.api.world.Location;
 
-    /**
-     * Basic information logging
-     */
-    INFO("[INFO] "),
+public class SpongePosition {
 
-    /**
-     * Warning messages - coloured red
-     */
-    WARNING("[WARNING] "),
+    // TODO: docs
 
-    /**
-     * Severe messages - coloured red
-     */
-    SEVERE("[SEVERE] ");
+    private Location location;
+    private Vector2f rotation;
 
-    private String prefix;
-
-    Level(String prefix) {
-        this.prefix = prefix;
+    public SpongePosition(Location location, Vector2f rotation) {
+        this.location = location;
+        this.rotation = rotation;
     }
 
-    /**
-     * Gets the logging prefix for this level
-     *
-     * @return Logging prefix
-     */
-    public String getPrefix() {
-        return prefix;
+    public Location getLocation() {
+        return location;
+    }
+
+    public Vector2f getRotation() {
+        return rotation;
     }
 }

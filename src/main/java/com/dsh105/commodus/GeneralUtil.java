@@ -17,11 +17,12 @@
 
 package com.dsh105.commodus;
 
+import com.dsh105.commodus.container.PositionContainer;
+import com.dsh105.commodus.sponge.SpongeUtil;
 import com.google.common.collect.BiMap;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -29,15 +30,15 @@ import java.util.*;
  */
 public class GeneralUtil {
 
+    private static Random RANDOM;
+
     private GeneralUtil() {
     }
-
-    private static Random RANDOM;
 
     /**
      * Returns a random :D
      *
-     * @return a random something
+     * @return A random something
      */
     public static Random random() {
         if (RANDOM == null) {
@@ -48,12 +49,12 @@ public class GeneralUtil {
 
     /**
      * Tests whether or not the given String is an value in a particular Enum
-     * <p>
+     * <p/>
      * {@code nameValue} is converted to upper case before being tested
      *
      * @param clazz     Enum to test
      * @param nameValue String value to test
-     * @return true if the given String belongs to the Enum provided
+     * @return True if the given String belongs to the Enum provided
      */
     public static boolean isEnumType(Class<? extends Enum> clazz, String nameValue) {
         return toEnumType(clazz, nameValue) != null;
@@ -61,13 +62,13 @@ public class GeneralUtil {
 
     /**
      * Converts the given String to an Enum constant
-     * <p>
+     * <p/>
      * {@code nameValue} is converted to upper case before being converted
      *
      * @param clazz     Enum to convert to
      * @param nameValue String value to convert
-     *                  @param <T> enum type
-     * @return an Enum constant belonging to the provided Enum class, or null if the given String does not belong to the
+     * @param <T>       Enum type
+     * @return An Enum constant belonging to the provided Enum class, or null if the given String does not belong to the
      * enum provided
      */
     public static <T extends Enum<T>> T toEnumType(Class<T> clazz, String nameValue) {
@@ -81,8 +82,8 @@ public class GeneralUtil {
     /**
      * Tests if the given String is an Integer
      *
-     * @param toTest the String to be checked
-     * @return true if Integer
+     * @param toTest The String to be checked
+     * @return True if Integer
      */
     public static boolean isInt(String toTest) {
         try {
@@ -96,8 +97,8 @@ public class GeneralUtil {
     /**
      * Tests if the given String is an Double
      *
-     * @param toTest the String to be checked
-     * @return true if Double
+     * @param toTest The String to be checked
+     * @return True if Double
      */
     public static boolean isDouble(String toTest) {
         try {
@@ -109,53 +110,15 @@ public class GeneralUtil {
     }
 
     /**
-     * Parses a location from a set of String arguments
-     * <p>
-     * Arguments must be in the following order:
-     * <ul>
-     * <li>World name
-     * <li>X coordinate
-     * <li>Y coordinate
-     * <li>Z coordinate
-     * <li><b>Optional: </b>Yaw
-     * <li><b>Optional: </b>Pitch
-     * </ul>
-     *
-     * @param startIndex index to start parsing location from
-     * @param args       String arguments to parse location from
-     * @return a Location built from the given args, or null if it could not be parsed
-     * @throws java.lang.IllegalArgumentException if the world at {@code args[startIndex]} does not exist
-     */
-    public static Location readLocation(int startIndex, String... args) {
-        World world = Bukkit.getWorld(args[startIndex]);
-        if (world == null) {
-            throw new IllegalArgumentException("World does not exist!");
-        }
-        double[] coords = new double[5];
-        for (int i = startIndex + 1, index = 0; i < startIndex + 6; i++, index++) {
-            try {
-                coords[index] = toDouble(args[i]);
-            } catch (NumberFormatException | ArrayIndexOutOfBoundsException ignored) {
-                if (i <= startIndex + 3) {
-                    // coords MUST exist
-                    return null;
-                }
-            }
-        }
-
-        return new Location(world, coords[0], coords[1], coords[2], (float) coords[3], (float) coords[4]);
-    }
-
-    /**
      * Gets the key at the specified value in a key-value map
-     * <p>
+     * <p/>
      * <strong>This does NOT take into account the existence of multiple keys with the same value</strong>
      *
-     * @param map   key-value map to search in
-     * @param value value to retrieve the key for
-     * @param <K>   the type of keys maintained by the given map
-     * @param <V>   the type of mapped values
-     * @return key mapping the given key, or null if not found
+     * @param map   Key-value map to search in
+     * @param value Value to retrieve the key for
+     * @param <K>   The type of keys maintained by the given map
+     * @param <V>   The type of mapped values
+     * @return Key mapping the given key, or null if not found
      */
     public static <K, V> K getKeyAtValue(Map<K, V> map, V value) {
         if (map instanceof BiMap) {
@@ -171,13 +134,13 @@ public class GeneralUtil {
 
     /**
      * Inverts the given map from key-value mappings to value-key mappings
-     * <p>
+     * <p/>
      * Note: this may have unintended results if a certain value is included in the map more than once
      *
-     * @param map map to invert
-     * @param <V> the type of keys maintained by the given map
-     * @param <K> the type of mapped values
-     * @return inverted map
+     * @param map Map to invert
+     * @param <V> The type of keys maintained by the given map
+     * @param <K> The type of mapped values
+     * @return Inverted map
      */
     public static <V, K> Map<V, K> invertMap(Map<K, V> map) {
         Map<V, K> inverted = new HashMap<V, K>();
@@ -190,8 +153,8 @@ public class GeneralUtil {
     /**
      * Attempts to convert a string into an integer value using Regex
      *
-     * @param string the String to be checked
-     *               @return the converted integer
+     * @param string The String to be checked
+     * @return The converted integer
      * @throws java.lang.NumberFormatException if the conversion failed
      */
     public static int toInteger(String string) throws NumberFormatException {
@@ -205,8 +168,8 @@ public class GeneralUtil {
     /**
      * Attempts to convert a string into an double value using Regex
      *
-     * @param string the String to be checked
-     * @return the converted double
+     * @param string The String to be checked
+     * @return The converted double
      * @throws java.lang.NumberFormatException if the conversion failed
      */
     public static double toDouble(String string) {
@@ -220,8 +183,8 @@ public class GeneralUtil {
     /**
      * Transforms an integer into a set of digits
      *
-     * @param number integer to transform
-     * @return a set of digits representing the original number
+     * @param number Integer to transform
+     * @return A set of digits representing the original number
      */
     public static int[] toDigits(int number) {
         ArrayList<Integer> digitsList = new ArrayList<>();
@@ -243,9 +206,9 @@ public class GeneralUtil {
     /**
      * Merges a set of arrays into a single list, maintaining original order
      *
-     * @param arrays set of arrays to combine into a list
-     * @param <T>    type of object included in the set of arrays
-     * @return a combined list including all original objects in the given arrays
+     * @param arrays Set of arrays to combine into a list
+     * @param <T>    Type of object included in the set of arrays
+     * @return A combined list including all original objects in the given arrays
      */
     public static <T> List<T> merge(T[]... arrays) {
         ArrayList<T> merged = new ArrayList<>();
@@ -253,5 +216,108 @@ public class GeneralUtil {
             Collections.addAll(merged, array);
         }
         return merged;
+    }
+
+    /**
+     * Transforms a given array to a new array of given type using the supplied Transformer
+     *
+     * @param to          Type to convert the array to
+     * @param array       Array to convert to the given type, {@code to}
+     * @param transformer Transformer utilised to convert each object of the given array to the new type
+     * @param <O>         The object type to be transformed
+     * @param <V>         The type of the resultant array
+     * @return A new array of the type supplied by {@code to}
+     */
+    public static <O, V> V[] transform(Class<V> to, O[] array, Transformer<O, V> transformer) {
+        Affirm.notEmpty(array);
+        V[] result = (V[]) Array.newInstance(to, array.length);
+        for (int i = 0; i < array.length; i++) {
+            result[i] = transformer.transform(array[i]);
+        }
+        return result;
+    }
+
+    /**
+     * Transforms a given list to a new list of given type using the supplied Transformer.
+     * <p/>
+     * List order is maintained.
+     *
+     * @param list        List to convert to the given type, {@code to}
+     * @param transformer Transformer utilised to convert each object of the given array to the new type
+     * @param <O>         The object type to be transformed
+     * @param <V>         The type of the resultant list
+     * @return A new list of the type supplied by {@code to}
+     */
+    public static <O, V> List<V> transform(List<O> list, Transformer<O, V> transformer) {
+        return transform(true, list, transformer);
+    }
+
+    /**
+     * Transforms a given list to a new list of given type using the supplied Transformer.
+     * <p/>
+     * List order is maintained.
+     *
+     * @param includeNull If set to true, null objects will be included in the resultant list
+     * @param list        List to convert to the given type, {@code to}
+     * @param transformer Transformer utilised to convert each object of the given array to the new type
+     * @param <O>         The object type to be transformed
+     * @param <V>         The type of the resultant list
+     * @return A new list of the type supplied by {@code to}
+     */
+    public static <O, V> List<V> transform(boolean includeNull, List<O> list, Transformer<O, V> transformer) {
+        Affirm.notEmpty(list);
+        List<V> result = new ArrayList<>();
+        for (O element : list) {
+            if (includeNull || element != null) {
+                result.add(transformer.transform(element));
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Parses a location from a set of String arguments
+     * <p/>
+     * Arguments must be in the following order:
+     * <ul>
+     *     <li>World name</li>
+     *     <li>X coordinate</li>
+     *     <li>Y coordinate</li>
+     *     <li>Z coordinate</li
+     *     <li><b>Optional: </b>Yaw</li>
+     *     <li><b>Optional: </b>Pitch</li>
+     * </ul>
+     *
+     * @param startIndex Index to start parsing location from
+     * @param args       String arguments to parse location from
+     * @return A Location built from the given args, or null if it could not be parsed
+     * @throws java.lang.IllegalStateException if the world at {@code args[startIndex]} does not exist
+     */
+    public static PositionContainer readLocation(int startIndex, String... args) {
+        UUID worldUid = null;
+        switch (ServerUtil.getServerBrand()) {
+            case BUKKIT:
+            case SPIGOT:
+            case CAULDRON:
+                worldUid = Bukkit.getWorld(args[startIndex]).getUID();
+            case SPONGE:
+                worldUid = SpongeUtil.getGame().getServer().get().getWorld(args[startIndex]).get().getUniqueID();
+        }
+        if (worldUid == null) {
+            throw new IllegalStateException("World does not exist!");
+        }
+        double[] coords = new double[5];
+        for (int i = startIndex + 1, index = 0; i < startIndex + 6; i++, index++) {
+            try {
+                coords[index] = GeneralUtil.toDouble(args[i]);
+            } catch (NumberFormatException | ArrayIndexOutOfBoundsException ignored) {
+                if (i <= startIndex + 3) {
+                    // coords MUST exist
+                    return null;
+                }
+            }
+        }
+
+        return new PositionContainer(worldUid, coords[0], coords[1], coords[2], (float) coords[3], (float) coords[4]);
     }
 }

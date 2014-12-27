@@ -17,9 +17,11 @@
 
 package com.dsh105.commodus;
 
+import com.dsh105.commodus.reflection.Reflection;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -34,15 +36,9 @@ import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-/**
- * @author evilmidget38
- *         <p>
- *         http://forums.bukkit.org/threads/250926/
- *         <p>
- *         https://gist.github.com/evilmidget38/26d70114b834f71fb3b4
- */
-
 public class UUIDFetcher implements Callable<Map<String, UUID>> {
+
+    // TODO: docs
 
     private static final double PROFILES_PER_REQUEST = 100;
     private static final String PROFILE_URL = "https://api.mojang.com/profiles/minecraft";
@@ -70,6 +66,15 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
 
     public static Cache<String, UUID> getCache() {
         return UUID_CACHE;
+    }
+
+    public static UUID getUUIDOf(final String name) throws Exception {
+        if (getCache() instanceof LoadingCache) {
+            return ((LoadingCache<String, UUID>) getCache()).get(name);
+        } else {
+            // maintain support for servers below 1.8 - messy :|
+            return (UUID) Reflection.invoke(Reflection.getMethod(getCache().getClass(), "get", Object.class), getCache(), name);
+        }
     }
 
     private static void writeBody(HttpURLConnection connection, String body) throws Exception {
@@ -111,10 +116,7 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
         return new UUID(mostSignificant, leastSignificant);
     }
 
-    public static UUID getUUIDOf(String name) throws Exception {
-        return getCache().get(name);
-    }
-
+    @Override
     public Map<String, UUID> call() throws Exception {
         Map<String, UUID> uuidMap = new HashMap<String, UUID>();
         int requests = (int) Math.ceil(names.size() / PROFILES_PER_REQUEST);
@@ -127,7 +129,7 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
                 JSONObject jsonProfile = (JSONObject) profile;
                 String id = (String) jsonProfile.get("id");
                 String name = (String) jsonProfile.get("name");
-                UUID uuid = UUIDFetcher.getUUID(id);
+                UUID uuid = getUUID(id);
                 uuidMap.put(name, uuid);
             }
             if (rateLimiting && i != requests - 1) {

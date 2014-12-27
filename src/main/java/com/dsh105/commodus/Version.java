@@ -17,6 +17,8 @@
 
 package com.dsh105.commodus;
 
+import com.dsh105.commodus.bukkit.BukkitServerUtil;
+
 /**
  * Represents a server version that can be utilised as a comparison
  */
@@ -26,16 +28,9 @@ public class Version implements Comparable<Version> {
     private int[] numericVersion;
 
     /**
-     * Constructs a new Version from the current server version running
-     */
-    public Version() {
-        this(ServerUtil.getBukkitVersion().getVersion());
-    }
-
-    /**
      * Constructs a new Version from the given server version
      *
-     * @param version server version e.g. 1.7.10-R0.1
+     * @param version Server version e.g. 1.7.10-R0.1
      */
     public Version(String version) {
         this.version = version;
@@ -45,9 +40,9 @@ public class Version implements Comparable<Version> {
     /**
      * Constructs a new Version from the given numeric server version
      * <p/>
-     * <strong>Not recommended for public API consumption</strong>
+     * <strong>Not recommended for consumption outside of internal functions.</strong>
      *
-     * @param numericVersion numeric server version e.g. 1.7.10-R0.1 would be 171001
+     * @param numericVersion Numeric server version e.g. 1.7.10-R0.1 would be 171001
      */
     public Version(int numericVersion) {
         this.numericVersion = GeneralUtil.toDigits(numericVersion);
@@ -62,8 +57,8 @@ public class Version implements Comparable<Version> {
     /**
      * Returns an array of integers that represents the given server version
      *
-     * @param serverVersion version to convert to a numeric array
-     * @return a numeric array representing the {@code serverVersion} given
+     * @param serverVersion Version to convert to a numeric array
+     * @return A numeric array representing the {@code serverVersion} given
      */
     public static int[] getNumericVersion(String serverVersion) {
         String[] versionParts = serverVersion.split("[.-]");
@@ -85,7 +80,7 @@ public class Version implements Comparable<Version> {
     /**
      * Gets this version in string format
      *
-     * @return the version represented by this object as a string
+     * @return The version represented by this object as a string
      */
     public String getVersion() {
         return version;
@@ -94,7 +89,7 @@ public class Version implements Comparable<Version> {
     /**
      * Returns an array of integers that represents this server version
      *
-     * @return a numeric array representing this version instance
+     * @return A numeric array representing this version instance
      */
     public int[] getNumericVersion() {
         return numericVersion;
@@ -103,7 +98,7 @@ public class Version implements Comparable<Version> {
     /**
      * Returns {@code getNumericVersion()} as a string value
      *
-     * @return a string representing the numeric form of this version
+     * @return A string representing the numeric form of this version
      */
     public String getNumericVersionString() {
         StringBuilder builder = new StringBuilder();
@@ -114,50 +109,12 @@ public class Version implements Comparable<Version> {
     }
 
     /**
-     * Returns whether or not this version is identical to the currently running server version
-     * <p/>
-     * For example: 1.7.10 matches 1.7.10, but not 1.7.9 or 1.7.8
-     *
-     * @return true if the two versions are identical
-     */
-    public boolean isIdentical() {
-        return isIdentical(ServerUtil.getVersion());
-    }
-
-    /**
-     * Returns whether or not the currently running server version is compatible with this version
-     * <p/>
-     * Makes a comparison to see if the version currently running on the server is more recent (compatible) or
-     * identical
-     * to than this version. For example, if this version is 1.7.9, a server
-     * running 1.7.10 or 1.7.9 will be considered compatible, whereas a server running 1.7.8 will not
-     *
-     * @return true if the currently running server version is compatible with this version
-     */
-    public boolean isCompatible() {
-        return isCompatible(ServerUtil.getVersion());
-    }
-
-    /**
-     * Returns whether or not this version supports the currently running server version
-     * <p/>
-     * Makes a comparison to see if the version currently running on the server is earlier (supported) or identical
-     * to than this version. For example, if this version is 1.7.9, a server
-     * running 1.7.8 or 1.7.6 will be considered supported, whereas a server running 1.7.10 will not
-     *
-     * @return true if the currently running server version is supported according to this version
-     */
-    public boolean isSupported() {
-        return isSupported(ServerUtil.getVersion());
-    }
-
-    /**
      * Returns whether or not this version is identical to the given version
      * <p/>
      * For example: 1.7.10 matches 1.7.10, but not 1.7.9 or 1.7.8
      *
-     * @param version server version to make a comparison against e.g. 1.7.10-R0.1
-     * @return true if the two versions are identical
+     * @param version Server version to make a comparison against e.g. 1.7.10-R0.1
+     * @return True if the two versions are identical
      */
     public boolean isIdentical(String version) {
         return isIdentical(new Version(version));
@@ -166,12 +123,12 @@ public class Version implements Comparable<Version> {
     /**
      * Returns whether or not the given version is compatible with this version
      * <p/>
-     * Makes a comparison to see if the given version is more recent (compatible) or identical
-     * to than this version. For example, if this version is 1.7.9, a version of 1.7.10 or 1.7.9 will be considered
-     * compatible, whereas 1.7.8 will not
+     * Makes a comparison to see if the given version is more recent (compatible) or identical to this version. For
+     * example, if this version is 1.7.9, a version of 1.7.10 or 1.7.9 will be considered compatible, whereas 1.7.8 will
+     * not
      *
-     * @param minimumRequiredVersion server version to make a comparison against e.g. 1.7.10-R0.1
-     * @return true if the {@code minimumRequiredVersion} is compatible with this version
+     * @param minimumRequiredVersion Server version to make a comparison against e.g. 1.7.10-R0.1
+     * @return True if the {@code minimumRequiredVersion} is compatible with this version
      */
     public boolean isCompatible(String minimumRequiredVersion) {
         return isCompatible(new Version(minimumRequiredVersion));
@@ -180,12 +137,11 @@ public class Version implements Comparable<Version> {
     /**
      * Returns whether or not this version supports the given version
      * <p/>
-     * Makes a comparison to see if the version given is earlier (supported) or identical
-     * to than this version. For example, if this version is 1.7.9, a version of 1.7.8 or 1.7.6 will be considered
-     * supported, whereas 1.7.10 will not
+     * Makes a comparison to see if the version given is earlier (supported) or identical to this version. For example,
+     * if this version is 1.7.9, a version of 1.7.8 or 1.7.6 will be considered supported, whereas 1.7.10 will not
      *
-     * @param latestAllowedVersion server version to make a comparison against e.g. 1.7.10-R0.1
-     * @return true if {@code latestAllowedVersion} is supported by this version
+     * @param latestAllowedVersion Server version to make a comparison against e.g. 1.7.10-R0.1
+     * @return True if {@code latestAllowedVersion} is supported by this version
      */
     public boolean isSupported(String latestAllowedVersion) {
         return isSupported(new Version(latestAllowedVersion));
@@ -196,8 +152,8 @@ public class Version implements Comparable<Version> {
      * <p/>
      * For example: 1.7.10 matches 1.7.10, but not 1.7.9 or 1.7.8
      *
-     * @param version server version to make a comparison against e.g. 1.7.10-R0.1
-     * @return true if the two versions are identical
+     * @param version Server version to make a comparison against e.g. 1.7.10-R0.1
+     * @return True if the two versions are identical
      */
     public boolean isIdentical(int version) {
         return isIdentical(new Version(version));
@@ -206,12 +162,12 @@ public class Version implements Comparable<Version> {
     /**
      * Returns whether or not the given version is compatible with this version
      * <p/>
-     * Makes a comparison to see if the given version is more recent (compatible) or identical
-     * to than this version. For example, if this version is 1.7.9, a version of 1.7.10 or 1.7.9 will be considered
-     * compatible, whereas 1.7.8 will not
+     * Makes a comparison to see if the given version is more recent (compatible) or identical to this version. For
+     * example, if this version is 1.7.9, a version of 1.7.10 or 1.7.9 will be considered compatible, whereas 1.7.8 will
+     * not
      *
-     * @param minimumRequiredVersion server version to make a comparison against e.g. 1.7.10-R0.1
-     * @return true if the {@code minimumRequiredVersion} is compatible with this version
+     * @param minimumRequiredVersion Server version to make a comparison against e.g. 1.7.10-R0.1
+     * @return True if the {@code minimumRequiredVersion} is compatible with this version
      */
     public boolean isCompatible(int minimumRequiredVersion) {
         return isCompatible(new Version(minimumRequiredVersion));
@@ -220,12 +176,11 @@ public class Version implements Comparable<Version> {
     /**
      * Returns whether or not this version supports the given version
      * <p/>
-     * Makes a comparison to see if the version given is earlier (supported) or identical
-     * to than this version. For example, if this version is 1.7.9, a version of 1.7.8 or 1.7.6 will be considered
-     * supported, whereas 1.7.10 will not
+     * Makes a comparison to see if the version given is earlier (supported) or identical to this version. For example,
+     * if this version is 1.7.9, a version of 1.7.8 or 1.7.6 will be considered supported, whereas 1.7.10 will not
      *
-     * @param latestAllowedVersion server version to make a comparison against e.g. 1.7.10-R0.1
-     * @return true if {@code latestAllowedVersion} is supported by this version
+     * @param latestAllowedVersion Server version to make a comparison against e.g. 1.7.10-R0.1
+     * @return True if {@code latestAllowedVersion} is supported by this version
      */
     public boolean isSupported(int latestAllowedVersion) {
         return isSupported(new Version(latestAllowedVersion));
@@ -236,8 +191,8 @@ public class Version implements Comparable<Version> {
      * <p/>
      * For example: 1.7.10 matches 1.7.10, but not 1.7.9 or 1.7.8
      *
-     * @param version server version to make a comparison against e.g. 1.7.10-R0.1
-     * @return true if the two versions are identical
+     * @param version Server version to make a comparison against e.g. 1.7.10-R0.1
+     * @return True if the two versions are identical
      */
     public boolean isIdentical(Version version) {
         return compareTo(version) == 0;
@@ -246,12 +201,12 @@ public class Version implements Comparable<Version> {
     /**
      * Returns whether or not the given version is compatible with this version
      * <p/>
-     * Makes a comparison to see if the given version is more recent (compatible) or identical
-     * to than this version. For example, if this version is 1.7.9, a version of 1.7.10 or 1.7.9 will be considered
-     * compatible, whereas 1.7.8 will not
+     * Makes a comparison to see if the given version is more recent (compatible) or identical to this version. For
+     * example, if this version is 1.7.9, a version of 1.7.10 or 1.7.9 will be considered compatible, whereas 1.7.8 will
+     * not
      *
-     * @param minimumRequiredVersion server version to make a comparison against e.g. 1.7.10-R0.1
-     * @return true if the {@code minimumRequiredVersion} is compatible with this version
+     * @param minimumRequiredVersion Server version to make a comparison against e.g. 1.7.10-R0.1
+     * @return True if the {@code minimumRequiredVersion} is compatible with this version
      */
     public boolean isCompatible(Version minimumRequiredVersion) {
         return compareTo(minimumRequiredVersion) >= 0;
@@ -260,12 +215,11 @@ public class Version implements Comparable<Version> {
     /**
      * Returns whether or not this version supports the given version
      * <p/>
-     * Makes a comparison to see if the version given is earlier (supported) or identical
-     * to than this version. For example, if this version is 1.7.9, a version of 1.7.8 or 1.7.6 will be considered
-     * supported, whereas 1.7.10 will not
+     * Makes a comparison to see if the version given is earlier (supported) or identical to this version. For example,
+     * if this version is 1.7.9, a version of 1.7.8 or 1.7.6 will be considered supported, whereas 1.7.10 will not
      *
-     * @param latestAllowedVersion server version to make a comparison against e.g. 1.7.10-R0.1
-     * @return true if {@code latestAllowedVersion} is supported by this version
+     * @param latestAllowedVersion Server version to make a comparison against e.g. 1.7.10-R0.1
+     * @return True if {@code latestAllowedVersion} is supported by this version
      */
     public boolean isSupported(Version latestAllowedVersion) {
         return compareTo(latestAllowedVersion) <= 0;
@@ -273,7 +227,7 @@ public class Version implements Comparable<Version> {
 
     @Override
     public int compareTo(Version minimumRequiredVersion) {
-        int[] numericVersion = ServerUtil.getNumericServerVersion(version);
+        int[] numericVersion = BukkitServerUtil.getNumericServerVersion(version);
         int[] numericVersionToCompare = minimumRequiredVersion.numericVersion;
         int maxLength = Math.max(numericVersion.length, numericVersionToCompare.length);
         for (int i = 0; i < maxLength; i++) {

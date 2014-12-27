@@ -15,40 +15,11 @@
  * along with Commodus.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.dsh105.commodus.logging;
+package com.dsh105.commodus.bukkit;
 
-/**
- * Represents the logging level of a certain record
- */
-public enum Level {
+import com.dsh105.commodus.PluginDependency;
+import org.bukkit.plugin.Plugin;
 
-    /**
-     * Basic information logging
-     */
-    INFO("[INFO] "),
+public interface BukkitPluginDependency<P extends Plugin> extends PluginDependency<Plugin, P> {
 
-    /**
-     * Warning messages - coloured red
-     */
-    WARNING("[WARNING] "),
-
-    /**
-     * Severe messages - coloured red
-     */
-    SEVERE("[SEVERE] ");
-
-    private String prefix;
-
-    Level(String prefix) {
-        this.prefix = prefix;
-    }
-
-    /**
-     * Gets the logging prefix for this level
-     *
-     * @return Logging prefix
-     */
-    public String getPrefix() {
-        return prefix;
-    }
 }

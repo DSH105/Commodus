@@ -15,40 +15,9 @@
  * along with Commodus.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.dsh105.commodus.logging;
+package com.dsh105.commodus.sponge;
 
-/**
- * Represents the logging level of a certain record
- */
-public enum Level {
+public class SpongeMetrics {
 
-    /**
-     * Basic information logging
-     */
-    INFO("[INFO] "),
-
-    /**
-     * Warning messages - coloured red
-     */
-    WARNING("[WARNING] "),
-
-    /**
-     * Severe messages - coloured red
-     */
-    SEVERE("[SEVERE] ");
-
-    private String prefix;
-
-    Level(String prefix) {
-        this.prefix = prefix;
-    }
-
-    /**
-     * Gets the logging prefix for this level
-     *
-     * @return Logging prefix
-     */
-    public String getPrefix() {
-        return prefix;
-    }
+    // TODO: not yet available
 }

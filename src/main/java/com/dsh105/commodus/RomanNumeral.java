@@ -18,12 +18,10 @@
 package com.dsh105.commodus;
 
 /**
- * An object of type RomanNumeral is an integer between 1 and 3999.  It can
- * be constructed either from an integer or from a string that represents
- * a Roman numeral in this range.  The function toString() will return a
- * standardized Roman numeral representation of the number.  The function
- * toInt() will return the number as a value of type int.
- * <p>
+ * An object of type RomanNumeral is an integer between 1 and 3999.  It can be constructed either from an integer or
+ * from a string that represents a Roman numeral in this range.  The function toString() will return a standardized
+ * Roman numeral representation of the number.  The function toInt() will return the number as a value of type int.
+ * <p/>
  * From http://math.hws.edu/eck/cs124/javanotes6/c8/ex3-ans.html
  */
 public class RomanNumeral {
@@ -40,10 +38,10 @@ public class RomanNumeral {
     private final int num;   // The number represented by this Roman numeral.
 
     /**
-     * Constructor.  Creates the Roman number with the int value specified
-     * by the parameter.  Throws a NumberFormatException if arabic is
-     * not in the range 1 to 3999 inclusive.
-     * @param arabic the int value as an arabic number
+     * Constructor.  Creates the Roman number with the int value specified by the parameter.  Throws a
+     * NumberFormatException if arabic is not in the range 1 to 3999 inclusive.
+     *
+     * @param arabic The int value as an arabic number
      */
     public RomanNumeral(int arabic) {
         if (arabic < 1) {
@@ -112,9 +110,8 @@ public class RomanNumeral {
 
 
     /**
-     * Find the integer value of letter considered as a Roman numeral.  Throws
-     * NumberFormatException if letter is not a legal Roman numeral.  The letter
-     * must be upper case.
+     * Find the integer value of letter considered as a Roman numeral.  Throws NumberFormatException if letter is not a
+     * legal Roman numeral.  The letter must be upper case.
      */
     private int letterToNumber(char letter) {
         switch (letter) {
@@ -159,7 +156,8 @@ public class RomanNumeral {
 
     /**
      * Return the value of this Roman numeral as an int.
-     * @return numeric value of this Roman numeral
+     *
+     * @return Numeric value of this Roman numeral
      */
     public int toInt() {
         return num;

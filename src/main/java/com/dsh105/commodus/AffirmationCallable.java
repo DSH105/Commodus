@@ -17,9 +17,9 @@
 
 package com.dsh105.commodus;
 
-import java.util.concurrent.Callable;
+public interface AffirmationCallable {
 
-public interface AffirmationCallable<T> {
+    // TODO: docs?
 
-    T call(Throwable cause);
+    void call(Throwable cause);
 }

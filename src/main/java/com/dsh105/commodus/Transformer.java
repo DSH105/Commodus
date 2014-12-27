@@ -15,40 +15,21 @@
  * along with Commodus.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.dsh105.commodus.logging;
+package com.dsh105.commodus;
 
 /**
- * Represents the logging level of a certain record
+ * A task that transforms an object of a given type into an alternate value.
+ *
+ * @param <O> The object type to be transformed
+ * @param <V> The result type of method {@code transform}
  */
-public enum Level {
+public abstract class Transformer<O, V> {
 
     /**
-     * Basic information logging
-     */
-    INFO("[INFO] "),
-
-    /**
-     * Warning messages - coloured red
-     */
-    WARNING("[WARNING] "),
-
-    /**
-     * Severe messages - coloured red
-     */
-    SEVERE("[SEVERE] ");
-
-    private String prefix;
-
-    Level(String prefix) {
-        this.prefix = prefix;
-    }
-
-    /**
-     * Gets the logging prefix for this level
+     * Computes a value for the given object
      *
-     * @return Logging prefix
+     * @param transmutable Object to transform
+     * @return Result of the transformation
      */
-    public String getPrefix() {
-        return prefix;
-    }
+    public abstract V transform(O transmutable);
 }

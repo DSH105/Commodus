@@ -17,7 +17,6 @@
 
 package com.dsh105.commodus;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 
 import java.text.Normalizer;
@@ -36,22 +35,43 @@ public class StringUtil {
      * Represents an empty array of strings
      */
     public static final String[] EMPTY_STRING_ARRAY = new String[0];
+
+    /**
+     * Represents the char used by Minecraft to indicate subsequent color codes
+     */
+    public static final char COLOR_CHAR = '\u00A7';
     private static final Pattern DIACRITICS_AND_FRIENDS = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
 
     private StringUtil() {
     }
 
     /**
-     * Remove the specified ChatColors from a String
+     * Remove the specified colors from a String
      *
      * @param input          String to be sanitized
      * @param colorsToRemove ChatColors to be removed
-     * @return sanitized input
+     * @return Sanitized input
      */
     public String removeColor(String input, ChatColor... colorsToRemove) {
+        return removeColor(input, ChatColor.COLOR_CHAR, GeneralUtil.transform(char.class, colorsToRemove, new Transformer<ChatColor, Character>() {
+            @Override
+            public Character transform(ChatColor transmutable) {
+                return transmutable.getChar();
+            }
+        }));
+    }
+
+    /**
+     * Remove the specified colors from a String
+     *
+     * @param input          String to be sanitized
+     * @param colorsToRemove Chars representing the colors to be removed
+     * @return Sanitized input
+     */
+    public String removeColor(String input, char colorChar, Character... colorsToRemove) {
         String result = input;
-        for (ChatColor color : colorsToRemove) {
-            input = input.replaceAll("(?i)" + ChatColor.COLOR_CHAR + color.getChar(), "");
+        for (char colorCode : colorsToRemove) {
+            input = input.replaceAll("(?i)" + colorChar + colorCode, "");
         }
         return result;
     }
@@ -93,9 +113,9 @@ public class StringUtil {
     /**
      * Capitalizes the first letter of a String
      *
-     * @param string         the String to be capitalized
-     * @param forceLowerCase whether to force lower case on other parts of the String
-     * @return capitalized String
+     * @param string         The String to be capitalized
+     * @param forceLowerCase Whether to force lower case on other parts of the String
+     * @return Capitalized String
      */
     public static String capitalise(String string, boolean forceLowerCase) {
         String[] parts = string.split(" ");
@@ -108,9 +128,9 @@ public class StringUtil {
     /**
      * Separates a string array from the given start index
      *
-     * @param startIndex index to begin the separation at, inclusive
-     * @param string     string array to separate
-     * @return the new separated array of strings
+     * @param startIndex Index to begin the separation at, inclusive
+     * @param string     String array to separate
+     * @return The new separated array of strings
      */
     public static String[] separate(int startIndex, String... string) {
         if (startIndex >= string.length || string.length <= 0) {
@@ -122,14 +142,13 @@ public class StringUtil {
     }
 
     /**
-     * Builds a sentence list from an array of strings.
-     * Example: {"one", "two", "three"} returns "one, two and three".
+     * Builds a sentence list from an array of strings. Example: {"one", "two", "three"} returns "one, two and three".
      *
      * @param words The string array to build into a list,
      * @return String representing the list.
      */
     public static String buildSentenceList(String... words) {
-        Validate.notEmpty(words);
+        Affirm.notEmpty(words);
         if (words.length == 1) {
             return words[0];
         } else if (words.length == 2) {
@@ -146,10 +165,10 @@ public class StringUtil {
     /**
      * Combines a set of strings into a single string, separated by the given character set
      *
-     * @param startIndex index to begin the separation at, inclusive
-     * @param string     array to combine
-     * @param separator  character set included between each part of the given array
-     * @return the combined string
+     * @param startIndex Index to begin the separation at, inclusive
+     * @param string     Array to combine
+     * @param separator  Character set included between each part of the given array
+     * @return The combined string
      * @deprecated use {@link #combineArray(int, String, String...)}
      */
     @Deprecated
@@ -160,9 +179,9 @@ public class StringUtil {
     /**
      * Combines a set of strings into a single string, separated by the given character set
      *
-     * @param separator   character set included between each part of the given array
-     * @param stringArray array to combine
-     * @return the combined string
+     * @param separator   Character set included between each part of the given array
+     * @param stringArray Array to combine
+     * @return The combined string
      */
     public static String combineArray(String separator, String... stringArray) {
         return combineArray(0, separator, stringArray);
@@ -171,10 +190,10 @@ public class StringUtil {
     /**
      * Combines a set of strings into a single string, separated by the given character set
      *
-     * @param startIndex  index to begin the separation at, inclusive
-     * @param separator   character set included between each part of the given array
-     * @param stringArray array to combine
-     * @return the combined string
+     * @param startIndex  Index to begin the separation at, inclusive
+     * @param separator   Character set included between each part of the given array
+     * @param stringArray Array to combine
+     * @return The combined string
      */
     public static String combineArray(int startIndex, String separator, String... stringArray) {
         return combineArray(startIndex, stringArray.length, separator, stringArray);
@@ -183,11 +202,11 @@ public class StringUtil {
     /**
      * Combines a set of strings into a single string, separated by the given character set
      *
-     * @param startIndex  index to begin the separation at, inclusive
-     * @param endIndex    index to end the separation at, exclusive
-     * @param separator   character set included between each part of the given array
-     * @param stringArray array to combine
-     * @return the combined string
+     * @param startIndex  Index to begin the separation at, inclusive
+     * @param endIndex    Index to end the separation at, exclusive
+     * @param separator   Character set included between each part of the given array
+     * @param stringArray Array to combine
+     * @return The combined string
      */
     public static String combineArray(int startIndex, int endIndex, String separator, String... stringArray) {
         if (stringArray == null || startIndex >= endIndex) {
@@ -206,9 +225,9 @@ public class StringUtil {
     /**
      * Combines a collection of strings into a single string, separated by the given character set
      *
-     * @param separator        character set included between each part of the given array
-     * @param stringCollection collection of strings to combine
-     * @return the combined string
+     * @param separator        Character set included between each part of the given array
+     * @param stringCollection Collection of strings to combine
+     * @return The combined string
      */
     public static String combine(String separator, Collection<String> stringCollection) {
         return combineArray(separator, stringCollection.toArray(EMPTY_STRING_ARRAY));
@@ -217,10 +236,10 @@ public class StringUtil {
     /**
      * Combines a collection of strings into a single string, separated by the given character set
      *
-     * @param startIndex       index to begin the separation at, inclusive
-     * @param separator        character set included between each part of the given array
-     * @param stringCollection collection of strings to combine
-     * @return the combined string
+     * @param startIndex       Index to begin the separation at, inclusive
+     * @param separator        Character set included between each part of the given array
+     * @param stringCollection Collection of strings to combine
+     * @return The combined string
      */
     public static String combine(int startIndex, String separator, Collection<String> stringCollection) {
         return combineArray(startIndex, separator, stringCollection.toArray(EMPTY_STRING_ARRAY));
@@ -229,11 +248,11 @@ public class StringUtil {
     /**
      * Combines a collection of strings into a single string, separated by the given character set
      *
-     * @param startIndex       index to begin the separation at, inclusive
-     * @param endIndex         index to end the separation at, exclusive
-     * @param separator        character set included between each part of the given array
-     * @param stringCollection collection of strings to combine
-     * @return the combined string
+     * @param startIndex       Index to begin the separation at, inclusive
+     * @param endIndex         Index to end the separation at, exclusive
+     * @param separator        Character set included between each part of the given array
+     * @param stringCollection Collection of strings to combine
+     * @return The combined string
      */
     public static String combine(int startIndex, int endIndex, String separator, Collection<String> stringCollection) {
         return combineArray(startIndex, endIndex, separator, stringCollection.toArray(EMPTY_STRING_ARRAY));
@@ -243,10 +262,10 @@ public class StringUtil {
      * Combines and splits a set of strings into a new array, such that the length of the new array is
      * originalLength-{@code startIndex}
      *
-     * @param startIndex  index to begin the separation at, inclusive
-     * @param separator   character set included between each part of the given array
-     * @param stringArray array to combine and split
-     * @return the newly formed array
+     * @param startIndex  Index to begin the separation at, inclusive
+     * @param separator   Character set included between each part of the given array
+     * @param stringArray Array to combine and split
+     * @return The newly formed array
      */
     public static String[] splitArgs(int startIndex, String separator, String... stringArray) {
         return splitArgs(startIndex, stringArray.length, separator, stringArray);
@@ -256,11 +275,11 @@ public class StringUtil {
      * Combines and splits a set of strings into a new array, such that the length of the new array is
      * originalLength-{@code startIndex}
      *
-     * @param startIndex  index to begin the separation at, inclusive
-     * @param endIndex    index to end the separation at, exclusive
-     * @param separator   character set included between each part of the given array
-     * @param stringArray array to combine and split
-     * @return the newly formed array
+     * @param startIndex  Index to begin the separation at, inclusive
+     * @param endIndex    Index to end the separation at, exclusive
+     * @param separator   Character set included between each part of the given array
+     * @param stringArray Array to combine and split
+     * @return The newly formed array
      */
     public static String[] splitArgs(int startIndex, int endIndex, String separator, String... stringArray) {
         String combined = combineArray(startIndex, endIndex, separator, stringArray);
@@ -275,8 +294,8 @@ public class StringUtil {
      * <p/>
      * From http://stackoverflow.com/a/1453284
      *
-     * @param input string to remove diacritics from
-     * @return the stripped string
+     * @param input String to remove diacritics from
+     * @return The stripped string
      */
     public static String stripDiacritics(String input) {
         input = Normalizer.normalize(input, Normalizer.Form.NFD);
@@ -306,9 +325,9 @@ public class StringUtil {
     /**
      * Limits a String to an amount of characters
      *
-     * @param input     string to limit character length
-     * @param maxLength maximum length of characters allowed
-     * @return the {@code input} limited to {@code maxLength} characters
+     * @param input     String to limit character length
+     * @param maxLength Maximum length of characters allowed
+     * @return The {@code input} limited to {@code maxLength} characters
      */
     public static String limitCharacters(String input, int maxLength) {
         if (input.length() <= maxLength) {
@@ -316,5 +335,45 @@ public class StringUtil {
         }
 
         return input.substring(0, maxLength);
+    }
+
+    /**
+     * Converts a String to a Boolean.
+     * <p/>
+     * {@code true}, {@code yes}, {@code on} all return {@code true}.
+     * <p/>
+     * {@code false}, {@code no}, {@code off} all return {@code false}.
+     *
+     * @param input The String to convert
+     * @return The boolean value of the String, or null if no match is found
+     */
+    public static Boolean toBoolean(String input) {
+        return toBoolean(input, null);
+    }
+
+    /**
+     * Converts a String to a Boolean.
+     * <p/>
+     * {@code true}, {@code yes}, {@code on} all return {@code true}.
+     * <p/>
+     * {@code false}, {@code no}, {@code off} all return {@code false}.
+     *
+     * @param input The String to convert
+     * @param def   The default value to return if the given input is not valid
+     * @return The boolean value of the String, or {@code def} if no match is found
+     */
+    public static Boolean toBoolean(String input, Boolean def) {
+        switch (input.toLowerCase()) {
+            case "true":
+            case "yes":
+            case "on":
+                return true;
+            case "false":
+            case "no":
+            case "off":
+                return false;
+            default:
+                return def;
+        }
     }
 }

@@ -17,12 +17,12 @@
 
 package com.dsh105.commodus;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import com.dsh105.commodus.bukkit.BukkitGeometryUtil;
+import com.dsh105.commodus.container.PositionContainer;
+import com.dsh105.commodus.sponge.SpongeGeometryUtil;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -36,9 +36,9 @@ public class GeometryUtil {
     /**
      * Generates a random floating point value between the given minimum and maximum
      *
-     * @param min minimum value, inclusive
-     * @param max maximum value, inclusive
-     * @return a random floating point value
+     * @param min Minimum value, inclusive
+     * @param max Maximum value, inclusive
+     * @return A random floating point value
      */
     public static float generateRandomFloat(float min, float max) {
         float f = min + (GeneralUtil.random().nextFloat() * ((1 + max) - min));
@@ -48,7 +48,7 @@ public class GeometryUtil {
     /**
      * Generates a random floating point value
      *
-     * @return a random floating point value
+     * @return A random floating point value
      */
     public static float generateRandomFloat() {
         float f = GeneralUtil.random().nextFloat();
@@ -57,30 +57,35 @@ public class GeometryUtil {
 
     /**
      * Generates a list of locations within a circular shape, dependent on the provided conditions
+     * <p/>
+     * <p/>
+     * See {@link com.dsh105.commodus.bukkit.BukkitGeometryUtil#circle(org.bukkit.Location, int, int, boolean, boolean,
+     * boolean)} and {@link com.dsh105.commodus.sponge.SpongeGeometryUtil#circle(org.spongepowered.api.world.Location,
+     * int, int, boolean, boolean, boolean)} for use of this in Bukkit and Sponge plugins.
      *
-     * @param origin     origin or centre of the circle
-     * @param radius     radius of the circle
-     * @param height     height of the circle. If {@code height > 1}, the circle will become a cylinder
-     * @param hollow     true if the generated circle is to be hollow
-     * @param sphere     true if the shape generated is spherical
-     * @param includeAir true if air can be included in the list of locations
-     * @return a list of locations inside a generated circular shape
+     * @param origin     Origin or centre of the circle
+     * @param radius     Radius of the circle
+     * @param height     Height of the circle. If {@code height > 1}, the circle will become a cylinder
+     * @param hollow     True if the generated circle is to be hollow
+     * @param sphere     True if the shape generated is spherical
+     * @param includeAir True if air can be included in the list of locations
+     * @return A list of locations inside a generated circular shape
      */
-    public static List<Location> circle(Location origin, int radius, int height, boolean hollow, boolean sphere, boolean includeAir) {
-        List<Location> blocks = new ArrayList<>();
-        int cx = origin.getBlockX(),
-                cy = origin.getBlockY(),
-                cz = origin.getBlockZ();
+    public static List<PositionContainer> circle(PositionContainer origin, int radius, int height, boolean hollow, boolean sphere, boolean includeAir) {
+        List<PositionContainer> blocks = new ArrayList<>();
+        int cx = (int) origin.getX(),
+                cy = (int) origin.getY(),
+                cz = (int) origin.getZ();
         for (int x = cx - radius; x <= cx + radius; x++) {
             for (int z = cz - radius; z <= cz + radius; z++) {
                 for (int y = (sphere ? cy - radius : cy); y < (sphere ? cy + radius : cy + height); y++) {
                     double dist = (cx - x) * (cx - x) + (cz - z) * (cz - z) + (sphere ? (cy - y) * (cy - y) : 0);
                     if (dist < radius * radius && !(hollow && dist < (radius - 1) * (radius - 1))) {
-                        Location l = new Location(origin.getWorld(), x, y, z);
-                        if (!includeAir && l.getBlock().getType() == Material.AIR) {
+                        PositionContainer position = new PositionContainer(origin.getWorldUID(), x, y, z);
+                        if (!includeAir && isAir(position)) {
                             continue;
                         }
-                        blocks.add(l);
+                        blocks.add(position);
                     }
                 }
             }
@@ -89,59 +94,65 @@ public class GeometryUtil {
     }
 
     /**
-     * Gets whether a certain location is within a given radius
+     * Gets whether a certain location is within a given radius.
+     * <p/>
+     * See {@link com.dsh105.commodus.bukkit.BukkitGeometryUtil#isInBorder(org.bukkit.Location, org.bukkit.Location,
+     * int)} and {@link com.dsh105.commodus.sponge.SpongeGeometryUtil#isInBorder(org.spongepowered.api.world.Location,
+     * org.spongepowered.api.world.Location, int)} for use of this in Bukkit and Sponge plugins.
      *
-     * @param origin  origin or centre
-     * @param toCheck location to check
-     * @param range   border range
-     * @return true if the location is inside the border, false if not
+     * @param origin  Origin or centre
+     * @param toCheck Location to check
+     * @param range   Border range
+     * @return True if the location is inside the border, false if not
      */
-    public static boolean isInBorder(Location origin, Location toCheck, int range) {
-        int x = origin.getBlockX(), z = origin.getBlockZ();
-        int x1 = toCheck.getBlockX(), z1 = toCheck.getBlockZ();
+    public static boolean isInBorder(PositionContainer origin, PositionContainer toCheck, int range) {
+        int x = (int) origin.getX(), z = (int) origin.getZ();
+        int x1 = (int) toCheck.getX(), z1 = (int) toCheck.getZ();
         return !(x1 >= (x + range) || z1 >= (z + range) || x1 <= (x - range) || z1 <= (z - range));
     }
 
     /**
-     * Returns a list of entities near a given location
+     * Returns a list of entities near a given location.
+     * <p/>
+     * See {@link com.dsh105.commodus.bukkit.BukkitGeometryUtil#getNearbyEntities(org.bukkit.Location, int)} and {@link
+     * com.dsh105.commodus.sponge.SpongeGeometryUtil#getNearbyEntities(org.spongepowered.api.world.Location, int)} for
+     * use of this in Bukkit and Sponge plugins.
      *
-     * @param entityType type (or super-type) of entity to include in the search
-     * @param origin     origin or centre of the area to search
-     * @param range      range to search within
-     * @param <T>        entity restriction to place on the search
-     * @return a list of nearby entities
+     * @param origin     Origin or centre of the area to search
+     * @param range      Range to search within
+     * @param candidates List of possible candidates to search through
+     * @return A list of nearby entities
      */
-    public static <T extends Entity> List<T> getNearbyEntities(Class<T> entityType, Location origin, int range) {
-        List<T> entities = new ArrayList<>();
-        for (Entity entity : origin.getWorld().getEntities()) {
-            if (range <= 0 || isInBorder(origin, entity.getLocation(), range)) {
-                if (entityType.isAssignableFrom(entity.getClass())) {
-                    entities.add((T) entity);
-                }
+    public static List<PositionContainer> getNearby(PositionContainer origin, int range, Collection<PositionContainer> candidates) {
+        List<PositionContainer> nearby = new ArrayList<>();
+        for (PositionContainer candidate : candidates) {
+            if (range <= 0 || isInBorder(origin, candidate, range)) {
+                nearby.add(candidate);
             }
         }
-        return entities;
+        return nearby;
     }
 
     /**
-     * Returns a list of entities near a given location
+     * Gets whether the block at the given position is filled with air
+     * <p/>
+     * Polls both {@link com.dsh105.commodus.bukkit.BukkitGeometryUtil#isAir(com.dsh105.commodus.container.PositionContainer)}
+     * and {@link } before returning a value.
      *
-     * @param origin origin or centre of the area to search
-     * @param range  range to search within
-     * @return a list of nearby entities
+     * @param positionContainer Position of the block to check
+     * @return True if the given position contains a block of air, false if otherwise
+     * @throws java.lang.IllegalStateException if neither the Bukkit nor Sponge API could be accessed
      */
-    public static List<Entity> getNearbyEntities(Location origin, int range) {
-        return getNearbyEntities(Entity.class, origin, range);
-    }
-
-    /**
-     * Returns a list of players near a given location
-     *
-     * @param origin origin or centre
-     * @param range  range to search within
-     * @return a list of nearby players
-     */
-    public static List<Player> getNearbyPlayers(Location origin, int range) {
-        return getNearbyEntities(Player.class, origin, range);
+    public static boolean isAir(PositionContainer positionContainer) {
+        try {
+            return BukkitGeometryUtil.isAir(positionContainer);
+        } catch (NoClassDefFoundError ignored) {
+        }
+        try {
+            return SpongeGeometryUtil.isAir(positionContainer);
+        } catch (NoClassDefFoundError e) {
+            // neither could be found
+            throw new IllegalStateException("Failed to access the appropriate utilities for the running server API.", e);
+        }
     }
 }

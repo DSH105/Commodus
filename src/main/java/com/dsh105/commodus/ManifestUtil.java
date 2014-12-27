@@ -17,8 +17,6 @@
 
 package com.dsh105.commodus;
 
-import com.dsh105.commodus.exceptions.ManifestAttributeNotFoundException;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -37,9 +35,9 @@ public class ManifestUtil {
     /**
      * Returns the Manifest file at a given path
      *
-     * @param path path to search for the file
-     * @return the manifest file at the given file path
-     * @throws IOException if the file cannot be found
+     * @param path Path to search for the file
+     * @return The manifest file at the given file path
+     * @throws java.io.IOException if the file cannot be found
      */
     public static Manifest getManifest(String path) throws IOException {
         File jar = new File(path);
@@ -52,30 +50,25 @@ public class ManifestUtil {
     /**
      * Returns an attribute in the manifest file of the given compiled JAR file at runtime
      *
-     * @param filePath path of the file to retrieve the manifest for
-     * @param attributePath path of the attribute to find
-     * @return the value of a attribute as specified in the manifest of the given JAR file path
+     * @param filePath      Path of the file to retrieve the manifest for
+     * @param attributePath Path of the attribute to find
+     * @return The value of a attribute as specified in the manifest of the given JAR file path
+     * @throws java.io.IOException if the given file path cannot be found
      */
-    public static String getAttribute(String filePath, String attributePath) {
-        try {
-            Attributes attributes = getManifest(filePath).getMainAttributes();
-            return attributes.getValue(attributePath);
-        } catch (Exception e) {
-            throw new ManifestAttributeNotFoundException(e);
-        }
+    public static String getAttribute(String filePath, String attributePath) throws IOException {
+        Attributes attributes = getManifest(filePath).getMainAttributes();
+        return attributes.getValue(attributePath);
     }
 
     /**
      * Returns an attribute in the manifest file of this compiled JAR file at runtime
      *
-     * @param attributePath path of the attribute to find
-     * @return the value of a attribute as specified in the manifest of this JAR file
+     * @param attributePath Path of the attribute to find
+     * @return The value of a attribute as specified in the manifest of this JAR file
+     * @throws java.io.IOException         if the given file path cannot be found
+     * @throws java.net.URISyntaxException if the given attribute path cannot be converted to a valid URI
      */
-    public static String getAttribute(String attributePath) {
-        try {
-            return getAttribute(ManifestUtil.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), attributePath);
-        } catch (URISyntaxException e) {
-            throw new ManifestAttributeNotFoundException(e);
-        }
+    public static String getAttribute(String attributePath) throws URISyntaxException, IOException {
+        return getAttribute(ManifestUtil.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), attributePath);
     }
 }

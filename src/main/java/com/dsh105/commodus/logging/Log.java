@@ -17,35 +17,35 @@
 
 package com.dsh105.commodus.logging;
 
-import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
-
 /**
- * Basic logging to a server console
- * <p>
- * Supports chat colours :)
+ * Basic logging to a server console with colour support
  */
-public class Log {
+public abstract class Log {
 
-    private JavaPlugin plugin;
     private String prefix;
-    private ConsoleCommandSender console;
 
     /**
      * Constructs a new console logger with the given prefix
      *
-     * @param prefix prefix appended to all messages, excluding any opening/closing brackets e.g. [{@code prefix}] Hello
-     *               world.
+     * @param prefix Prefix appended to all messages, excluding any opening/closing brackets e.g. [{@code prefix}]
      */
     public Log(String prefix) {
         this.prefix = prefix;
     }
 
     /**
+     * Gets the prefix for this logger
+     *
+     * @return Prefix appended to all messages
+     */
+    public String getPrefix() {
+        return prefix;
+    }
+
+    /**
      * Logs a coloured message to the console
      *
-     * @param message message to log
+     * @param message Message to log
      */
     public void log(String message) {
         info(message);
@@ -54,16 +54,17 @@ public class Log {
     /**
      * Logs a coloured message to the console
      *
-     * @param message message to log
+     * @param message Message to log
      */
     public void info(String message) {
         console(message);
     }
 
     /**
-     * Logs a coloured message to the console, with the {@link Level#WARNING} colour appended
+     * Logs a coloured message to the console, with the {@link com.dsh105.commodus.logging.Level#WARNING} colour
+     * appended
      *
-     * @param message message to log
+     * @param message Message to log
      */
     public void warning(String message) {
         console(Level.WARNING, message);
@@ -72,7 +73,7 @@ public class Log {
     /**
      * Logs a coloured message to the console, with the {@link Level#SEVERE} colour appended
      *
-     * @param message message to log
+     * @param message Message to log
      */
     public void severe(String message) {
         console(Level.SEVERE, message);
@@ -81,7 +82,7 @@ public class Log {
     /**
      * Logs a coloured message to the console
      *
-     * @param message message to log
+     * @param message Message to log
      */
     public void console(String message) {
         console(Level.INFO, message);
@@ -90,13 +91,8 @@ public class Log {
     /**
      * Logs a coloured message to the console with the given level
      *
-     * @param level level to log the message at
-     * @param message message to log
+     * @param level   Level to log the message at
+     * @param message Message to log
      */
-    public void console(Level level, String message) {
-        if (console == null) {
-            console = Bukkit.getConsoleSender();
-        }
-        console.sendMessage("[" + prefix + "]" + level.getPrefix() + message);
-    }
+    public abstract void console(Level level, String message);
 }

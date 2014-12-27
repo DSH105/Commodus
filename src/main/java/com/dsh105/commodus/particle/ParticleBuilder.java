@@ -18,21 +18,19 @@
 package com.dsh105.commodus.particle;
 
 import com.captainbern.minecraft.protocol.PacketType;
-import com.captainbern.minecraft.reflection.MinecraftMethods;
 import com.captainbern.minecraft.wrapper.WrappedPacket;
 import com.dsh105.commodus.GeneralUtil;
 import com.dsh105.commodus.GeometryUtil;
 import com.dsh105.commodus.ServerUtil;
 import com.dsh105.commodus.Version;
+import com.dsh105.commodus.bukkit.BukkitGeometryUtil;
+import com.dsh105.commodus.bukkit.BukkitServerUtil;
 import com.dsh105.commodus.reflection.Reflection;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 public class ParticleBuilder implements Cloneable {
 
@@ -71,15 +69,15 @@ public class ParticleBuilder implements Cloneable {
         packet.getFloats().write(5, (float) offset.getZ());
         packet.getFloats().write(6, speed);
         packet.getIntegers().write(0, amount);
-        if (new Version().isCompatible("1.8")) {
+        if (ServerUtil.getMinecraftVersion().isCompatible("1.8")) {
             packet.getIntegerArrays().write(0, data);
             packet.getBooleans().write(0, this.force); // TODO
         }
-        ServerUtil.sendPacket(packet.getHandle(), player);
+        BukkitServerUtil.sendPacket(packet.getHandle(), player);
     }
 
     private Object getNMSParticleType() {
-        if (new Version().isCompatible("1.8")) {
+        if (ServerUtil.getMinecraftVersion().isCompatible("1.8")) {
             Class<?> enumParticle = Reflection.getNMSClass("EnumParticle");
             return enumParticle.getEnumConstants()[type.getId()];
         }
@@ -91,7 +89,7 @@ public class ParticleBuilder implements Cloneable {
     }
 
     public void show() {
-        for (Player player : GeometryUtil.getNearbyPlayers(position, 50)) {
+        for (Player player : BukkitGeometryUtil.getNearbyPlayers(position, 50)) {
             show(player);
         }
     }
