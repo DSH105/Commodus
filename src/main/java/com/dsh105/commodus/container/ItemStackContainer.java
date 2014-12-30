@@ -26,6 +26,7 @@ import org.spongepowered.api.GameRegistry;
 public class ItemStackContainer extends Container<ItemStackContainer> {
 
     // TODO: docs
+    // TODO: enchantments
 
     private String id;
     private int quantity;
@@ -70,7 +71,7 @@ public class ItemStackContainer extends Container<ItemStackContainer> {
 
     public org.spongepowered.api.item.inventory.ItemStack asSponge() {
         GameRegistry gameRegistry = SpongeUtil.getGame().getRegistry();
-        return gameRegistry.getItemBuilder().withItemType(gameRegistry.getItem(id).get()).withQuantity(quantity).build();
+        return gameRegistry.getItemBuilder().itemType(gameRegistry.getItem(id).get()).quantity(quantity).build();
     }
 
     public String getId() {
@@ -79,5 +80,9 @@ public class ItemStackContainer extends Container<ItemStackContainer> {
 
     public int getQuantity() {
         return quantity;
+    }
+
+    public boolean isSimilar(ItemStackContainer stack) {
+        return stack != null && (stack == this || id.equals(stack.id) && quantity == stack.quantity);
     }
 }
