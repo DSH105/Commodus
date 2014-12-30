@@ -91,10 +91,8 @@ public enum ServerBrand {
      * @return Server version
      */
     public Version getPlatformVersion() {
-        switch (this) {
+        switch (getCapsule()) {
             case BUKKIT:
-            case SPIGOT:
-            case CAULDRON:
                 return BukkitServerUtil.getPlatformVersion();
             case SPONGE:
                 // TODO
@@ -111,15 +109,30 @@ public enum ServerBrand {
      * @return Minecraft server version
      */
     public Version getMinecraftVersion() {
-        switch (this) {
+        switch (getCapsule()) {
             case BUKKIT:
-            case SPIGOT:
-            case CAULDRON:
                 return BukkitServerUtil.getMinecraftVersion();
             case SPONGE:
                 // TODO
             default:
                 throw new IllegalStateException("Failed to detect version of unknown server brand.");
         }
+    }
+
+    public Capsule getCapsule() {
+        switch (this) {
+            case BUKKIT:
+            case SPIGOT:
+            case CAULDRON:
+                return Capsule.BUKKIT;
+            case SPONGE:
+                return Capsule.SPONGE;
+            default:
+                return Capsule.UNKNOWN;
+        }
+    }
+
+    public enum Capsule {
+        BUKKIT, SPONGE, UNKNOWN
     }
 }
