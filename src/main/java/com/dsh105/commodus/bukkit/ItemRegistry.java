@@ -60,8 +60,6 @@ public final class ItemRegistry {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        NAME_TO_ID_MAP.putAll(GeneralUtil.invertMap(ID_TO_NAME_MAP));
     }
 
     public static String getId(Material material) {
