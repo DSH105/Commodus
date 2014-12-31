@@ -24,11 +24,11 @@ public class MaterialId {
     // TODO: docs
 
     private int id;
-    private int data;
+    private int meta;
 
-    private MaterialId(int id, int data) {
+    private MaterialId(int id, int meta) {
         this.id = id;
-        this.data = data;
+        this.meta = meta;
     }
 
     public static MaterialId of(int id) {
@@ -51,7 +51,7 @@ public class MaterialId {
         return id;
     }
 
-    public int getData() {
-        return data;
+    public int getMeta() {
+        return meta;
     }
 }

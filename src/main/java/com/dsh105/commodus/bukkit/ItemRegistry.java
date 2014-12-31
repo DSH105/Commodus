@@ -34,7 +34,7 @@ public final class ItemRegistry {
     // TODO: docs
 
     private static final Map<MaterialId, String> ID_TO_NAME_MAP = new HashMap<>();
-    private static final Map<String, MaterialId> INVERSE_ID_TO_NAME_MAP = new HashMap<>();
+    private static final Map<String, Integer> NAME_TO_ID_MAP = new HashMap<>();
 
     static {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(ItemRegistry.class.getResourceAsStream("/items.tsv")))) {
@@ -46,7 +46,13 @@ public final class ItemRegistry {
                 }
                 String[] columns = line.split("\t");
                 try {
-                    ID_TO_NAME_MAP.put(MaterialId.of(GeneralUtil.toInteger(columns[0]), GeneralUtil.toInteger(columns[1])), columns[2]);
+                    int id = GeneralUtil.toInteger(columns[0]);
+                    int meta = GeneralUtil.toInteger(columns[1]);
+                    String name = columns[2];
+                    ID_TO_NAME_MAP.put(MaterialId.of(id, meta), name);
+                    if (!NAME_TO_ID_MAP.containsKey(name)) {
+                        NAME_TO_ID_MAP.put(name, id);
+                    }
                 } catch (NumberFormatException ignored) {
                     // carry on!
                 }
@@ -55,30 +61,34 @@ public final class ItemRegistry {
             e.printStackTrace();
         }
 
-        INVERSE_ID_TO_NAME_MAP.putAll(GeneralUtil.invertMap(ID_TO_NAME_MAP));
+        NAME_TO_ID_MAP.putAll(GeneralUtil.invertMap(ID_TO_NAME_MAP));
     }
 
-    public static String getName(Material material) {
-        return getName(material, 0);
+    public static String getId(Material material) {
+        return getId(material, 0);
     }
 
-    public static String getName(Material material, int data) {
-        return getName(material.getId(), data);
+    public static String getId(Material material, int data) {
+        return getId(material.getId(), data);
     }
 
-    public static String getName(int id) {
-        return getName(id, 0);
+    public static String getId(int id) {
+        return getId(id, 0);
     }
 
-    public static String getName(int id, int data) {
-        return getName(MaterialId.of(id, data));
+    public static String getId(int id, int data) {
+        return getId(MaterialId.of(id, data));
     }
 
-    public static String getName(MaterialId materialId) {
+    public static String getId(MaterialId materialId) {
         return ID_TO_NAME_MAP.get(materialId);
     }
 
     public static MaterialId getId(String name) {
-        return INVERSE_ID_TO_NAME_MAP.get(name);
+        return getId(name, 0);
+    }
+
+    public static MaterialId getId(String name, int meta) {
+        return MaterialId.of(NAME_TO_ID_MAP.get(name), meta);
     }
 }
