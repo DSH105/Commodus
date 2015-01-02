@@ -238,36 +238,32 @@ public class GeneralUtil {
     }
 
     /**
-     * Transforms a given list to a new list of given type using the supplied Transformer.
-     * <p/>
-     * List order is maintained.
+     * Transforms a given collection to a new collection of given type using the supplied Transformer.
      *
-     * @param list        List to convert to the given type, {@code to}
+     * @param collection  Collection to convert to the given type, {@code to}
      * @param transformer Transformer utilised to convert each object of the given array to the new type
      * @param <O>         The object type to be transformed
      * @param <V>         The type of the resultant list
      * @return A new list of the type supplied by {@code to}
      */
-    public static <O, V> List<V> transform(List<O> list, Transformer<O, V> transformer) {
-        return transform(true, list, transformer);
+    public static <O, V> Collection<V> transform(Collection<O> collection, Transformer<O, V> transformer) {
+        return transform(true, collection, transformer);
     }
 
     /**
-     * Transforms a given list to a new list of given type using the supplied Transformer.
-     * <p/>
-     * List order is maintained.
+     * Transforms a given collection to a new list of given type using the supplied Transformer.
      *
      * @param includeNull If set to true, null objects will be included in the resultant list
-     * @param list        List to convert to the given type, {@code to}
+     * @param collection  Collection to convert to the given type, {@code to}
      * @param transformer Transformer utilised to convert each object of the given array to the new type
      * @param <O>         The object type to be transformed
      * @param <V>         The type of the resultant list
      * @return A new list of the type supplied by {@code to}
      */
-    public static <O, V> List<V> transform(boolean includeNull, List<O> list, Transformer<O, V> transformer) {
-        Affirm.notEmpty(list);
+    public static <O, V> Collection<V> transform(boolean includeNull, Collection<O> collection, Transformer<O, V> transformer) {
+        Affirm.notEmpty(collection);
         List<V> result = new ArrayList<>();
-        for (O element : list) {
+        for (O element : collection) {
             if (includeNull || element != null) {
                 result.add(transformer.transform(element));
             }
