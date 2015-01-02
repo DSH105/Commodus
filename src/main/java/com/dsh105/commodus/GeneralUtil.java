@@ -238,37 +238,66 @@ public class GeneralUtil {
     }
 
     /**
-     * Transforms a given collection to a new collection of given type using the supplied Transformer.
+     * Transforms a given list to a new list of given type using the supplied Transformer.
      *
-     * @param collection  Collection to convert to the given type, {@code to}
+     * @param list        List to convert to the given type, {@code V}
      * @param transformer Transformer utilised to convert each object of the given array to the new type
      * @param <O>         The object type to be transformed
      * @param <V>         The type of the resultant list
-     * @return A new list of the type supplied by {@code to}
+     * @return A new list of the type supplied by {@code V}
      */
-    public static <O, V> Collection<V> transform(Collection<O> collection, Transformer<O, V> transformer) {
-        return transform(true, collection, transformer);
+    public static <O, V> List<V> transform(List<O> list, Transformer<O, V> transformer) {
+        return transform(true, list, transformer);
     }
 
     /**
-     * Transforms a given collection to a new list of given type using the supplied Transformer.
+     * Transforms a given list to a new list of given type using the supplied Transformer.
      *
      * @param includeNull If set to true, null objects will be included in the resultant list
-     * @param collection  Collection to convert to the given type, {@code to}
+     * @param list        List to convert to the given type, {@code V}
      * @param transformer Transformer utilised to convert each object of the given array to the new type
      * @param <O>         The object type to be transformed
      * @param <V>         The type of the resultant list
-     * @return A new list of the type supplied by {@code to}
+     * @return A new list of the type supplied by {@code V}
      */
-    public static <O, V> Collection<V> transform(boolean includeNull, Collection<O> collection, Transformer<O, V> transformer) {
+    public static <O, V> List<V> transform(boolean includeNull, List<O> list, Transformer<O, V> transformer) {
+        return transform(includeNull, list, new ArrayList<V>(), transformer);
+    }
+
+    /**
+     * Transforms a given collection to a new collection of given type using the supplied Transformer.
+     *
+     * @param collection  Collection to convert to the given type, {@code V}
+     * @param to          Collection to insert the transformed values into
+     * @param transformer Transformer utilised to convert each object of the given array to the new type
+     * @param <O>         The object type to be transformed
+     * @param <V>         The type of the resultant list
+     * @return A new collection of the type supplied by {@code V}
+     */
+    public static <O, V, C extends Collection<O>, D extends Collection<V>> D transform(C collection, D to, Transformer<O, V> transformer) {
+        return transform(true, collection, to, transformer);
+    }
+
+    /**
+     * Transforms a given collection to a new provided collection using the supplied Transformer.
+     *
+     * @param includeNull If set to true, null objects will be included in the resultant list
+     * @param collection  Collection to convert to the given type, {@code V}
+     * @param to          Collection to insert the transformed values into
+     * @param transformer Transformer utilised to convert each object of the given array to the new type
+     * @param <O>         The object type to be transformed
+     * @param <V>         The type of the resultant list
+     * @return A new list of the type supplied by {@code V}
+     */
+    public static <O, V, C extends Collection<O>, D extends Collection<V>> D transform(boolean includeNull, C collection, D to, Transformer<O, V> transformer) {
         Affirm.notEmpty(collection);
-        List<V> result = new ArrayList<>();
+        Affirm.notEmpty(to);
         for (O element : collection) {
             if (includeNull || element != null) {
-                result.add(transformer.transform(element));
+                to.add(transformer.transform(element));
             }
         }
-        return result;
+        return to;
     }
 
     /**
@@ -291,10 +320,8 @@ public class GeneralUtil {
      */
     public static PositionContainer readLocation(int startIndex, String... args) {
         UUID worldUid = null;
-        switch (ServerUtil.getServerBrand()) {
+        switch (ServerUtil.getServerBrand().getCapsule()) {
             case BUKKIT:
-            case SPIGOT:
-            case CAULDRON:
                 worldUid = Bukkit.getWorld(args[startIndex]).getUID();
             case SPONGE:
                 worldUid = SpongeUtil.getGame().getServer().get().getWorld(args[startIndex]).get().getUniqueID();
