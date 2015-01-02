@@ -112,7 +112,8 @@ public class ItemStackContainer extends Container<ItemStackContainer> {
         GameRegistry gameRegistry = SpongeUtil.getGame().getRegistry();
         // TODO: name/loer
         // TODO: meta
-        return gameRegistry.getItemBuilder().itemType(gameRegistry.getItem(id).get()).quantity(quantity).build();
+        return null;
+        //return gameRegistry.getItemBuilder().itemType(gameRegistry.getItem(id).get()).quantity(quantity).build();
     }
 
     public String getId() {

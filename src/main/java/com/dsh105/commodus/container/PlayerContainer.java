@@ -20,6 +20,7 @@ package com.dsh105.commodus.container;
 import com.dsh105.commodus.ServerUtil;
 import com.dsh105.commodus.StringUtil;
 import com.dsh105.commodus.bukkit.BukkitIdentUtil;
+import com.dsh105.commodus.message.Message;
 import com.dsh105.commodus.sponge.SpongeIdentUtil;
 
 import java.util.HashMap;
@@ -86,5 +87,15 @@ public class PlayerContainer extends Container<PlayerContainer> {
 
     public org.spongepowered.api.entity.player.Player asSponge() {
         return SpongeIdentUtil.getPlayer(playerUID);
+    }
+    
+    public void sendMessage(Message... messages) {
+        for (Message message : messages) {
+            sendMessage(message);
+        }
+    }
+    
+    public void sendMessage(Message message) {
+        message.send(this);
     }
 }

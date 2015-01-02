@@ -63,7 +63,7 @@ public enum ServerBrand {
             try {
                 Class.forName("org.bukkit.Bukkit");
                 return initialiseBukkit(Bukkit.getVersion());
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException | NullPointerException e) {
                 // ignore, obviously not running Bukkit
             }
 

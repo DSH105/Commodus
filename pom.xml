@@ -81,6 +81,13 @@
             <version>1.1-SNAPSHOT</version>
         </dependency>
 
+        <!-- Gson - shaded -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.1</version>
+        </dependency>
+
         <!-- Reflection -->
         <dependency>
             <groupId>com.captainbern</groupId>
@@ -151,20 +158,36 @@
                 </configuration>
             </plugin>
 
-            <!-- JavaDoc -->
+            <!-- Shade -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
-                <configuration>
-                    <failOnError>false</failOnError>
-                </configuration>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.1</version>
                 <executions>
                     <execution>
-                        <id>attach-javadocs</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>jar</goal>
+                            <goal>shade</goal>
                         </goals>
+                        <configuration>
+                            <minimizeJar>true</minimizeJar>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+
+                            <!-- Artifacts to shade -->
+                            <artifactSet>
+                                <includes>
+                                    <artifact>com.google.code.gson:gson</artifact>
+                                </includes>
+                            </artifactSet>
+
+                            <!-- Relocate everything into the project package -->
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.google.gson</pattern>
+                                    <shadedPattern>com.dsh105.commodus.libraries.gson</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
