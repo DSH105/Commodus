@@ -100,7 +100,7 @@ public class StringUtil {
     public static String capitalise(String string, boolean forceLowerCase) {
         String[] parts = string.split("\\s+");
         for (int i = 0; i < parts.length; i++) {
-            if (parts[i].length > 0) {
+            if (parts[i].length() > 0) {
                 parts[i] = parts[i].substring(0, 1).toUpperCase() + (forceLowerCase ? parts[i].substring(1).toLowerCase() : parts[i].substring(1));
             }
         }
