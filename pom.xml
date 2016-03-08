@@ -38,10 +38,10 @@
 
     <!-- Repositories -->
     <repositories>
-        <!-- Bukkit -->
+        <!-- Spigot -->
         <repository>
-            <id>bukkit-repo</id>
-            <url>http://repo.bukkit.org/content/groups/public/</url>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
 
         <!-- Hawk's CI -->
@@ -53,11 +53,11 @@
 
     <!-- Dependencies -->
     <dependencies>
-        <!-- Bukkit -->
+        <!-- Spigot -->
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.7.9-R0.3-SNAPSHOT</version>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.9-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
